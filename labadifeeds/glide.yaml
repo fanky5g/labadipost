@@ -1,9 +1,9 @@
 package: bitbucket.org/fanky5g/labadipost/labadifeeds
 import:
-# - package: bitbucket.org/fanky5g/labadipost
-#   repo: git@bitbucket.org:fanky5g/labadipost.git
-#   subpackages:
-#   - labadicommon
+- package: bitbucket.org/fanky5g/labadipost
+  repo: git@bitbucket.org:fanky5g/labadipost.git
+  subpackages:
+  - labadicommon
 - package: github.com/Techdevt/rss
 - package: github.com/asaskevich/govalidator
 - package: github.com/garyburd/redigo
