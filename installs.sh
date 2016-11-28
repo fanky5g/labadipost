@@ -1,6 +1,6 @@
 #!/bin/bash
-echo "installing nodejs and npm"
-
+if !node 2> /dev/null; then
+  echo "installing nodejs and npm"
   echo 'export PATH=$HOME/local/bin:$PATH' >> ~/.bashrc
   . ~/.bashrc
   mkdir ~/local
@@ -10,6 +10,9 @@ echo "installing nodejs and npm"
   ./configure --prefix=~/local
   make install
   curl https://www.npmjs.org/install.sh | sh
+fi
 
-echo "installing glide golang vendoring tool"
-curl https://glide.sh/get | sh
+if !glide 2> /dev/null; then
+  echo "installing glide golang vendoring tool"
+  curl https://glide.sh/get | sh
+fi

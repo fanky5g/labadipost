@@ -1,6 +1,8 @@
 package: bitbucket.org/fanky5g/labadipost/labadiweb
 import:
 - package: git@bitbucket.org:fanky5g/labadipost
+  repo: git@bitbucket.org:fanky5g/labadipost.git
+  vcs: git
   subpackages:
     - labadicommon
 - package: github.com/codegangsta/cli
