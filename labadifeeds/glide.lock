@@ -1,8 +1,8 @@
 hash: 91c5f180177ffa1b214d7640f5b3e9edefd11d75559c7533d5a4d086128fd6b2
-updated: 2016-11-28T22:51:13.79282529Z
+updated: 2016-11-28T23:11:57.204642415Z
 imports:
 - name: bitbucket.org/fanky5g/labadipost
-  version: ecf18d0f081ec2d13519dbaffc66ad45db1fdb96
+  version: 7195063685b6661eceb00916a80e289cc3f459b0
   repo: git@bitbucket.org:fanky5g/labadipost.git
   vcs: git
   subpackages:
@@ -21,7 +21,7 @@ imports:
 - name: github.com/PuerkitoBio/goquery
   version: 152b1a2c8f5d0340f658bb656032a39b94e52958
 - name: github.com/Sirupsen/logrus
-  version: a437dfd2463eaedbec3dfe443e477d3b0a810b3f
+  version: e400ff7861bce9661cf37c162ce3b7b303baf333
 - name: github.com/streadway/amqp
   version: 1b8853833a94be8ba57fd121a8651f7221e5b051
 - name: github.com/tealeg/xlsx

@@ -18,7 +18,6 @@ func (d *Dispatcher) Run() {
     worker := NewWorker(d.WorkerPool)
     worker.Start()
   }
-
   go d.dispatch()
   select {} // make function block forever
 }

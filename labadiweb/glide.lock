@@ -1,29 +1,30 @@
-hash: 084c4abacb877df011b55afc31bcd98110ad2145e7ce08921c3ee5778a03ac82
-updated: 2016-11-28T02:54:38.295411574Z
+hash: 2f5b49aafbf6eee1cf287a4fe6a119493a9be1201bd52e7d63d19e3fab8d4300
+updated: 2016-11-28T23:37:15.432047278Z
 imports:
 - name: bitbucket.org/fanky5g/labadipost
-  version: 9e8db6ade528a4b230473654c61dc205b9d22440
+  version: 7195063685b6661eceb00916a80e289cc3f459b0
   repo: git@bitbucket.org:fanky5g/labadipost.git
   subpackages:
   - labadicommon
 - name: github.com/andybalholm/cascadia
   version: 65919c611220063037b1db8eb334acaf17a6d8ea
-  repo: https://github.com/andybalholm/cascadia
+- name: github.com/asaskevich/govalidator
+  version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
 - name: github.com/axgle/mahonia
   version: c528b747d92d41ca581a7acf3e604c396fc7c034
 - name: github.com/codegangsta/cli
   version: 0bdeddeeb0f650497d603c4ad7b20cfe685682f6
 - name: github.com/dgrijalva/jwt-go
-  version: d2709f9f1f31ebcda9651b03077758c1f3a0018c
+  version: 9ed569b5d1ac936e6494082958d63a6aa4fff99a
 - name: github.com/elazarl/go-bindata-assetfs
   version: 9a6736ed45b44bf3835afeebb3034b57ed329f3e
 - name: github.com/garyburd/redigo
-  version: cca3df8fa0670249a3f746bcc062c69aeba0517c
+  version: 8873b2f1995f59d4bcdd2b0dc9858e2cb9bf0c13
   subpackages:
   - internal
   - redis
 - name: github.com/golang/protobuf
-  version: 2402d76f3d41f928c7902a765dfc872356dd3aad
+  version: 8ee79997227bf9b34611aee7946ae64735e6fd93
   subpackages:
   - proto
 - name: github.com/gorilla/context
@@ -31,26 +32,20 @@ imports:
 - name: github.com/gorilla/securecookie
   version: fa5329f913702981df43dcb2a380bac429c810b5
 - name: github.com/gorilla/sessions
-  version: ca9ada44574153444b00d3fd9c8559e4cc95f896
+  version: 52389059572b4736b2b7d899b0242ecc449c8779
 - name: github.com/icza/minquery
   version: 17a30f16bf59968d8041d487655437001fefc8f3
 - name: github.com/itsjamie/go-bindata-templates
   version: 65d795d0c74021e19b2ebadf3c83c01a8290a405
-- name: github.com/labstack/echo
-  version: 8ab362f61d0a930b883f9bfe5a9858542f1b87ed
 - name: github.com/labstack/gommon
   version: 9a43ff0d261e0e65594422e9eee08cf301aabbe7
   subpackages:
-  - bytes
   - color
   - log
-  - random
 - name: github.com/mattn/go-colorable
   version: d228849504861217f796da67fae4f6e347643f15
 - name: github.com/mattn/go-isatty
   version: 30a891c33c7cde7b02a981314b4228ec99380cca
-- name: github.com/miekg/dns
-  version: 271c58e0c14f552178ea321a545ff9af38930f39
 - name: github.com/moul/http2curl
   version: 4e24498b31dba4683efb9d35c1c8a91e2eda28c8
 - name: github.com/mrjones/oauth
@@ -63,48 +58,37 @@ imports:
   version: 72b36f5004492e232ddc3b67c17060b252231000
 - name: github.com/PuerkitoBio/goquery
   version: 152b1a2c8f5d0340f658bb656032a39b94e52958
-  repo: https://github.com/PuerkitoBio/goquery
-- name: github.com/rsc/letsencrypt
-  version: 76104d26167d38b6a0010f42bfc8ec5487742e8b
 - name: github.com/Sirupsen/logrus
-  version: 3ec0642a7fb6488f65b06f9040adc67e3990296a
-  repo: https://github.com/Sirupsen/logrus
+  version: e400ff7861bce9661cf37c162ce3b7b303baf333
+- name: github.com/streadway/amqp
+  version: 1b8853833a94be8ba57fd121a8651f7221e5b051
+- name: github.com/tealeg/xlsx
+  version: abbe40bca7f65a68f0c8a4410aba36b9aa000dcc
 - name: github.com/Techdevt/rss
-  version: a160f3005ef3ed959b79a3fb52c9e61ee6453e3c
-- name: github.com/tylerb/graceful
-  version: 4df1190835320af7076dfcf27b3d071fd3612caf
+  version: 9f69dbd11bfe53a8e03d178546d66d3485941c62
 - name: github.com/valyala/fasttemplate
   version: 3b874956e03f1636d171bda64b130f9135f42cff
-- name: github.com/xenolf/lego
-  version: 0abbd738a45af51595a214c52b02b18d16974f19
-  subpackages:
-  - acme
 - name: golang.org/x/crypto
-  version: 9477e0b78b9ac3d0b03822fd95422e2fe07627cd
+  version: ede567c8e044a5913dad1d1af3696d9da953104c
   subpackages:
   - bcrypt
   - blowfish
-  - ocsp
 - name: golang.org/x/net
-  version: 3bafa3320efdf0c95d056586aa9abdd05ad72ee1
+  version: 4971afdc2f162e82d185353533d3cf16188a9f4e
   subpackages:
   - context
   - html
   - html/atom
   - publicsuffix
+  - websocket
 - name: golang.org/x/oauth2
   version: d5040cddfc0da40b408c9a1da4728662435176a9
   subpackages:
   - internal
 - name: golang.org/x/sys
-  version: 002cbb5f952456d0c50e0d2aff17ea5eca716979
-  repo: https://go.googlesource.com/sys
+  version: 30237cf4eefd639b184d1f2cb77a581ea0be8947
   subpackages:
   - unix
-- name: golang.org/x/time
-  version: f51c12702a4d776e4c1fa9b0fabab841babae631
-  subpackages:
-  - rate
 - name: google.golang.org/appengine
   version: ca59ef35f409df61fa4a5f8290ff289b37eccfb8
   subpackages:
@@ -118,12 +102,15 @@ imports:
 - name: gopkg.in/boj/redistore.v1
   version: fc113767cd6b051980f260d6dbe84b2740c46ab0
 - name: gopkg.in/labstack/echo.v1
-  version: cd2530ea098106338b888f4fb66e966efa2fd75e
+  version: 1659348a67f499ff74f6dbf386375c95b5433ded
+  repo: https://gopkg.in/labstack/echo.v1
+  vcs: git
   subpackages:
   - middleware
 - name: gopkg.in/mgo.v2
   version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
   subpackages:
+  - bcrypt
   - bson
   - internal/json
   - internal/sasl
@@ -132,11 +119,6 @@ imports:
   version: a4ba37699f8bae499586df39f367460ab7566f1b
 - name: gopkg.in/olebedev/go-duktape.v2
   version: c8eb77ef5aa5bff7b04fa1b8e70a5a1e5eb0755a
-- name: gopkg.in/square/go-jose.v1
-  version: aa2e30fdd1fe9dd3394119af66451ae790d50e0d
-  subpackages:
-  - cipher
-  - json
 - name: gopkg.in/yaml.v2
   version: a5b47d31c556af34a302ce5d659e6fea44d90de0
 testImports: []

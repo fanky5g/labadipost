@@ -37,6 +37,8 @@ import:
 - package: golang.org/x/oauth2
 - package: gopkg.in/boj/redistore.v1
 - package: gopkg.in/labstack/echo.v1
+  repo: https://gopkg.in/labstack/echo.v1
+  vcs: git
   subpackages:
   - middleware
 - package: gopkg.in/mgo.v2
