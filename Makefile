@@ -6,3 +6,7 @@ all:
 	@cd ./labadipics && glide install
 	@echo "installing dependencies from labadihub"
 	@cd ./labadihub && glide install
+	@echo "installing dependencies for labadicommon"
+	@cd ./labadicommon && glide install
+	@echo "installing dependencies for labadifeeds"
+	@cd ./labadifeeds && glide install
