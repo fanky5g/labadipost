@@ -1,0 +1,127 @@
+.overlay {
+    position: fixed;
+    overflow: auto;
+    text-align: center;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: block;
+    z-index: 900;
+    background-color: rgba(255, 255, 255, .97);
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    &.overlay--dark {
+        background-color: rgba(0, 0, 0, .6);
+    }
+    &:before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: -.25em;
+    }
+}
+
+.overlay--dark {
+    .button--close {
+        color: #fff;
+    }
+    .overlay-dialog {
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .44);
+        padding: 0;
+        max-width: 520px;
+    }
+    .overlay-title {
+        margin-bottom: 0;
+        background-color: #f0f0f0;
+        padding: 24px 24px 24px;
+        font-size: 18px;
+        color: rgba(0, 0, 0, .8);
+    }
+    .overlay-content {
+        padding: 0 32px 0;
+        margin: 24px 0;
+        font-size: 16px;
+        text-align: left;
+        color: rgba(0, 0, 0, .6);
+    }
+}
+
+.overlay-dialog {
+    display: inline-block;
+    vertical-align: middle;
+    outline: 0;
+    overflow: hidden;
+    max-width: 580px;
+    padding: 100px 80px;
+}
+
+.overlay-dialog--signin, .overlay-dialog--signup {
+    max-width: 620px;
+}
+
+.overlay-dialog--alert,
+.overlay-dialog--confirm,
+.overlay-dialog--signin,
+.overlay-dialog--signup {
+    text-align: center;
+}
+
+.overlay-dialog--animate {
+    transform-origin: bottom center;
+    animation: fade-in-pulse-08 .3s forwards cubic-bezier(.8, .02, .45, .91);
+}
+
+.overlay-title {
+    color: rgba(0, 0, 0, .8);
+    font-size: 24px;
+    line-height: 1.1;
+    margin-bottom: 6px;
+}
+
+@include media('<=768px') {
+    .overlay--dark {
+        padding: 10px 0;
+        &:before {
+            margin-right: 0;
+        }
+        .button--close {
+            z-index: 200;
+            color: rgba(0, 0, 0, .44);
+            right: 5px;
+        }
+        .overlay-dialog {
+            width: 100%;
+            box-shadow: none;
+            border-radius: 0;
+            vertical-align: top;
+            max-width: 100%;
+        }
+        .overlay-content {
+          font-size: 16px;
+        }
+    }
+    .overlay--dark .overlay-title {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    .overlay-dialog {
+        width: 80%;
+        padding: 0;
+    }
+    .overlay-title {
+        font-size: 24px;
+        padding-top: 35px;
+    }
+}
+
+.overlay-content {
+    color: rgba(0, 0, 0, .6);
+    line-height: 1.4;
+    margin-bottom: 30px;
+}

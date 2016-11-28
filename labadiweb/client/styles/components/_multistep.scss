@@ -1,0 +1,80 @@
+ol.progtrckr {
+    margin: 0;
+    padding-bottom: 2.2rem;
+    list-style-type: none;
+    text-align: center;
+
+    li {
+        display: inline-block;
+        text-align: center;
+        line-height: 4.5rem;
+        font-size: 14px;
+        font-weight: $font-weight--bold;
+        cursor: pointer;
+
+        @include media('>1400px') {
+            font-size: 16px;
+       }
+
+        &.progtrckr-doing,
+        &.progtrckr-done {
+            color: $text-color--primary;
+            border-bottom: 4px solid $color-accent;
+       }
+        &.progtrckr-done {
+            &:before {
+                content: "\2713";
+                color: white;
+                background-color: $color-accent;
+                width: 1.2em;
+                line-height: 1.2em;
+                border-radius: 1.2em;
+           }
+       }
+        &.progtrckr-doing {
+            &:before {
+                content: "\2022";
+                color: white;
+                background-color: $color-accent;
+                width: 1.2em;
+                line-height: 1.2em;
+                border-radius: 1.2em;
+           }
+       }
+        &.progtrckr-todo {
+          color: $color-primary--contrast__active;
+        border-bottom: 4px solid $color-primary--contrast__active;
+          &:before {
+            content: "\039F";
+          color: silver;
+          background-color: $white;
+          width: 1.2em;
+          line-height: 1.4em;
+          }
+       }
+        &:before {
+            position: relative;
+            bottom: -4.2rem;
+            float: left;
+            left: 50%;
+       }
+        &:after {
+            content: "\00a0\00a0";
+       }
+        
+        em {
+            display: none;
+            font-weight: 700;
+            padding-left: 1rem;
+       }
+        span {
+            padding: 0;
+            @include media('>=740px', '<=1024px') {
+                padding: 0 0.2rem;
+           }
+            @include media('>1024px') {
+                padding: 0 1.5rem;
+           }
+       }
+   }
+}

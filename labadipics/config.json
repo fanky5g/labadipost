@@ -1,0 +1,38 @@
+{
+  "kvstore": {
+    "type": "redis",
+    "host": "redis",
+    "port": 6379,
+    "password": "",
+    "prefix": "image:",
+    "db": 0
+  },
+  "port": 3001,
+  "options": {
+    "enable_upload": true
+  },
+  "storage": {
+    "src": {
+      "type": "http+s3",
+      "base_url": "https://labadipost.s3.amazonaws.com/",
+      "access_key_id": "AKIAJDGLHUP3FX6ESQZQ",
+      "secret_access_key": "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",
+      "bucket_name": "labadipics",
+      "acl": "bucket-owner-full-control",
+      "region": "us-west-2",
+      "location": "images"
+    },
+    "dst": {
+      "type": "s3",
+      "access_key_id": "AKIAJDGLHUP3FX6ESQZQ",
+      "secret_access_key": "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",
+      "bucket_name": "labadipics",
+      "acl": "bucket-owner-full-control",
+      "region": "us-west-2",
+      "location": "images"
+    }
+  },
+  "allowed_headers": ["Content-Type", "Authorization", "Accept", "Accept-Encoding", "Accept-Language"],
+  "allowed_origins": ["*"],
+  "allowed_methods": ["GET", "HEAD", "POST", "PUT"]
+}

@@ -1,0 +1,9 @@
+{
+  "js": {
+    "indent_char": " ",
+    "indent_size": 2,
+    "allowed_file_extensions": ["js", "jsx", "json", "jshintrc", "jsbeautifyrc"],
+    "jslint_happy": true,
+    "e4x": true
+  }
+}

@@ -1,0 +1,40 @@
+// =================================================================
+// Helpers
+// =================================================================
+// Clearfix
+.l-clearfix, %clearfix {
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+   }
+}
+
+%resetHeaders {
+    -webkit-margin-before: 0;
+    -moz-margin-before: 0;
+    -webkit-margin-after: 0;
+    -moz-margin-after: 0;
+}
+
+.srt {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+%pseudos {
+    display: block;
+    content: '';
+    position: absolute;
+}
+
+.centered {
+    float: none;
+    margin: 0 auto;
+}

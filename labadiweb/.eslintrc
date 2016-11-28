@@ -1,0 +1,40 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "allowImportExportEverywhere": false,
+     "ecmaVersion": 6,
+     "sourceType": "module",
+     "ecmaFeatures": {
+        "jsx": true
+     }
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "mocha": true,
+    "amd": true,
+    "mongo": true
+  },
+  "rules": {
+    "no-console": 0,
+    "strict": 0,
+    "new-cap": [2, { "capIsNewExceptions": ["List", "express.Router", "mongoose.Schema", "Immutable.Map", "Immutable.List"] }],
+    "no-underscore-dangle": ["error", { "allow": ["__redial_handlers__", "_id", "__INITIAL_STATE__"] }],
+    "no-param-reassign": [2, { "props": false }],
+    "no-cond-assign": [2, "except-parens"]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": { 
+        "paths": ["client/common", "client/containers", "client/lib", "client/routes"]
+      }
+    }
+  },
+  "globals": {
+    "debug": false,
+    "appRoot": false,
+    "google": false,
+  }
+}

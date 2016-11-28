@@ -1,0 +1,4 @@
+package: bitbucket.org/fanky5g/labadipost/labadihub
+import:
+- package: github.com/gorilla/websocket
+  version: ~1.0.0

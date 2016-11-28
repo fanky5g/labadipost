@@ -1,0 +1,6 @@
+package: bitbucket.org/fanky5g/labadipost/labadicommon
+import:
+- package: github.com/Techdevt/rss
+- package: gopkg.in/mgo.v2
+  subpackages:
+  - bson

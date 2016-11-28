@@ -1,0 +1,49 @@
+@import 'reset';
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+html,
+body {
+    @include text(px2em(16px), ($base__line / $base__font-size), $font-weight--medium, $text-color--primary);
+    font-family: $font-family--primary;
+    text-rendering: geometricPrecision;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100%;
+    height: 100%;
+    @include media('>80rem') {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+}
+
+a,
+button,
+input {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    overflow: visible;
+}
+
+button,
+select {
+    text-transform: none;
+}
+
+button,
+select,
+textarea,
+input,
+optgroup {
+    color: inherit;
+    font: inherit;
+    margin: 0;
+}
+
+a {
+  background-color: transparent;
+}

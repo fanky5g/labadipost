@@ -1,0 +1,40 @@
+.form-header {
+    position: relative;
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 auto 25px;
+    letter-spacing: 1px;
+    width: 100%;
+    @include media('<=1280px') {
+        font-size: 18px;
+        margin: 0 auto 15px;
+    }
+}
+
+.mdl-textfield--floating-label.is-invalid .mdl-textfield__label,
+.mdl-textfield.is-invalid .mdl-textfield__input {
+    color: inherit!important;
+    border-color: inherit!important;
+}
+
+.mdl-textfield--floating-label.is-invalid.is-dirty .mdl-textfield__label,
+.mdl-textfield.is-invalid.is-dirty,
+.mdl-textfield__input,
+.mdl-textfield.is-invalid.is-dirty .mdl-textfield__label:after {
+    border-color: rgb(222, 50, 38);
+}
+
+.mdl-textfield {
+    &.is-invalid {
+        .mdl-textfield__label {
+            &:after {
+                border-color: $color-primary!important;
+            }
+        }
+        &.is-dirty .mdl-textfield__label {
+          border-color: rgb(222, 50, 38);
+        }
+    }
+}

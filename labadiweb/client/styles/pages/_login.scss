@@ -1,0 +1,93 @@
+.Login {
+    .Login__container {
+        position: relative;
+        .social-buttons {
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-justify-content: space-between;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+            a {
+                position: relative;
+                display: inline-block;
+                color: #fff;
+                cursor: pointer;
+                height: 50px;
+                width: 32.5%;
+                display: -webkit-inline-flex;
+                display: -ms-inline-flexbox;
+                display: inline-flex;
+                -webkit-justify-content: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                -webkit-align-items: center;
+                -ms-flex-align: center;
+                align-items: center;
+                @include media('<1280px') {
+                    height: 40px;
+                }
+            }
+            .facebook-login {
+                background: #3B5999;
+            }
+            .google-login {
+                background: #DC4A38;
+            }
+            .twitter-login {
+               background: #3BA9EE;
+               svg {
+                 height: 15px;
+               }
+            }
+        }
+        .Login__container--body {
+            padding: 20px 0;
+            display: flex;
+            flex-flow: row wrap;
+            .Login__container--body-inputfield {
+                .mdl-textfield__input {
+                    flex: 1 100%;
+                }
+            }
+            .Login__container--body-inputfield {
+                .mdl-textfield {
+                    min-width: 100%;
+                }
+            }
+            .Login__container--body-inputfield,
+            .Login__container--body-submit,
+            .Login__container--body-forgot {
+                flex: 1 100%;
+                padding: 5px 10px;
+            }
+            .Login__container--body-submit {
+                .mdl-button {
+                    width: 100%;
+                    background: #09c;
+                    color: #fff;
+                    text-transform: none;
+                }
+            }
+        }
+    }
+}
+
+.login-header, .signup-header {
+    display: inherit;
+    text-align: center;
+    text-transform: uppercase;
+    color: $text-color--secondary;
+    margin-bottom: 10px;
+}
+
+.mdl-textfield.is-invalid .mdl-textfield__error {
+  visibility: hidden;
+}
+
+.mdl-textfield.is-invalid.is-dirty .mdl-textfield__error {
+  visibility: visible;
+}

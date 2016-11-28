@@ -1,0 +1,69 @@
+.metabar {
+    position: absolute;
+    display: block;
+    z-index: 500;
+    width: 100%;
+    font-size: 14px;
+    background: #fff;
+    color: rgba(0, 0, 0, .44);
+    font-family: $font-family--primary;
+    letter-spacing: 0;
+    font-weight: 400;
+    font-style: normal;
+    box-sizing: border-box;
+    top: 0;
+    .metabar-inner {
+        position: relative;
+    }
+    .metabar-block {
+        &:not(metabar-block--center) {
+            position: relative;
+            z-index: 500;
+        }
+    }
+    .buttonSet,
+    .inputGroup,
+    .metablock > .button {
+        margin: 10px;
+        display: inline-block;
+        white-space: nowrap;
+        vertical-align: top;
+    }
+    .buttonSet,
+    .inputGroup {
+        line-height: 44px;
+    }
+    .button--chromeless {
+        height: 37px;
+        line-height: 35px;
+    }
+}
+
+.siteNav-logo {
+    position: relative;
+    display: inline-block;
+    padding-top: 10px;
+    padding-left: 12px;
+    padding-right: 14px;
+    z-index: 700;
+    border: 0;
+}
+
+.avatar {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: normal;
+}
+
+.avatar-image--icon {
+    width: 32px;
+    height: 32px;
+}
+
+.avatar-image {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 100%;
+}

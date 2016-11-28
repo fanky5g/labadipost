@@ -1,0 +1,90 @@
+version: "2"
+
+services:
+  labadifeeds:
+    build: ./labadifeeds
+    volumes:
+      - ./labadifeeds:/go/src/labadifeeds
+    links:
+      - redis
+      - rabbitmq
+      - mongo
+    environment:
+      REDIS_URL: redis://redis
+      RABBITMQ_URL: amqp://rabbitmq
+      MONGO_URL: mongo
+      MAX_WORKERS: 10
+      MAX_QUEUE: 100000
+    command: ./labadifeeds
+
+  labadihub:
+    build: ./labadihub
+    expose:
+      - "10000-11000"
+    volumes:
+      - ./labadihub:/go/src/labadihub
+    command: go build
+
+  labadiweb:
+    build: ./labadiweb
+    expose:
+      - "5000"
+      - "5001"
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    volumes:
+      - ./labadiweb:/go/src/labadiweb
+    links:
+      - rabbitmq
+      - redis
+      - mongo
+    command: make serve
+    environment:
+      MONGO_URL: mongo
+      GMAIL_USER: fanky5g@gmail.com
+      GMAIL_PASS: fankygold2010
+      JWT_KEY: gold59
+      GOOGLE_ID: 47314254044-n04g039mol3ef4h7oaslr9s2eqgrh0qp.apps.googleusercontent.com
+      GOOGLE_SECRET: jHyQJfd-at2vG_hHjntkb7wi
+      FB_ID: "175443636251732"
+      FB_SECRET: f72a85e7aa4404a33ff8a8125ca72d38
+      TWITTER_ID: Dhp9FlOpXofoBVL19sVWrt3WI
+      TWITTER_SECRET: VmG3r8TKwWRw1Uf1DGluy10QEXU4oQaUyc2ZXEdu7D5KKfJoHT
+      REDIS_URL_RAW: redis:6379
+      REDIS_URL: redis://redis
+  labadipics:
+    build: ./labadipics
+    expose:
+      - "3001"
+    volumes:
+      - ./labadipics:/go/src/github.com/Techdevt/labadipost/labadipics
+    links:
+      - redis
+    command: bin/picfit -c config.json
+
+  nginx:
+    restart: always
+    build: ./nginx/
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/sites-enabled:/etc/nginx/sites-enabled
+    volumes_from:
+      - labadiweb
+    links:
+      - labadiweb
+      - labadipics
+
+  redis:
+    image: redis:3.0.7-alpine
+    expose:
+      - "6379"
+  rabbitmq:
+    image: rabbitmq:latest
+    expose:
+      - "5672"
+  mongo:
+    image: mongo:latest
+    expose:
+      - "27017"

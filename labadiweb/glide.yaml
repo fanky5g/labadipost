@@ -1,0 +1,33 @@
+package: bitbucket.org/fanky5g/labadipost/labadiweb
+import:
+- package: git@bitbucket.org:fanky5g/labadipost
+  subpackages:
+    - labadicommon
+- package: github.com/codegangsta/cli
+  version: ~1.19.1
+- package: github.com/dgrijalva/jwt-go
+  version: ~3.0.0
+- package: github.com/elazarl/go-bindata-assetfs
+- package: github.com/icza/minquery
+- package: github.com/itsjamie/go-bindata-templates
+- package: github.com/mrjones/oauth
+- package: github.com/nu7hatch/gouuid
+- package: github.com/olebedev/config
+- package: golang.org/x/crypto
+  subpackages:
+  - bcrypt
+- package: golang.org/x/net
+  subpackages:
+  - context
+- package: golang.org/x/oauth2
+- package: gopkg.in/boj/redistore.v1
+  version: ~1.2.0
+- package: gopkg.in/labstack/echo.v1
+  version: ~3.0.2
+  subpackages:
+  - middleware
+- package: gopkg.in/mgo.v2
+  subpackages:
+  - bson
+- package: gopkg.in/olebedev/go-duktape-fetch.v2
+- package: gopkg.in/olebedev/go-duktape.v2
