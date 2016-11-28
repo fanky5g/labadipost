@@ -1,4 +1,4 @@
-package structures
+package common
 
 import (
   "github.com/Techdevt/rss"
