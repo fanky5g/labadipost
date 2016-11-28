@@ -2,11 +2,12 @@ package main
 
 import (
   "github.com/Techdevt/rss"
+  models "bitbucket.org/fanky5g/labadipost/labadicommon"
   "fmt"
   "time"
 )
 
-func NewFeed(feed *rss.Feed, agency string, category Category, subcategory Subcategory) (out Feed) {
+func NewFeed(feed *rss.Feed, agency string, category models.Category, subcategory models.Subcategory) (out Feed) {
   out = Feed {
     Feed: &rss.Feed {
       Nickname: feed.Nickname,
