@@ -1,12 +1,11 @@
 package: bitbucket.org/fanky5g/labadipost/labadiweb
 import:
-- package: git@bitbucket.org:fanky5g/labadipost
+- package: bitbucket.org/fanky5g/labadipost
   repo: git@bitbucket.org:fanky5g/labadipost.git
-  vcs: git
+  subpackages:
+  - labadicommon
 - package: github.com/codegangsta/cli
-  version: ~1.19.1
 - package: github.com/dgrijalva/jwt-go
-  version: ~3.0.0
 - package: github.com/elazarl/go-bindata-assetfs
 - package: github.com/icza/minquery
 - package: github.com/itsjamie/go-bindata-templates
@@ -21,9 +20,7 @@ import:
   - context
 - package: golang.org/x/oauth2
 - package: gopkg.in/boj/redistore.v1
-  version: ~1.2.0
 - package: gopkg.in/labstack/echo.v1
-  version: ~3.0.2
   subpackages:
   - middleware
 - package: gopkg.in/mgo.v2

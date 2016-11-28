@@ -15,7 +15,7 @@ services:
       MONGO_URL: mongo
       MAX_WORKERS: 10
       MAX_QUEUE: 100000
-    command: ./labadifeeds
+    command: /bin/sh -c "go build && ./labadifeeds"
 
   labadihub:
     build: ./labadihub
@@ -23,7 +23,7 @@ services:
       - "10000-11000"
     volumes:
       - ./labadihub:/go/src/labadihub
-    command: go build
+    command: /bin/sh -c "go build && ./labadihub"
 
   labadiweb:
     build: ./labadiweb
@@ -61,7 +61,7 @@ services:
       - ./labadipics:/go/src/github.com/Techdevt/labadipost/labadipics
     links:
       - redis
-    command: bin/picfit -c config.json
+    command: bash -c "make build && bin/picfit -c config.json"
 
   nginx:
     restart: always
