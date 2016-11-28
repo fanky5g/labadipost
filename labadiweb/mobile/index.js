@@ -11,6 +11,12 @@ const { pathname, search, hash } = window.location;
 const $location = `${pathname}${search}${hash}`;
 const container = document.getElementById('app');
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/serviceWorker.js', {
+    scope: '/',
+  });
+}
+
 match({ routes, location: $location }, () => {
   const component = (
     <Router history={history} routes={routes} />

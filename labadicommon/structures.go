@@ -10,8 +10,8 @@ type News struct {
   *rss.Item
   Id         bson.ObjectId `json:"id"  bson:"_id,omitempty"`
   Parent     string       `json:"parent"  bson:"parent"`
-  Category   string       `json:"category"  bson:"category"`
-  Subcategory string      `json:"subcategory"  bson:"subcategory"`
+  Category   Category       `json:"category"  bson:"category"`
+  Subcategory Subcategory      `json:"subcategory"  bson:"subcategory"`
   ImageWidth  int      `json:"imagewidth"   bson:"imagewidth"`
   ImageHeight int      `json:"imageheight"   bson:"imageheight"`
 }
