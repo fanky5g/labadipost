@@ -10,8 +10,8 @@ type News struct {
   *rss.Item
   Id         bson.ObjectId `json:"id"  bson:"_id,omitempty"`
   Parent     string       `json:"parent"  bson:"parent"`
-  Category   Category       `json:"category"  bson:"category"`
-  Subcategory Subcategory      `json:"subcategory"  bson:"subcategory"`
+  Category   string       `json:"category"  bson:"category"`
+  Subcategory string      `json:"subcategory"  bson:"subcategory"`
   ImageWidth  int      `json:"imagewidth"   bson:"imagewidth"`
   ImageHeight int      `json:"imageheight"   bson:"imageheight"`
 }
@@ -28,4 +28,12 @@ type Category struct {
   Image string `json:"image"  bson:"image"`
   Subcategories []Subcategory `json:"subcategories"  bson:"subcategories"`
   Stories []mgo.DBRef `json:"stories"  bson:"stories"  bson:"stories"`
+}
+
+type Feed struct {
+  *rss.Feed
+  Id          bson.ObjectId `json:"id"  bson:"_id,omitempty"`
+  Agency      string              `json:"agency"  bson:"agency"`
+  Category    Category           `json:"category" bson:"category"`
+  Subcategory Subcategory        `json:"subcategory"  bson:"subcategory"`  
 }
