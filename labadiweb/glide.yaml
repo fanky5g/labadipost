@@ -3,8 +3,6 @@ import:
 - package: git@bitbucket.org:fanky5g/labadipost
   repo: git@bitbucket.org:fanky5g/labadipost.git
   vcs: git
-  subpackages:
-    - labadicommon
 - package: github.com/codegangsta/cli
   version: ~1.19.1
 - package: github.com/dgrijalva/jwt-go
