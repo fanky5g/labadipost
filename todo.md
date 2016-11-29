@@ -53,3 +53,4 @@ seed admin database
 change subcategories into agency ie tv3, bbc, etc
 category and subcategory image management -> editing
 mobile view render header image, think of how hamburger button can happen
+collect categories and subcategories into mobile view and render...make selection ticking happen and save to user preferences

@@ -30,9 +30,6 @@ services:
     expose:
       - "5000"
       - "5001"
-    ports:
-      - "5000:5000"
-      - "5001:5001"
     volumes:
       - ./labadiweb:/go/src/labadiweb
     links:
