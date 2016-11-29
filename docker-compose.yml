@@ -39,6 +39,7 @@ services:
       - rabbitmq
       - redis
       - mongo
+      - labadipics
     command: make serve
     environment:
       MONGO_URL: mongo

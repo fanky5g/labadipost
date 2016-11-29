@@ -40,10 +40,16 @@ func (f *Feed) SaveItems(parent string, prevItemMap map[string]struct{}) (itemRe
         return itemRefs, err
       }
 
+      summary := item.Description
+
+      if item.Description == "" {
+        summary = item.Summary
+      }
+
       news := &News{
         Item: &rss.Item{
           Title: item.Title,
-          Summary: item.Summary,
+          Summary: item.Description,
           Content: item.Content,
           Link: item.Link,
           Date: item.Date,
