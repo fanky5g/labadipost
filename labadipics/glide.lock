@@ -1,12 +1,28 @@
 hash: e865ad793f1dd514425d00649cd338bbe4eafed051b431020d6af27471e32b51
-updated: 2016-11-29T00:11:38.191157237Z
+updated: 2016-11-29T00:20:31.863069569Z
 imports:
 - name: bitbucket.org/fanky5g/labadipost
-  version: 35947b5ea736e0460d6c34518e9c84c7b27c0131
+  version: 9c64ccf6c4d364564b50bc96074b7e0da58e17fe
   repo: git@bitbucket.org:fanky5g/labadipost.git
   vcs: git
   subpackages:
   - labadipics
+  - labadipics/application
+  - labadipics/config
+  - labadipics/engine
+  - labadipics/errs
+  - labadipics/hash
+  - labadipics/image
+  - labadipics/kvstore
+  - labadipics/logger
+  - labadipics/middleware
+  - labadipics/middleware/context
+  - labadipics/payload
+  - labadipics/server
+  - labadipics/signature
+  - labadipics/storage
+  - labadipics/util
+  - labadipics/views
 - name: github.com/BurntSushi/toml
   version: 99064174e013895bbd9b025c31100bd1d9b590ca
 - name: github.com/codegangsta/cli
