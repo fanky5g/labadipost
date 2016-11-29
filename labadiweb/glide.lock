@@ -1,0 +1,127 @@
+hash: 1432aa48d5f48beb1e15eeef577918aae7d12cd2d922935aefb204b282067741
+updated: 2016-11-29T21:15:13.430057122Z
+imports:
+- name: bitbucket.org/fanky5g/labadipost
+  version: a7bd9182e2b9ed45a22f1b8fdbae8a7991cb24b4
+  repo: git@bitbucket.org:fanky5g/labadipost.git
+  subpackages:
+  - labadicommon
+- name: github.com/andybalholm/cascadia
+  version: 65919c611220063037b1db8eb334acaf17a6d8ea
+- name: github.com/asaskevich/govalidator
+  version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
+- name: github.com/axgle/mahonia
+  version: c528b747d92d41ca581a7acf3e604c396fc7c034
+- name: github.com/codegangsta/cli
+  version: c31a7975863e7810c92e2e288a9ab074f9a88f29
+- name: github.com/dgrijalva/jwt-go
+  version: 9ed569b5d1ac936e6494082958d63a6aa4fff99a
+- name: github.com/elazarl/go-bindata-assetfs
+  version: 57eb5e1fc594ad4b0b1dbea7b286d299e0cb43c2
+- name: github.com/garyburd/redigo
+  version: cca3df8fa0670249a3f746bcc062c69aeba0517c
+  subpackages:
+  - internal
+  - redis
+- name: github.com/golang/protobuf
+  version: 2402d76f3d41f928c7902a765dfc872356dd3aad
+  subpackages:
+  - proto
+- name: github.com/gorilla/context
+  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gorilla/securecookie
+  version: fa5329f913702981df43dcb2a380bac429c810b5
+- name: github.com/gorilla/sessions
+  version: 52389059572b4736b2b7d899b0242ecc449c8779
+- name: github.com/icza/minquery
+  version: 17a30f16bf59968d8041d487655437001fefc8f3
+- name: github.com/itsjamie/go-bindata-templates
+  version: 65d795d0c74021e19b2ebadf3c83c01a8290a405
+- name: github.com/jteeuwen/go-bindata
+  version: a0ff2567cfb70903282db057e799fd826784d41d
+- name: github.com/labstack/gommon
+  version: 9c0a60557b6840125c331d8c8075119770aa2805
+  subpackages:
+  - color
+  - log
+- name: github.com/mattn/go-colorable
+  version: 3dac7b4f76f6e17fb39b768b89e3783d16e237fe
+- name: github.com/mattn/go-isatty
+  version: 56b76bdf51f7708750eac80fa38b952bb9f32639
+- name: github.com/moul/http2curl
+  version: b0342e01ef01008cc313e64847a3b80b96e1f9bf
+- name: github.com/mrjones/oauth
+  version: 88427e754deb856c87036b0f91c069bc4f6a1411
+- name: github.com/nu7hatch/gouuid
+  version: 179d4d0c4d8d407a32af483c2354df1d2c91e6c3
+- name: github.com/olebedev/config
+  version: e3edea7d68b76222b5118cc2e1cf3825e30abb80
+- name: github.com/olebedev/on
+  version: f65b7c9823a4c30797e9ad3c51d559a36ff8d542
+- name: github.com/parnurzeal/gorequest
+  version: c73179dd31355d86bd7692de9b47623d6d0fa696
+- name: github.com/PuerkitoBio/goquery
+  version: 152b1a2c8f5d0340f658bb656032a39b94e52958
+- name: github.com/Sirupsen/logrus
+  version: 6c28e16200e55c2549705ac24ea58976c07f18ac
+- name: github.com/streadway/amqp
+  version: 1b8853833a94be8ba57fd121a8651f7221e5b051
+- name: github.com/tealeg/xlsx
+  version: abbe40bca7f65a68f0c8a4410aba36b9aa000dcc
+- name: github.com/Techdevt/rss
+  version: 9f69dbd11bfe53a8e03d178546d66d3485941c62
+- name: github.com/valyala/fasttemplate
+  version: 3b874956e03f1636d171bda64b130f9135f42cff
+- name: golang.org/x/crypto
+  version: d67eb63455fa4d6fca5802332d86f1f204017e00
+  subpackages:
+  - bcrypt
+  - blowfish
+- name: golang.org/x/net
+  version: 5df5483e0518a11a6ef1e894c70236eb3f639557
+  subpackages:
+  - context
+  - html
+  - html/atom
+  - publicsuffix
+  - websocket
+- name: golang.org/x/oauth2
+  version: d5040cddfc0da40b408c9a1da4728662435176a9
+  subpackages:
+  - internal
+- name: golang.org/x/sys
+  version: 30237cf4eefd639b184d1f2cb77a581ea0be8947
+  subpackages:
+  - unix
+- name: golang.org/x/text
+  version: cf4986612c83df6c55578ba198316d1684a9a287
+- name: google.golang.org/appengine
+  version: ca59ef35f409df61fa4a5f8290ff289b37eccfb8
+  subpackages:
+  - internal
+  - internal/base
+  - internal/datastore
+  - internal/log
+  - internal/remote_api
+  - internal/urlfetch
+  - urlfetch
+- name: gopkg.in/boj/redistore.v1
+  version: fc113767cd6b051980f260d6dbe84b2740c46ab0
+- name: gopkg.in/labstack/echo.v1
+  version: 18a78a34eb4481722eef1ac9034eada58e3cf909
+  subpackages:
+  - middleware
+- name: gopkg.in/mgo.v2
+  version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
+  subpackages:
+  - bson
+  - internal/json
+  - internal/sasl
+  - internal/scram
+- name: gopkg.in/olebedev/go-duktape-fetch.v2
+  version: 634a7ea4ba91939a6dc4d0274bd053b02aed234b
+- name: gopkg.in/olebedev/go-duktape.v2
+  version: 1c5e9d0fb82296a24a63ab68b682c5b4d7a45cca
+- name: gopkg.in/yaml.v2
+  version: f7716cbe52baa25d2e9b0d0da546fcf909fc16b4
+testImports: []

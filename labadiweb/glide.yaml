@@ -2,8 +2,6 @@ package: bitbucket.org/fanky5g/labadipost/labadiweb
 import:
 - package: golang.org/x/oauth2
 - package: gopkg.in/boj/redistore.v1
-- package: gopkg.in/olebedev/go-duktape-fetch.v2
-- package: gopkg.in/olebedev/go-duktape.v2
 - package: github.com/olebedev/on
   version: f65b7c9823a4c30797e9ad3c51d559a36ff8d542
 - package: github.com/elazarl/go-bindata-assetfs
@@ -32,8 +30,6 @@ import:
   version: 3b874956e03f1636d171bda64b130f9135f42cff
 - package: golang.org/x/crypto
   version: d67eb63455fa4d6fca5802332d86f1f204017e00
-- package: golang.org/x/net
-  version: 5df5483e0518a11a6ef1e894c70236eb3f639557
 - package: golang.org/x/text
   version: cf4986612c83df6c55578ba198316d1684a9a287
 - package: gopkg.in/labstack/echo.v1
@@ -56,9 +52,13 @@ import:
 - package: github.com/streadway/amqp
 - package: github.com/tealeg/xlsx
 - package: gopkg.in/mgo.v2
+  version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
   subpackages:
-  - bcrypt
   - bson
+  - internal/json
+  - internal/sasl
+  - internal/scram
 - package: golang.org/x/net
+  version: 5df5483e0518a11a6ef1e894c70236eb3f639557
   subpackages:
   - context

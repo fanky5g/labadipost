@@ -6,6 +6,7 @@ import(
   "gopkg.in/labstack/echo.v1"
   "github.com/icza/minquery"
   "strconv"
+  "fmt"
 )
 
 func GetCategory(catName string) (cat models.Category, stories []models.News, err error) {
@@ -15,6 +16,7 @@ func GetCategory(catName string) (cat models.Category, stories []models.News, er
   if err != nil {
     return cat, stories, err
   }
+  fmt.Println("get category done")
 
   c := conn.DB("labadifeeds").C("Categories")
   err = c.Find(bson.M{"name": catName}).One(&cat)

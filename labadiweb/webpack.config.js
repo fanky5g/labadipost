@@ -114,6 +114,6 @@ const config = [{
       '#styles': path.join(__dirname, 'client/styles'),
     },
   },
-},];
+}];
 
 module.exports = config;

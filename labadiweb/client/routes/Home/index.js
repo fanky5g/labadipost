@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setCategories, setStories, setActive } from './actions';
 import CategoryBar from '#common/components/CategoryBar';
-import Height280VerticalImage from './StoryComponents';
+// import Height280VerticalImage from './StoryComponents';
 
 class Homepage extends Component {
   /*eslint-disable */
@@ -41,183 +41,144 @@ class Homepage extends Component {
     renderedComponents: [],
   };
 
-  renderStoryGroups() {
-    const { stories, screenWidth } = this.props;
-    const { renderedComponents } = this.state;
-    const breakPoints = [700, 980, 1370];
-    if (renderedComponents.length && !(breakPoints.indexOf(screenWidth) !== -1)) {
-      return renderedComponents;
-    }
+  // renderStoryGroups() {
+  //   const { stories, screenWidth } = this.props;
+  //   const { renderedComponents } = this.state;
+  //   const breakPoints = [700, 980, 1370];
+  //   if (renderedComponents.length && !(breakPoints.indexOf(screenWidth) !== -1)) {
+  //     return renderedComponents;
+  //   }
 
-    let groups;
+  //   let groups;
 
-    const pageGapComponent = (
-      <div className="page-gap">
-        <div
-          className="page-content"
-          style={{
-            position: 'relative',
-            left: 0,
-            right: 0,
-            width: `${screenWidth - 200}px`,
-            height: '10px'
-          }}>
-        </div>
-      </div>
-    );
+  //   const pageGapComponent = (
+  //     <div className="page-gap">
+  //       <div
+  //         className="page-content"
+  //         style={{
+  //           position: 'relative',
+  //           left: 0,
+  //           right: 0,
+  //           width: `${screenWidth - 200}px`,
+  //           height: '10px'
+  //         }}>
+  //       </div>
+  //     </div>
+  //   );
 
-    const div580Component = (
-      <div className="grid-page">
-        <div
-          className="page-content"
-          style={{
-            position: 'relative',
-            left: 0,
-            right: 0,
-            width: `${screenWidth - 200}px`,
-            height: '580px'
-          }}>
-        </div>
-      </div>
-    );
+  //   const div580Component = (
+  //     <div className="grid-page">
+  //       <div
+  //         className="page-content"
+  //         style={{
+  //           position: 'relative',
+  //           left: 0,
+  //           right: 0,
+  //           width: `${screenWidth - 200}px`,
+  //           height: '580px'
+  //         }}>
+  //       </div>
+  //     </div>
+  //   );
 
-    const div420Component = (
-      <div className="grid-page">
-        <div
-          className="page-content"
-          style={{
-            position: 'relative',
-            left: 0,
-            right: 0,
-            width: `${screenWidth - 200}px`,
-            height: '420px'
-          }}>
-        </div>
-      </div>
-    );
+  //   const div420Component = (
+  //     <div className="grid-page">
+  //       <div
+  //         className="page-content"
+  //         style={{
+  //           position: 'relative',
+  //           left: 0,
+  //           right: 0,
+  //           width: `${screenWidth - 200}px`,
+  //           height: '420px'
+  //         }}>
+  //       </div>
+  //     </div>
+  //   );
 
-    const div280Component = (
-      <div className="grid-page">
-        <div
-          className="page-content"
-          style={{
-            position: 'relative',
-            left: 0,
-            right: 0,
-            width: `${screenWidth - 200}px`,
-            height: '280px'
-          }}>
-        </div>
-      </div>
-    );
+  //   const div280Component = (
+  //     <div className="grid-page">
+  //       <div
+  //         className="page-content"
+  //         style={{
+  //           position: 'relative',
+  //           left: 0,
+  //           right: 0,
+  //           width: `${screenWidth - 200}px`,
+  //           height: '280px'
+  //         }}>
+  //       </div>
+  //     </div>
+  //   );
 
-    switch(screenWidth) {
-      case screenWidth == 700:
-        groups = this.renderSmallScreen();
-      case screenWidth == 980:
-        groups = this.renderMediumScreen();
-      case screenWidth == 1370:
-        groups = this.renderLargeScreen();
-      default:
-        console.log('usual render');
-    }
+  //   switch(screenWidth) {
+  //     case screenWidth == 700:
+  //       groups = this.renderSmallScreen();
+  //     case screenWidth == 980:
+  //       groups = this.renderMediumScreen();
+  //     case screenWidth == 1370:
+  //       groups = this.renderLargeScreen();
+  //     default:
+  //       console.log('usual render');
+  //   }
+  // }
 
+  // renderSmallScreen() {
+  //   const { screenWidth, stories } = this.props;
+  //   const filteredWithImages = stories.filter(story => story.image);
+  //   let groups = [], pgCount = 0;
 
-      // var components = elements.map(
-      //     (b, i) => {
-      //         return <ShopProduct key={i} index={i} product={b} 
-      //             selectTab={this.selectTab} addToWish={this.addToWish}
-      //             replaceLocation={replaceLocation}/>;
-      //     }
-      // );
+  //   const components = filteredWithImages.map((story, index) => <Height280VerticalImage story={story} key={index} />);
 
-      // var groups = [];
-      // var children = [];
-      // const classes = classNames({
-      // 'ones': groups.length % 2 !== 0,
-      // 'twos': groups.length % 2 === 0,
-      // 'product-row': true
-      // });
+  //   const PageGapComponent = React.createClass({
+  //     render() {
+  //       return (
+  //         <div className="page-gap">
+  //           <div
+  //             className="page-content"
+  //             style={{
+  //               position: 'relative',
+  //               left: 0,
+  //               right: 0,
+  //               width: `${screenWidth - 85}px`,
+  //               height: '40px'
+  //             }}>
+  //           </div>
+  //         </div>
+  //       );
+  //     }
+  //   });
 
-      // while(components.length > 0) {
-      //     children.push(components.shift());
-      //     if (children.length === 2) {
-      //         groups.push(<div key={groups.length} className={classNames({
-      //   'ones': groups.length % 2 !== 0,
-      //   'twos': groups.length % 2 === 0,
-      //   'product-row': true
-      //       })}>{children}</div>);
-      //         children = [];
-      //     }
-      // }
-      
-      // if (children.length > 0 ) {
-      //     groups.push(<div key={groups.length} className={classNames({
-      //   'ones': groups.length % 2 !== 0,
-      //   'twos': groups.length % 2 === 0,
-      //   'product-row': true
-      //   })}>{children}</div>);
-      // }
+  //   const LastPageGapComponent = React.createClass({
+  //     render() {
+  //       return (
+  //         <div className="page-gap">
+  //           <div
+  //             className="page-content"
+  //             style={{
+  //               position: 'relative',
+  //               left: 0,
+  //               right: 0,
+  //               height: '100px'
+  //             }}>
+  //           </div>
+  //         </div>
+  //       );
+  //     }
+  //   });
 
-      // return groups;
-  }
+  //   while (components.length > 0) {
+  //     groups.push(components.shift());
+  //     groups.push(<PageGapComponent key={`pg-${pgCount++}`}/>);
+  //   }
 
-  renderSmallScreen() {
-    const { screenWidth, stories } = this.props;
-    const filteredWithImages = stories.filter(story => story.image);
-    let groups = [], pgCount = 0;
-
-    const components = filteredWithImages.map((story, index) => <Height280VerticalImage story={story} key={index} />);
-
-    const PageGapComponent = React.createClass({
-      render() {
-        return (
-          <div className="page-gap">
-            <div
-              className="page-content"
-              style={{
-                position: 'relative',
-                left: 0,
-                right: 0,
-                width: `${screenWidth - 85}px`,
-                height: '40px'
-              }}>
-            </div>
-          </div>
-        );
-      }
-    });
-
-    const LastPageGapComponent = React.createClass({
-      render() {
-        return (
-          <div className="page-gap">
-            <div
-              className="page-content"
-              style={{
-                position: 'relative',
-                left: 0,
-                right: 0,
-                height: '100px'
-              }}>
-            </div>
-          </div>
-        );
-      }
-    });
-
-    while (components.length > 0) {
-      groups.push(components.shift());
-      groups.push(<PageGapComponent key={`pg-${pgCount++}`}/>);
-    }
-
-    groups.push(<LastPageGapComponent key={`lpg-${pgCount++}`}/>);
-    return groups;
-  }
+  //   groups.push(<LastPageGapComponent key={`lpg-${pgCount++}`}/>);
+  //   return groups;
+  // }
 
   render() {
     const {categories, stories, activeCat, dispatch, screenWidth} = this.props;
-    const groups = this.renderSmallScreen()
+    // const groups = this.renderSmallScreen()
     return <div>
       <Helmet
         title='Cover Stories on Labadipost'
@@ -242,9 +203,6 @@ class Homepage extends Component {
           <div className="layout-view">
             <div className="page-content" style={{position: 'relative', left: 0, right: 0, width: `${screenWidth - 200}px`, height: '10px'}}></div>
           </div>
-          {
-            groups
-          }
         </div>
     </div>;
   }
