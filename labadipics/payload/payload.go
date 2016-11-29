@@ -8,7 +8,7 @@ import (
 
   "github.com/mholt/binding"
   "github.com/thoas/gostorages"
-  "bitbucket.com/fanky5g/labadipost/labadipics/image"
+  "bitbucket.org/fanky5g/labadipost/labadipics/image"
 )
 
 // MultipartPayload represents a multipart upload

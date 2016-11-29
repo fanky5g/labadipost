@@ -15,7 +15,7 @@ import (
 
 	"github.com/disintegration/imaging"
 	"github.com/imdario/mergo"
-	imagefile "bitbucket.com/fanky5g/labadipost/labadipics/image"
+	imagefile "bitbucket.org/fanky5g/labadipost/labadipics/image"
 	"golang.org/x/image/bmp"
 	"golang.org/x/image/tiff"
 )

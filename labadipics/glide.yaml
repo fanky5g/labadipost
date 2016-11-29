@@ -1,10 +1,10 @@
 package: bitbucket.org/fanky5g/labadipost/labadipics
 import:
 - package: bitbucket.org/fanky5g/labadipost
-repo: git@bitbucket.org:fanky5g/labadipost.git
-vcs: git
-subpackages:
-  - labadipics
+  repo: git@bitbucket.org:fanky5g/labadipost.git
+  vcs: git
+  subpackages:
+    - labadipics
 - package: github.com/Sirupsen/logrus
 - package: github.com/codegangsta/cli
 - package: github.com/disintegration/imaging
@@ -32,6 +32,3 @@ testImport:
 - package: github.com/stretchr/testify
   subpackages:
   - assert
-- package: golang.org/x/net
-  subpackages:
-  - context

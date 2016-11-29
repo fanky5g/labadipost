@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/thoas/gokvstores"
-	"bitbucket.com/fanky5g/labadipost/labadipics/config"
+	"bitbucket.org/fanky5g/labadipost/labadipics/config"
 )
 
 // NewKVStoreFromConfig returns a KVStore from config

@@ -6,7 +6,7 @@ import (
 
 	"github.com/mitchellh/goamz/aws"
 	"github.com/thoas/gostorages"
-	"bitbucket.com/fanky5g/labadipost/labadipics/config"
+	"bitbucket.org/fanky5g/labadipost/labadipics/config"
 )
 
 // NewStoragesFromConfig return destination and source storages from config

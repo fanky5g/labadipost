@@ -6,11 +6,11 @@ import (
 
   "github.com/gin-gonic/gin"
   "github.com/mholt/binding"
-  "bitbucket.com/fanky5g/labadipost/labadipics/application"
-  "bitbucket.com/fanky5g/labadipost/labadipics/engine"
-  "bitbucket.com/fanky5g/labadipost/labadipics/errs"
-  "bitbucket.com/fanky5g/labadipost/labadipics/payload"
-  "bitbucket.com/fanky5g/labadipost/labadipics/storage"
+  "bitbucket.org/fanky5g/labadipost/labadipics/application"
+  "bitbucket.org/fanky5g/labadipost/labadipics/engine"
+  "bitbucket.org/fanky5g/labadipost/labadipics/errs"
+  "bitbucket.org/fanky5g/labadipost/labadipics/payload"
+  "bitbucket.org/fanky5g/labadipost/labadipics/storage"
   "github.com/disintegration/imaging"
 )
 

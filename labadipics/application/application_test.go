@@ -23,12 +23,12 @@ import (
 	"github.com/disintegration/imaging"
 	"github.com/stretchr/testify/assert"
 	"github.com/thoas/gokvstores"
-	"bitbucket.com/fanky5g/labadipost/labadipics/application"
-	"bitbucket.com/fanky5g/labadipost/labadipics/config"
-	"bitbucket.com/fanky5g/labadipost/labadipics/kvstore"
-	"bitbucket.com/fanky5g/labadipost/labadipics/server"
-	"bitbucket.com/fanky5g/labadipost/labadipics/signature"
-	"bitbucket.com/fanky5g/labadipost/labadipics/storage"
+	"bitbucket.org/fanky5g/labadipost/labadipics/application"
+	"bitbucket.org/fanky5g/labadipost/labadipics/config"
+	"bitbucket.org/fanky5g/labadipost/labadipics/kvstore"
+	"bitbucket.org/fanky5g/labadipost/labadipics/server"
+	"bitbucket.org/fanky5g/labadipost/labadipics/signature"
+	"bitbucket.org/fanky5g/labadipost/labadipics/storage"
 )
 
 type Dimension struct {

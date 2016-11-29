@@ -2,7 +2,7 @@ package engine
 
 import (
 	"github.com/disintegration/imaging"
-	"bitbucket.com/fanky5g/labadipost/labadipics/image"
+	"bitbucket.org/fanky5g/labadipost/labadipics/image"
 )
 
 type Options struct {

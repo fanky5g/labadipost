@@ -9,7 +9,7 @@ import (
 
 	"github.com/franela/goreq"
 	"github.com/thoas/gostorages"
-	"bitbucket.com/fanky5g/labadipost/labadipics/errs"
+	"bitbucket.org/fanky5g/labadipost/labadipics/errs"
 )
 
 // HTTPStorage wraps a storage

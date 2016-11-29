@@ -58,7 +58,7 @@ services:
     expose:
       - "3001"
     volumes:
-      - ./labadipics:/go/src/github.com/Techdevt/labadipost/labadipics
+      - ./labadipics:/go/src/labadipics
     links:
       - redis
     command: bash -c "make build && bin/picfit -c config.json"

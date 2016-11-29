@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"bitbucket.com/fanky5g/labadipost/labadipics/config"
-	"bitbucket.com/fanky5g/labadipost/labadipics/signature"
+	"bitbucket.org/fanky5g/labadipost/labadipics/config"
+	"bitbucket.org/fanky5g/labadipost/labadipics/signature"
 )
 
 // Security wraps the request and confront sent parameters with secret key

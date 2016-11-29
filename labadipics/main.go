@@ -5,9 +5,9 @@ import (
 	"os"
 
 	"github.com/codegangsta/cli"
-	"bitbucket.com/fanky5g/labadipost/labadipics/application"
-	"bitbucket.com/fanky5g/labadipost/labadipics/server"
-	"bitbucket.com/fanky5g/labadipost/labadipics/signature"
+	"bitbucket.org/fanky5g/labadipost/labadipics/application"
+	"bitbucket.org/fanky5g/labadipost/labadipics/server"
+	"bitbucket.org/fanky5g/labadipost/labadipics/signature"
 )
 
 func main() {

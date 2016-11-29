@@ -10,14 +10,14 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"github.com/thoas/gokvstores"
-	"bitbucket.com/fanky5g/labadipost/labadipics/config"
-	"bitbucket.com/fanky5g/labadipost/labadipics/engine"
-	"bitbucket.com/fanky5g/labadipost/labadipics/errs"
-	"bitbucket.com/fanky5g/labadipost/labadipics/hash"
-	"bitbucket.com/fanky5g/labadipost/labadipics/image"
-	"bitbucket.com/fanky5g/labadipost/labadipics/kvstore"
-	"bitbucket.com/fanky5g/labadipost/labadipics/logger"
-	"bitbucket.com/fanky5g/labadipost/labadipics/storage"
+	"bitbucket.org/fanky5g/labadipost/labadipics/config"
+	"bitbucket.org/fanky5g/labadipost/labadipics/engine"
+	"bitbucket.org/fanky5g/labadipost/labadipics/errs"
+	"bitbucket.org/fanky5g/labadipost/labadipics/hash"
+	"bitbucket.org/fanky5g/labadipost/labadipics/image"
+	"bitbucket.org/fanky5g/labadipost/labadipics/kvstore"
+	"bitbucket.org/fanky5g/labadipost/labadipics/logger"
+	"bitbucket.org/fanky5g/labadipost/labadipics/storage"
 )
 
 // LoadFromConfigContent returns a net/context from content

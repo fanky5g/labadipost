@@ -5,7 +5,7 @@ import (
 	"net/url"
 
 	"github.com/thoas/gostorages"
-	"bitbucket.com/fanky5g/labadipost/labadipics/storage"
+	"bitbucket.org/fanky5g/labadipost/labadipics/storage"
 )
 
 // FromURL retrieves an ImageFile from an url

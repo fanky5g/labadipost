@@ -9,10 +9,10 @@ import (
 	"regexp"
 
 	"github.com/gin-gonic/gin"
-	"bitbucket.com/fanky5g/labadipost/labadipics/engine"
-	"bitbucket.com/fanky5g/labadipost/labadipics/hash"
-	"bitbucket.com/fanky5g/labadipost/labadipics/image"
-	"bitbucket.com/fanky5g/labadipost/labadipics/util"
+	"bitbucket.org/fanky5g/labadipost/labadipics/engine"
+	"bitbucket.org/fanky5g/labadipost/labadipics/hash"
+	"bitbucket.org/fanky5g/labadipost/labadipics/image"
+	"bitbucket.org/fanky5g/labadipost/labadipics/util"
 )
 
 const sigParamName = "sig"

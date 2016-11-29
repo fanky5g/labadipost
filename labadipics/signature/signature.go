@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"regexp"
 
-	"bitbucket.com/fanky5g/labadipost/labadipics/util"
+	"bitbucket.org/fanky5g/labadipost/labadipics/util"
 )
 
 var signRegex = regexp.MustCompile("&?sig=[^&]*")

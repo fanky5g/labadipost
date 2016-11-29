@@ -13,7 +13,7 @@
   },
   "storage": {
     "src": {
-      "type": "http+s3",
+      "type": "http+fs",
       "base_url": "https://labadipost.s3.amazonaws.com/",
       "access_key_id": "AKIAJDGLHUP3FX6ESQZQ",
       "secret_access_key": "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",
@@ -23,7 +23,7 @@
       "location": "images"
     },
     "dst": {
-      "type": "s3",
+      "type": "fs",
       "access_key_id": "AKIAJDGLHUP3FX6ESQZQ",
       "secret_access_key": "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",
       "bucket_name": "labadipics",

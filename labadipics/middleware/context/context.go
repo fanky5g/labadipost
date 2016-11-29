@@ -4,11 +4,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/thoas/gokvstores"
 	"github.com/thoas/gostorages"
-	"bitbucket.com/fanky5g/labadipost/labadipics/config"
-	"bitbucket.com/fanky5g/labadipost/labadipics/engine"
-	"bitbucket.com/fanky5g/labadipost/labadipics/kvstore"
-	"bitbucket.com/fanky5g/labadipost/labadipics/logger"
-	"bitbucket.com/fanky5g/labadipost/labadipics/storage"
+	"bitbucket.org/fanky5g/labadipost/labadipics/config"
+	"bitbucket.org/fanky5g/labadipost/labadipics/engine"
+	"bitbucket.org/fanky5g/labadipost/labadipics/kvstore"
+	"bitbucket.org/fanky5g/labadipost/labadipics/logger"
+	"bitbucket.org/fanky5g/labadipost/labadipics/storage"
 )
 
 // SetEngine adds an engine in the gin context
