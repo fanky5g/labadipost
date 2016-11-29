@@ -2,10 +2,12 @@ import React, { Component } from '#node_modules/react';
 import ReactCanvas from '#node_modules/react-canvas';
 import Page from './components/Page';
 import articles from './data';
+// import buttonPath from './logo.svg';
 
 const Surface = ReactCanvas.Surface;
 const ListView = ReactCanvas.ListView;
 const Button = ReactCanvas.Layer;
+// const ButtonSVG = new Path2D(buttonPath);
 
 
 export default class Home extends Component {
@@ -18,8 +20,6 @@ export default class Home extends Component {
   };
 
   renderPage = (pageIndex, scrollTop) => {
-    console.log(pageIndex);
-    console.log(scrollTop);
     var size = this.getSize();
     var article = articles[pageIndex % articles.length];
     var pageScrollTop = pageIndex * this.getPageHeight() - scrollTop;
@@ -56,11 +56,10 @@ export default class Home extends Component {
   };
 
   getButtonStyle = () => {
-    console.log('button style get called')
     return {
       left: 8,
       position: 'absolute',
-      zIndex: 100,
+      zIndex: -1,
       backgroundColor: 'red',
       top: 8,
       width: 40,
@@ -76,7 +75,7 @@ export default class Home extends Component {
     const size = this.getSize();
     return (
       <Surface top={0} left={0} width={size.width} height={size.height}>
-        <Button style={this.getButtonStyle()} onTouchStart={this.handleButtonClick}/>
+        <Button style={this.getButtonStyle()} onTouchStart={this.handleButtonClick}></Button>
         <ListView
           style={this.getListViewStyle()}
           snapping={true}
