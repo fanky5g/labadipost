@@ -2,7 +2,7 @@ package main
 
 import (
   "os"
-  "gopkg.in/labstack/echo"
+  "github.com/labstack/echo"
   "encoding/gob"
   "github.com/mrjones/oauth"
   "encoding/json"

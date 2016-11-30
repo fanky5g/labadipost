@@ -10,7 +10,7 @@ import (
   "time"
   "errors"
   "fmt"
-  "gopkg.in/labstack/echo"
+  "github.com/labstack/echo"
   "strings"
   "strconv"
 )

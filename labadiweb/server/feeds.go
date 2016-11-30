@@ -3,7 +3,7 @@ package main
 import(
   models "bitbucket.org/fanky5g/labadipost/labadicommon"
   "gopkg.in/mgo.v2/bson"
-  "gopkg.in/labstack/echo"
+  "github.com/labstack/echo"
   "github.com/icza/minquery"
   "strconv"
   "fmt"

@@ -3,7 +3,7 @@ package main
 import (
 	// "time"
 
-	"gopkg.in/labstack/echo"
+	"github.com/labstack/echo"
 )
 
 type API struct{}

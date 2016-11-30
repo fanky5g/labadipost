@@ -2,7 +2,7 @@ package main
 
 import (
   "os"
-  "gopkg.in/labstack/echo"
+  "github.com/labstack/echo"
   "golang.org/x/net/context"
   "golang.org/x/oauth2"
   "encoding/json"
