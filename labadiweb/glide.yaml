@@ -12,8 +12,10 @@ import:
   version: a0ff2567cfb70903282db057e799fd826784d41d
 - package: github.com/codegangsta/cli
   version: c31a7975863e7810c92e2e288a9ab074f9a88f29
+- package: github.com/dgrijalva/jwt-go
+  version: 24c63f56522a87ec5339cc3567883f1039378fdb
 - package: github.com/labstack/gommon
-  version: 9c0a60557b6840125c331d8c8075119770aa2805 
+  version: 431777a5117c8de4352a400dad1e2a55f484b189 
 - package: github.com/mattn/go-colorable
   version: 3dac7b4f76f6e17fb39b768b89e3783d16e237fe
 - package: github.com/mattn/go-isatty
@@ -32,8 +34,8 @@ import:
   version: d67eb63455fa4d6fca5802332d86f1f204017e00
 - package: golang.org/x/text
   version: cf4986612c83df6c55578ba198316d1684a9a287
-- package: gopkg.in/labstack/echo.v1
-  version: 18a78a34eb4481722eef1ac9034eada58e3cf909
+- package: github.com/labstack/echo
+  version: 245c05330a465e3f3f3471df4b1b1acd250749d2
 - package: gopkg.in/olebedev/go-duktape-fetch.v2
   version: 634a7ea4ba91939a6dc4d0274bd053b02aed234b
 - package: gopkg.in/olebedev/go-duktape.v2

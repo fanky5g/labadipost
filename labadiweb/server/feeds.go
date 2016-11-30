@@ -3,7 +3,7 @@ package main
 import(
   models "bitbucket.org/fanky5g/labadipost/labadicommon"
   "gopkg.in/mgo.v2/bson"
-  "gopkg.in/labstack/echo.v1"
+  "gopkg.in/labstack/echo"
   "github.com/icza/minquery"
   "strconv"
   "fmt"
@@ -38,7 +38,7 @@ func GetCategory(catName string) (cat models.Category, stories []models.News, er
   return cat, stories, nil
 }
 
-func (api *API) GetAllCategories(c *echo.Context) error {
+func (api *API) GetAllCategories(c echo.Context) error {
   conn, err := ConnectMongo()
   defer conn.Close()
   if err != nil {
@@ -64,7 +64,7 @@ type NewsReturn struct {
   News []models.News `json:"stories"`
 }
 
-func (api *API) GetNews(c *echo.Context) error{
+func (api *API) GetNews(c echo.Context) error{
   l := c.Query("limit")
   cursor := c.Query("cursor")
 

@@ -2,7 +2,7 @@ package main
 
 import (
   "os"
-  "gopkg.in/labstack/echo.v1"
+  "gopkg.in/labstack/echo"
   "encoding/gob"
   "github.com/mrjones/oauth"
   "encoding/json"
@@ -35,7 +35,7 @@ type TwitterUserInfo struct {
   TwitterId int64 `json:"id"`
 }
 
-func (api *API) TwitterOauthInitiate(c *echo.Context) error{
+func (api *API) TwitterOauthInitiate(c echo.Context) error{
   clientLocation := c.Query("location")
   gob.Register(&oauth.RequestToken{})
 
@@ -62,7 +62,7 @@ func (api *API) TwitterOauthInitiate(c *echo.Context) error{
   return nil
 }
 
-func (api *API) TwitterOauthCallback(c *echo.Context) error {
+func (api *API) TwitterOauthCallback(c echo.Context) error {
   gob.Register(&oauth.RequestToken{})
   gob.Register(&oauth.AccessToken{})
   // oauth_token := c.Form("oauth_token")

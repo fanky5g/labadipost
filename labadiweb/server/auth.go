@@ -10,7 +10,7 @@ import (
   "time"
   "errors"
   "fmt"
-  "gopkg.in/labstack/echo.v1"
+  "gopkg.in/labstack/echo"
   "strings"
   "strconv"
 )
@@ -81,7 +81,7 @@ func (user *User) GenerateJWTToken(issuer string) (string, error) {
   return token.SignedString(mySigningKey)
 }
 
-func (api *API) Login(c *echo.Context) error {
+func (api *API) Login(c echo.Context) error {
   conn, err := ConnectMongo()
   defer conn.Close()
   if err != nil {
@@ -108,7 +108,7 @@ func (api *API) Login(c *echo.Context) error {
   }
 }
 
-func LoginUser(c *echo.Context, conn *mgo.Session, details *Details) error {
+func LoginUser(c echo.Context, conn *mgo.Session, details *Details) error {
   user := &User{}
   collection := conn.DB("labadipost").C("Users")
   err := collection.Find(bson.M{ "$or": []bson.M{ bson.M{"email": details.Username}, bson.M{"username": details.Username}}}).One(&user)
@@ -145,7 +145,7 @@ func LoginUser(c *echo.Context, conn *mgo.Session, details *Details) error {
   return nil
 }
 
-func LoginAdmin(c *echo.Context, conn *mgo.Session, details *Details) error {
+func LoginAdmin(c echo.Context, conn *mgo.Session, details *Details) error {
   admin := Admin{}
   collection := conn.DB("labadipost").C("Admins")
   err := collection.Find(bson.M{ "$or": []bson.M{ bson.M{"user.email": details.Username}, bson.M{"user.username": details.Username}}}).One(&admin)
@@ -183,7 +183,7 @@ func LoginAdmin(c *echo.Context, conn *mgo.Session, details *Details) error {
 }
 
 func (api *AuthRoutes) AuthMiddleware(protectedPage echo.HandlerFunc) echo.HandlerFunc {
-  return func(c *echo.Context) error {
+  return func(c echo.Context) error {
     requestHeaders := c.Request().Header
     AuthHeader := requestHeaders["Authorization"]
     if len(AuthHeader) == 0 {
@@ -214,7 +214,7 @@ func (api *AuthRoutes) AuthMiddleware(protectedPage echo.HandlerFunc) echo.Handl
   }
 }
 
-func (api *API) Logout(c *echo.Context) error {
+func (api *API) Logout(c echo.Context) error {
   store, err := GetRedisStore()
   defer store.Close()
 

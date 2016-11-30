@@ -6,14 +6,15 @@ import (
 	"net/http"
   "strings"
   "os"
-  "fmt"
 
-	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/itsjamie/go-bindata-templates"
-	"github.com/nu7hatch/gouuid"
-	"github.com/olebedev/config"
-	"gopkg.in/labstack/echo.v1"
-	"gopkg.in/labstack/echo.v1/middleware"
+  "github.com/nu7hatch/gouuid"
+  "github.com/olebedev/config"
+  "github.com/labstack/echo/engine/standard"
+  "github.com/elazarl/go-bindata-assetfs"
+  "github.com/labstack/echo/engine"
+  "github.com/labstack/echo"
+  "github.com/labstack/echo/middleware"
 )
 
 // App struct.
@@ -25,6 +26,7 @@ type App struct {
 	Conf   *config.Config
 	React  *React
 	API    *API
+  Server *standard.Server
 }
 
 // NewApp returns initialized struct
@@ -52,34 +54,37 @@ func NewApp(opts ...AppOptions) *App {
 	conf.Env()
 
 	// Make an engine
-	engine := echo.New()
+	e := echo.New()
 
-	// Set up echo
-	engine.SetDebug(conf.UBool("debug"))
-
-  // Get allowed origins
+  // Set up echo
+  e.SetDebug(conf.UBool("debug"))
+  
+    // Get allowed origins
   origins := os.Getenv("ALLOWED_ORIGINS")
   originsAllowed := strings.Split(origins, ",")
-  fmt.Println(originsAllowed)
 
-	// Regular middlewares
-	engine.Use(middleware.Logger())
-	engine.Use(middleware.Recover())
-  // engine.Use(middleware.CORS())
-  // engine.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-  //   AllowOrigins: []string{"https://labstack.com", "https://labstack.net"},
-  //   AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
-  // }))
+
+  // Regular middlewares
+  e.Use(middleware.Logger())
+  e.Use(middleware.Recover())
+  e.Use(middleware.Gzip())
+
+  e.GET("/favicon.ico", func(c echo.Context) error {
+    return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
+  })
+
+  std := standard.WithConfig(engine.Config{})
+  std.SetHandler(e)
 
 	// Initialize the application
 	app := &App{
 		Conf:   conf,
-		Engine: engine,
+		Engine: e,
 		API:    &API{},
 		React: NewReact(
 			conf.UString("duktape.path"),
 			conf.UBool("debug"),
-			engine,
+			std,
 		),
 	}
 
@@ -87,24 +92,23 @@ func NewApp(opts ...AppOptions) *App {
 	app.Engine.SetRenderer(NewTemplate())
 
 	// Map app struct to access from request handlers
-	// and middlewares
-	app.Engine.Use(func(c *echo.Context) error {
-		c.Set("app", app)
-		return nil
-	})
+  // and middlewares
+  app.Engine.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+    return func(c echo.Context) error {
+      c.Set("app", app)
+      return next(c)
+    }
+  })
+
 
 	// Map uuid for every requests
-	app.Engine.Use(func(c *echo.Context) error {
-		id, _ := uuid.NewV4()
-		c.Set("uuid", id)
-		return nil
-	})
-
-	// Avoid favicon react handling
-	app.Engine.Get("/favicon.ico", func(c *echo.Context) error {
-		c.Redirect(301, "/static/images/favicon.ico")
-		return nil
-	})
+  app.Engine.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+    return func(c echo.Context) error {
+      id, _ := uuid.NewV4()
+      c.Set("uuid", id)
+      return next(c)
+    }
+  })
 
 	// Bind api hadling for URL api.prefix
 	app.API.Bind(
@@ -127,38 +131,41 @@ func NewApp(opts ...AppOptions) *App {
 		AssetInfo: AssetInfo,
 	})
 
-	// Serve static via bindata and handle via react app
-	// in case when static file was not found
-	app.Engine.Use(func(h echo.HandlerFunc) echo.HandlerFunc {
-		return func(c *echo.Context) error {
-			// execute echo handlers chain
-			err := h(c)
-			// if page(handler) for url/method not found
-			if err != nil && err.Error() == http.StatusText(http.StatusNotFound) {
-				// check if file exists
-				// omit first `/`
-				if _, err := Asset(c.Request().URL.Path[1:]); err == nil {
-					fileServerHandler.ServeHTTP(c.Response(), c.Request())
-					return nil
-				}
+  // Serve static via bindata and handle via react app
+  // in case when static file was not found
+  app.Engine.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+    return func(c echo.Context) error {
+      // execute echo handlers chain
+      err := next(c)
+      // if page(handler) for url/method not found
+      if err != nil && err.Error() == http.StatusText(http.StatusNotFound) {
+        // check if file exists
+        // omit first `/`
+        if _, err := Asset(c.Request().URI()[1:]); err == nil {
+          fileServerHandler.ServeHTTP(
+            c.Response().(*standard.Response).ResponseWriter,
+            c.Request().(*standard.Request).Request)
+          return nil
+        }
         // if static file not found check if client is mobile
         ua := c.Request().Header.Get("User-Agent")
         isMobile := CheckIsMobile(ua)
         if isMobile {
           return HandleMobile(c)
         }
-				// if client is not mobile,handle request via react application
-				return app.React.Handle(c)
-			}
-			// Move further if err is not `Not Found`
-			return err
-		}
-	})
+        // if client is not mobile,handle request via react application
+        // if static file not found handle request via react application
+        return app.React.Handle(c)
+      }
+      // Move further if err is not `Not Found`
+      return err
+    }
+  })
 
 	return app
 }
 
-func HandleMobile(c *echo.Context) error {
+func HandleMobile(c echo.Context) error {
   re := struct{}{}
   c.Render(200, "mobile.html", re)
   return nil
@@ -176,7 +183,7 @@ func CheckIsMobile(useragent string) bool{
 
 // Run runs the app
 func (app *App) Run() {
-	app.Engine.Run(":" + app.Conf.UString("port"))
+	app.Engine.Run(standard.New(":" + app.Conf.UString("port")))
 }
 
 // Template is custom renderer for Echo, to render html from bindata
@@ -192,7 +199,7 @@ func NewTemplate() *Template {
 }
 
 // Render renders template
-func (t *Template) Render(w io.Writer, name string, data interface{}) error {
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context ) error {
 	return t.templates.ExecuteTemplate(w, name, data)
 }
 

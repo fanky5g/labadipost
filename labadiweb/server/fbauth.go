@@ -2,7 +2,7 @@ package main
 
 import (
   "os"
-  "gopkg.in/labstack/echo.v1"
+  "gopkg.in/labstack/echo"
   "golang.org/x/net/context"
   "golang.org/x/oauth2"
   "encoding/json"
@@ -39,7 +39,7 @@ type FbUserInfo struct {
   FbId string `json:"id"`
 }
 
-func (api *API) FbOauthInitiate(c *echo.Context) error{
+func (api *API) FbOauthInitiate(c echo.Context) error{
   clientLocation := c.Query("location")
 
   url := FbOauthConfig.AuthCodeURL(clientLocation)
@@ -47,7 +47,7 @@ func (api *API) FbOauthInitiate(c *echo.Context) error{
   return nil
 }
 
-func (api *API) FbOauthCallback(c *echo.Context) error {
+func (api *API) FbOauthCallback(c echo.Context) error {
   code := c.Form("code")
   clientLocation := c.Form("state")
 

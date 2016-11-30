@@ -2,7 +2,7 @@ package main
 
 import (
   "os"
-  "gopkg.in/labstack/echo.v1"
+  "gopkg.in/labstack/echo"
   "golang.org/x/net/context"
   "golang.org/x/oauth2"
   "encoding/json"
@@ -32,7 +32,7 @@ type GoogleUserInfo struct {
   GId string `json:"id"`
 }
 
-func (api *API) GoogleOAuthInitiate(c *echo.Context) error {
+func (api *API) GoogleOAuthInitiate(c echo.Context) error {
   clientLocation := c.Query("location")
 
   url := GoogleOauthConfig.AuthCodeURL(clientLocation)
@@ -40,7 +40,7 @@ func (api *API) GoogleOAuthInitiate(c *echo.Context) error {
   return nil
 }
 
-func (api *API) GoogleOauthCallback(c *echo.Context) error {
+func (api *API) GoogleOauthCallback(c echo.Context) error {
   code := c.Form("code")
   clientLocation := c.Form("state")
 
