@@ -1,0 +1,93 @@
+.header {
+    @extend %clearfix;
+    position: absolute;
+    top: 0;
+    height: 65px;
+    z-index: 1000;
+    background: #222222;
+    min-height: 2.9375rem;
+    border-bottom: .0625rem solid #ededed;
+    width: 100%;
+    box-shadow: none;
+    .mdl-layout__header-row {
+        padding: 0;
+        width: 100%;
+        display: block;
+        line-height: 1.6em;
+        .mdl-navigation__link {
+            padding: 0;
+       }
+        .mdl-menu {
+            .mdl-menu__item {
+                width: 100%;
+           }
+       }
+   }
+    .mdl-layout__drawer-button {
+        @include media('<=850px') {
+            z-index: 500;
+            color: rgba(0, 0, 0, .5);
+            margin-top: 5px;
+       }
+        @include media('>850px') {
+            display: none;
+       }
+   }
+    .brand {
+        display: inline-block;
+        & > * {
+            float: left;
+       }
+        .icon-logo {
+            width: 164px;
+            height: 46px;
+            margin-top: 10px;
+       }
+        @include media('<=850px') {
+            margin: 0 auto;
+            display: block;
+            width: 139px;
+       }
+   }
+    nav.mdl-navigation {
+        float: right;
+        li {
+            display: block;
+            text-align: left;
+            float: left;
+            margin-left: 0.0625rem;
+            a {
+                font-family: "Lato", $stack-sans-serif;
+                font-weight: $font-weight--bold;
+                display: block;
+                outline: none;
+                text-transform: uppercase;
+                float: left;
+                padding: 0.5609rem 0.625rem;
+                margin-top: 1.09375rem;
+                margin-bottom: 1.09375rem;
+                transition: all ease-in 0.15s;
+                webkit-transition: all ease-in 0.15s;
+                position: relative;
+                color: #909090;
+                text-transform: uppercase;
+                display: block;
+                font-size: 0.75rem;
+                line-height: 1.4;
+                -webkit-transition: all 0.5s ease;
+                -moz-transition: all 0.5s ease;
+                transition: all 0.5s ease;
+                &:hover,
+                &.active {
+                    color: #D2232A;
+               }
+           }
+            .md-button {
+                margin-top: 20px;
+           }
+       }
+        @include media('<=850px') {
+            display: none;
+       }
+   }
+}

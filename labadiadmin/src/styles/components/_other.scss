@@ -1,0 +1,15 @@
+.mdl-textfield.is-invalid .mdl-textfield__input {
+    border-color: inherit!important;
+}
+
+.mdl-textfield.is-dirty.is-invalid .mdl-textfield__input {
+  border-color: #de3226;
+}
+
+.mdl-textfield--floating-label.is-invalid .mdl-textfield__label {
+    color: inherit!important
+}
+
+.mdl-textfield--floating-label.is-dirty.is-invalid .mdl-textfield__label {
+  color: #de3226;
+}

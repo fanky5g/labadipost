@@ -17,6 +17,17 @@ services:
       MAX_QUEUE: 100000
     command: /bin/sh -c "go build && ./labadifeeds"
 
+  labadiadmin:
+    build: ./labadiadmin
+    volumes:
+      - ./labadiadmin:/home/labadiadmin
+    links:
+      - labadiweb
+    command: npm start
+    environment:
+      PROTOCOL: http
+      API_VERSION: v1
+
   labadihub:
     build: ./labadihub
     expose:
@@ -51,6 +62,8 @@ services:
       TWITTER_SECRET: VmG3r8TKwWRw1Uf1DGluy10QEXU4oQaUyc2ZXEdu7D5KKfJoHT
       REDIS_URL_RAW: redis:6379
       REDIS_URL: redis://redis
+      ALLOWED_ORIGINS: http://admin.labadipost.com, http://server.labadipost.com
+
   labadipics:
     build: ./labadipics
     expose:
@@ -73,6 +86,7 @@ services:
     links:
       - labadiweb
       - labadipics
+      - labadiadmin
 
   redis:
     image: redis:3.0.7-alpine

@@ -1,0 +1,36 @@
+.DashBar {
+    padding: 0 20px;
+    position: fixed;
+    background: $white;
+    border-bottom: 1px solid $divider-color;
+    .mdl-layout__drawer-button {
+        @include media('>1024px') {
+            display: none;
+        }
+    }
+    .mdl-layout-title {
+        span {
+            color: #4F545C;
+            font-size: 18px;
+            text-transform: capitalize;
+            transition: all .5s ease;
+            font-weight: $font-weight--semi-bold;
+        }
+        strong {
+            color: $text-color--secondary;
+            padding-right: 5px;
+            font-weight: $font-weight--thin;
+            letter-spacing: 1px;
+        }
+    }
+    .DashBar__right {
+        padding-top: 10px;
+        .material-icons {
+            color: $text-color--secondary;
+        }
+        vertical-align: middle;
+        > * {
+            margin-left: 10px;
+        }
+    }
+}

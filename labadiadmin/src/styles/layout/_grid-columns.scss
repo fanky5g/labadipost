@@ -1,0 +1,34 @@
+// ================================================================
+// Grid Columns
+// ================================================================
+@media (min-width: 769px) {
+    @for $i from 1 through $g-col-count {
+        $target: ($g-col-width * $i) + ($g-gutter-width * ($i - 1));
+        $context: g-context($g-col-width, $g-col-count, $g-gutter-width) !global;
+        // Generate column modifier classes
+        .grid__col--#{$i} {
+            width: percentage($target / $context);
+       }
+   }
+}
+
+//  Column styles 
+[class^="grid__col--"]{
+    @extend %clearfix; 
+    position: relative;
+    @media (min-width: 1px) and (max-width: 768px){
+        margin-top: px2em(12px);
+        margin-bottom: px2em(12px);
+   }
+
+    @media (min-width: 768px){
+        @include doubly(percentage($g-gutter-width / $context));
+        float: left;
+        min-height: 1px;
+        padding: 0 15px;
+ 
+        &:last-of-type{
+            float: right;
+       }
+   }
+}

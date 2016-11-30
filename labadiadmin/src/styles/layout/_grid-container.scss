@@ -1,0 +1,41 @@
+// ===========================================================
+// Grid Container
+// ===========================================================
+#App,
+#app-view {
+    height: 100%;
+}
+
+.grid {
+    @extend %clearfix;
+    @extend .centered;
+    width: 90%;
+    // Make nested grid container 100%
+    [class*="grid__col--"] > & {
+        width: 100%;
+   }
+    // Set a max-width for grid container
+    @media(min-width: 1100px) {
+        max-width: $g-cont-max-w;
+   }
+}
+
+.container {
+    max-width: 68em;
+    margin-left: auto;
+    margin-right: auto;
+    &:after {
+        clear: both;
+        content: "";
+        display: table;
+   }
+    @include media('<60rem') {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+   }
+}
+
+.content {
+  clear: both;
+  min-height: 100%;
+}

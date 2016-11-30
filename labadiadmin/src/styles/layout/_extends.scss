@@ -1,0 +1,16 @@
+%clearfix{
+	&:before,
+    &:after {
+        content: " ";
+        display: table;
+   }
+}
+
+%centered{
+	margin: 0 auto;
+	@extend %text-centered;
+}
+
+%text-centered{
+	text-align: center;
+}
