@@ -6,7 +6,7 @@ import (
 )
 
 type Admin struct {
-  *User
+  User
   Role string //type of role may be basic, userac or full //we'll implement functions for those later
 }
 
@@ -16,7 +16,7 @@ type User struct {
   FbId      string        `json:"id"`
   TwitterId string        `json:"id"`
   Username  string        `json:"username"`
-  Password  string        `json:"password"`
+  Password  string        `json:"-"`
   OauthToken AccessToken  `json:"oauthtoken"`
   Firstname string        `json:"firstname"`
   Lastname  string        `json:"lastname"`

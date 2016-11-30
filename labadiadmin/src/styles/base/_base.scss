@@ -1,0 +1,21 @@
+@import 'reset';
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+html,
+body {
+    @include text(px2em(16px), ($base__line / $base__font-size), $font-weight--medium, $text-color--primary);
+    font-family: $font-family--primary;
+    text-rendering: geometricPrecision;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    background: #f6f8f8;
+    min-height: 100%;
+    height: 100%;
+    @include media('>80rem') {
+        font-size: 1rem;
+        line-height: 1.6;
+   }
+}

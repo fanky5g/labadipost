@@ -1,0 +1,98 @@
+//Web Fonts
+@mixin font-face ($family, $file) {
+    @font-face {
+        font-family: $family;
+        src: url('#{$path-fonts}/#{$file}.ttf');
+   }
+}
+
+//Text
+@mixin text($size,
+$lheight: null,
+$weight: null,
+$color: null) {
+    font-size: $size;
+    line-height: $lheight;
+    font-weight: $weight;
+    color: $color;
+}
+
+@mixin doubly($margin: 1em) {
+    & + & {
+        margin-left: $margin;
+        @content;
+   }
+}
+
+@mixin hero($bg-color,
+$height: 300px,
+$pad-top: 0px) {
+    position: relative;
+    height: $height;
+    padding: $pad-top 0 0;
+    margin: 0;
+    background-color: $bg-color;
+    background-position: center center;
+    background-repeat: none;
+    background-size: cover;
+}
+
+@mixin bg-gradient-t2b($start-colour,
+$end-colour) {
+    background-color: $start-colour;
+    background-image: -webkit-gradient(linear, left top, left bottom, from($start-colour), to($end-colour));
+    background-image: -webkit-linear-gradient(top, $start-colour, $end-colour);
+    background-image: -moz-linear-gradient(top, $start-colour, $end-colour);
+    background-image: -ms-linear-gradient(top, $start-colour, $end-colour);
+    background-image: -o-linear-gradient(top, $start-colour, $end-colour);
+    background-image: linear-gradient(top, $start-colour, $end-colour);
+    filter: progid:DXImageTransform.Microsoft.gradient(start-colourStr='#{$start-colour}',
+    end-colourStr='#{$end-colour}');
+}
+
+@mixin scrollbars($size,
+$foreground-color,
+$background-color: mix($foreground-color, white, 50%)) {
+    // For Google Chrome
+    ::-webkit-scrollbar {
+        width: $size;
+        height: $size;
+   }
+    ::-webkit-scrollbar-thumb {
+        background: $foreground-color;
+   }
+    ::-webkit-scrollbar-track {
+        background: $background-color;
+   }
+    // For Internet Explorer
+    body {
+        scrollbar-face-color: $foreground-color;
+        scrollbar-track-color: $background-color;
+   }
+}
+
+@mixin sticky-footer($footer-height,
+$wrapper-selector: unquote("#wrapper"),
+$container-selector: unquote("#container"),
+$footer-selector: unquote("#footer")) {
+    html,
+    body {
+        height: 100%;
+   }
+    body {
+        margin: 0px;
+        padding: 0px;
+   }
+    #{$wrapper-selector} {
+        min-height: 100%;
+        height: auto !important;
+        height: 100%;
+        margin-bottom: -$footer-height;
+        #{$container-selector} {
+            padding: 0 0 $footer-height 0;
+       }
+   }
+    #{$footer-selector} {
+        height: $footer-height;
+   }
+}

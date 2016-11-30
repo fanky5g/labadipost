@@ -48,8 +48,5 @@ time wait on workers?release?
 delegate email sending to another server
 
 
-setup admin ui
-seed admin database
-change subcategories into agency ie tv3, bbc, etc
-category and subcategory image management -> editing
+
 mobile view render header image, think of how hamburger button can happen

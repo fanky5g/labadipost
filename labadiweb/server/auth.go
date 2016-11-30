@@ -3,6 +3,7 @@ package main
 import (
   "github.com/dgrijalva/jwt-go"
   "gopkg.in/mgo.v2/bson"
+  "gopkg.in/mgo.v2"
   "github.com/mrjones/oauth"
   "golang.org/x/oauth2"
   "os"
@@ -11,6 +12,7 @@ import (
   "fmt"
   "gopkg.in/labstack/echo.v1"
   "strings"
+  "strconv"
 )
 
 var mySigningKey = []byte(os.Getenv("JWT_KEY"))
@@ -97,10 +99,19 @@ func (api *API) Login(c *echo.Context) error {
   
   // expireCookie := time.Now().Add(time.Hour * 24)
   // cookie := http.Cookie{Name: "Auth", Value: signedToken, Expires: expireCookie, HttpOnly: true}
+  admin, err := strconv.ParseBool(c.Query("admin"))
 
+  if admin {
+    return LoginAdmin(c, conn, details)
+  } else {
+    return LoginUser(c, conn, details)
+  }
+}
+
+func LoginUser(c *echo.Context, conn *mgo.Session, details *Details) error {
   user := &User{}
   collection := conn.DB("labadipost").C("Users")
-  err = collection.Find(bson.M{ "$or": []bson.M{ bson.M{"email": details.Username}, bson.M{"username": details.Username}}}).One(&user)
+  err := collection.Find(bson.M{ "$or": []bson.M{ bson.M{"email": details.Username}, bson.M{"username": details.Username}}}).One(&user)
   
   if err != nil {
 
@@ -127,6 +138,43 @@ func (api *API) Login(c *echo.Context) error {
 
   auth := &AuthUser{
     User: user,
+    Token: token,
+  }
+
+  c.JSON(200, auth)
+  return nil
+}
+
+func LoginAdmin(c *echo.Context, conn *mgo.Session, details *Details) error {
+  admin := Admin{}
+  collection := conn.DB("labadipost").C("Admins")
+  err := collection.Find(bson.M{ "$or": []bson.M{ bson.M{"user.email": details.Username}, bson.M{"user.username": details.Username}}}).One(&admin)
+  
+  if err != nil {
+
+    if err.Error() == "not found" {
+      c.Error(errors.New("admin not found"))
+      return err
+    }
+
+    c.Error(err)
+    return err
+  }
+
+  adminpass, _ := VerifyPass(admin.Password, details.Password)
+
+  if !adminpass {
+    return errors.New("incorrect password")
+  }
+
+  token, err := admin.User.GenerateJWTToken("http://labadipost.com")
+  if err != nil {
+    c.Error(err)
+    return nil
+  }
+
+  auth := &AuthUser{
+    User: &admin.User,
     Token: token,
   }
 

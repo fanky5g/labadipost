@@ -8,12 +8,11 @@ import (
   "reflect"
   "time"
   "io"
-
   // "gopkg.in/mgo.v2"
   "gopkg.in/mgo.v2/bson"
 )
 
-func ensure(userObject *User, requiredFields []string) (e error) {
+func ensure(userObject User, requiredFields []string) (e error) {
   user := reflect.ValueOf(userObject)
   for _, key := range requiredFields {
     if reflect.Indirect(user).FieldByName(key).String() == "" {
@@ -25,7 +24,7 @@ func ensure(userObject *User, requiredFields []string) (e error) {
   return
 }
 
-func Validate(user *User) error {
+func Validate(user User) error {
   requiredFields := []string{"Firstname", "Email", "Password", "Username"}
 
   err := ensure(user, requiredFields)
@@ -66,11 +65,11 @@ func CheckDuplicateUsername(username string) error {
 }
 
 func ValidateUser(user interface{}) error {
-  var checkuser *User
+  var checkuser User
   if reflect.TypeOf(user).String() == "*main.User" {
-    checkuser = user.(*User)
+    checkuser = user.(User)
   } else {
-    u := user.(*Admin)
+    u := user.(Admin)
     checkuser = u.User
   }
 
@@ -84,6 +83,23 @@ func ValidateUser(user interface{}) error {
 
   if err := CheckDuplicateUsername(checkuser.Username); err != nil {
     return err
+  }
+
+  return nil
+}
+
+func ValidateAdmin(admin interface{}) error {
+  conn, err := ConnectMongo()
+  defer conn.Close()
+  if err != nil {
+    return err
+  }
+
+  a := admin.(Admin)
+  c := conn.DB("labadipost").C("Admins")
+  adminClashes, err := c.Find(bson.M{"$or": []bson.M{ bson.M{"user.email": a.Email}, bson.M{"user.username": a.Username}}}).Count()
+  if adminClashes > 0 {
+    return errors.New("admin with similar details is already registered")
   }
 
   return nil
@@ -143,12 +159,17 @@ func RegisterUser(user *User) (*User, error){
   return &User{}, errors.New("Token generation failure")
 }
 
-func RegisterAdmin(admin *Admin) (bool, error) {
+func RegisterAdmin(admin Admin) (bool, error) {
   if err := ValidateUser(admin); err != nil {
     return false, err
   }
 
+  if err := ValidateAdmin(admin); err != nil {
+    return false, err
+  }
+
   admin.DateRegistered = time.Now()
+  admin.Avatar = "https://labadipost.s3.amazonaws.com/gravatar.png"
   pass, err := Encrypt(admin.Password)
   if err != nil {
     return false, err
@@ -189,4 +210,41 @@ func (a *Admin) Save() error {
     return err
   }
   return nil
+}
+
+func getSuperAdmins() (admins []Admin) {
+  var superAdmin = Admin{
+    User: User{
+      Username: "Breezy",
+      Password: "gibberish",
+      Firstname: "Benjamin",
+      Lastname: "Appiah-Brobbey",
+      Email: "fanky5g@gmail.com",
+    },
+    Role: "full",
+  }
+
+  var superAdmin2 = Admin{
+    User: User{
+      Username: "eslouis397",
+      Password: "gibberish",
+      Firstname: "Louis",
+      Lastname: "Mcshaw",
+      Email: "eslouis397@gmail.com",
+    },
+    Role: "full",
+  }
+
+  admins = append(admins, superAdmin)
+  admins = append(admins, superAdmin2)
+  return
+}
+
+func init() {
+  admins := getSuperAdmins()
+  for _, admin := range admins {
+    if ok, _ := RegisterAdmin(admin); !ok {
+      // Do nothing if admin is already registered
+    }
+  }
 }

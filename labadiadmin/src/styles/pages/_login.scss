@@ -1,0 +1,107 @@
+%floats {
+    box-sizing: border-box;
+    float: left;
+    margin: 0;
+}
+
+.Login {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 2.5em;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 50em;
+    @include media('>48em') {
+        margin-bottom: 5em;
+        margin-top: 5em;
+    }
+    .Login__container {
+        margin-left: -3.75em;
+        display: block;
+        @extend %clearfix;
+        .l {
+            padding-left: 3.75em;
+            width: 100%;
+            @extend %floats;
+            a {
+                display: block;
+                img {
+                  max-height: 170px;
+                }
+            }
+            @include media('>48em') {
+              width: 33.33333%;
+            }
+        }
+        .r {
+            width: 100%;
+            @extend %floats;
+            padding-left: 3.75em;
+            @include media('>48em') {
+              width: 66.66667%;
+            }
+            .Login__container--header {
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
+                text-align: center;
+                padding: 2px 0;
+                h4 {
+                    color: $color-primary;
+                    font-weight: $font-weight--bold;
+                    font-size: 200%;
+                    line-height: 1.4;
+                }
+            }
+            .Login__container--body {
+                padding: 40px 20px 20px;
+                display: flex;
+                flex-flow: row wrap;
+                justify-content: space-around;
+                .Login__container--body-signup-fav {
+                    position: absolute;
+                    top: -20px;
+                    right: -20px;
+                }
+                .Login__container--body-inputfield {
+                    width: 100%;
+                    .mdl-textfield {
+                      width: 100%;
+                    }
+                }
+
+                .Login__container--body-submit,
+                .Login__container--body-forgot {
+                    flex: 1 100%;
+                }
+
+                .Login__container--body-submit {
+                    margin-top: 2.25em;
+                    .mdl-button {
+                        min-width: 18.75em;
+                        font-size: 100%;
+                        line-height: 2.7;
+                        padding: 0 2.5em;
+                        font-family: $font-family--primary;
+                        display: block;
+                        margin: 0 auto;
+                        transition: 0.2s ease-in-out;
+                        background: $color-accent;
+                        color: $white;
+                    }
+                }
+                .Login__container--body-forgot {
+                    padding: 10px 10px;
+                    position: relative;
+                    .Login__container--body-forgot__link {
+                        position: absolute;
+                        right: 10px;
+                        color: $color-primary;
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

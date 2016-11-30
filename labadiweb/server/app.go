@@ -5,6 +5,8 @@ import (
 	"io"
 	"net/http"
   "strings"
+  "os"
+  "fmt"
 
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/itsjamie/go-bindata-templates"
@@ -55,9 +57,19 @@ func NewApp(opts ...AppOptions) *App {
 	// Set up echo
 	engine.SetDebug(conf.UBool("debug"))
 
+  // Get allowed origins
+  origins := os.Getenv("ALLOWED_ORIGINS")
+  originsAllowed := strings.Split(origins, ",")
+  fmt.Println(originsAllowed)
+
 	// Regular middlewares
 	engine.Use(middleware.Logger())
 	engine.Use(middleware.Recover())
+  // engine.Use(middleware.CORS())
+  // engine.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+  //   AllowOrigins: []string{"https://labstack.com", "https://labstack.net"},
+  //   AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+  // }))
 
 	// Initialize the application
 	app := &App{
