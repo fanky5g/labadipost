@@ -11,6 +11,7 @@ import (
   "errors"
   "fmt"
   "github.com/labstack/echo"
+  "github.com/labstack/echo/engine/standard"
   "strings"
   "strconv"
 )
@@ -99,7 +100,7 @@ func (api *API) Login(c echo.Context) error {
   
   // expireCookie := time.Now().Add(time.Hour * 24)
   // cookie := http.Cookie{Name: "Auth", Value: signedToken, Expires: expireCookie, HttpOnly: true}
-  admin, err := strconv.ParseBool(c.Query("admin"))
+  admin, err := strconv.ParseBool(c.QueryParam("admin"))
 
   if admin {
     return LoginAdmin(c, conn, details)
@@ -184,8 +185,8 @@ func LoginAdmin(c echo.Context, conn *mgo.Session, details *Details) error {
 
 func (api *AuthRoutes) AuthMiddleware(protectedPage echo.HandlerFunc) echo.HandlerFunc {
   return func(c echo.Context) error {
-    requestHeaders := c.Request().Header
-    AuthHeader := requestHeaders["Authorization"]
+    AuthHeader := c.Request().Header().Get("Authorization")
+
     if len(AuthHeader) == 0 {
       errorMsg := struct {
         Message string `json:"message"`
@@ -196,7 +197,7 @@ func (api *AuthRoutes) AuthMiddleware(protectedPage echo.HandlerFunc) echo.Handl
     }
 
     //feels like hackery to get token..find a better way
-    token := strings.TrimSpace(strings.Split(AuthHeader[0], "Bearer")[1])
+    token := strings.TrimSpace(strings.Split(string(AuthHeader[:]), "Bearer")[1])
     claims, err := DecryptToken(token)
 
     if err != nil {
@@ -218,14 +219,14 @@ func (api *API) Logout(c echo.Context) error {
   store, err := GetRedisStore()
   defer store.Close()
 
-  session, err := store.Get(c.Request(), "jwt-storage")
+  session, err := store.Get(c.Request().(*standard.Request).Request, "jwt-storage")
   if err != nil {
     c.Error(err)
     return nil
   }
 
   session.Options.MaxAge = -1
-  if err = session.Save(c.Request(), c.Response()); err != nil {
+  if err = session.Save(c.Request().(*standard.Request).Request, c.Response().(*standard.Response).ResponseWriter); err != nil {
     c.Error(fmt.Errorf("Logout failure"))
     return nil
   }

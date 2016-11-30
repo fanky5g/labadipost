@@ -3,6 +3,7 @@ package main
 import (
   "os"
   "github.com/labstack/echo"
+  "github.com/labstack/echo/engine/standard"
   "golang.org/x/net/context"
   "golang.org/x/oauth2"
   "encoding/json"
@@ -40,7 +41,7 @@ type FbUserInfo struct {
 }
 
 func (api *API) FbOauthInitiate(c echo.Context) error{
-  clientLocation := c.Query("location")
+  clientLocation := c.QueryParam("location")
 
   url := FbOauthConfig.AuthCodeURL(clientLocation)
   c.Redirect(302, url)
@@ -48,8 +49,8 @@ func (api *API) FbOauthInitiate(c echo.Context) error{
 }
 
 func (api *API) FbOauthCallback(c echo.Context) error {
-  code := c.Form("code")
-  clientLocation := c.Form("state")
+  code := c.FormValue("code")
+  clientLocation := c.FormValue("state")
 
   ctx := context.Background()
   token, err := FbOauthConfig.Exchange(ctx, code)
@@ -112,13 +113,13 @@ func (api *API) FbOauthCallback(c echo.Context) error {
   store.SetMaxAge(1*24*3600) //1d
 
   //store jwt to session store
-  session, err := store.Get(c.Request(), "jwt-storage")
+  session, err := store.Get(c.Request().(*standard.Request).Request, "jwt-storage")
   if err != nil {
     c.Error(err)
     return nil
   }
   session.Values["auth-token"] = jwt
-  if err = session.Save(c.Request(), c.Response()); err != nil {
+  if err = session.Save(c.Request().(*standard.Request).Request, c.Response().(*standard.Response).ResponseWriter); err != nil {
     c.Error(err)
   }
 

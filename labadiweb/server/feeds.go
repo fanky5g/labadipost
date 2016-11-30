@@ -65,8 +65,8 @@ type NewsReturn struct {
 }
 
 func (api *API) GetNews(c echo.Context) error{
-  l := c.Query("limit")
-  cursor := c.Query("cursor")
+  l := c.QueryParam("limit")
+  cursor := c.QueryParam("cursor")
 
   var limit int
 

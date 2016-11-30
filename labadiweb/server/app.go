@@ -63,11 +63,13 @@ func NewApp(opts ...AppOptions) *App {
   origins := os.Getenv("ALLOWED_ORIGINS")
   originsAllowed := strings.Split(origins, ",")
 
-
   // Regular middlewares
   e.Use(middleware.Logger())
   e.Use(middleware.Recover())
   e.Use(middleware.Gzip())
+  e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+    AllowOrigins: originsAllowed,
+  }))
 
   e.GET("/favicon.ico", func(c echo.Context) error {
     return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
@@ -148,7 +150,7 @@ func NewApp(opts ...AppOptions) *App {
           return nil
         }
         // if static file not found check if client is mobile
-        ua := c.Request().Header.Get("User-Agent")
+        ua := c.Request().Header().Get("User-Agent")
         isMobile := CheckIsMobile(ua)
         if isMobile {
           return HandleMobile(c)

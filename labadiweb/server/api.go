@@ -37,7 +37,7 @@ func (api *API) ConfHandler(c echo.Context) error {
 }
 
 func (api *API) RegisterUser(c echo.Context) error {
-  // t := c.Query("type")
+  // t := c.QueryParam("type")
   user := &User{}
   err := c.Bind(user)
   if err != nil {
@@ -61,7 +61,7 @@ func (api *API) ActivateUser(c echo.Context) error {
 
 
 func (api *AuthRoutes) Bind(group *echo.Group) {
-  group.USE(api.AuthMiddleware)
+  group.Use(api.AuthMiddleware)
   group.GET("/v1/firstauth", api.GetFirst)
 }
 

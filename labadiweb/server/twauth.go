@@ -3,6 +3,7 @@ package main
 import (
   "os"
   "github.com/labstack/echo"
+  "github.com/labstack/echo/engine/standard"
   "encoding/gob"
   "github.com/mrjones/oauth"
   "encoding/json"
@@ -36,7 +37,7 @@ type TwitterUserInfo struct {
 }
 
 func (api *API) TwitterOauthInitiate(c echo.Context) error{
-  clientLocation := c.Query("location")
+  clientLocation := c.QueryParam("location")
   gob.Register(&oauth.RequestToken{})
 
   requestToken, url, err := TwOauthConfig.GetRequestTokenAndUrl("http://labadipost.com/api/v1/oauth/twitter/callback")
@@ -45,7 +46,7 @@ func (api *API) TwitterOauthInitiate(c echo.Context) error{
   defer store.Close()
   store.SetMaxAge(1*2*3600)
 
-  session, err := store.Get(c.Request(), "twitter-oauth-storage")
+  session, err := store.Get(c.Request().(*standard.Request).Request, "twitter-oauth-storage")
   if err != nil {
     c.Error(err)
     return nil
@@ -53,7 +54,7 @@ func (api *API) TwitterOauthInitiate(c echo.Context) error{
 
   session.Values["request-token"] = requestToken
   session.Values["location"] = clientLocation
-  if err = session.Save(c.Request(), c.Response()); err != nil {
+  if err = session.Save(c.Request().(*standard.Request).Request, c.Response().(*standard.Response).ResponseWriter); err != nil {
     c.Error(err)
     return nil
   }
@@ -66,12 +67,12 @@ func (api *API) TwitterOauthCallback(c echo.Context) error {
   gob.Register(&oauth.RequestToken{})
   gob.Register(&oauth.AccessToken{})
   // oauth_token := c.Form("oauth_token")
-  oauth_verifier := c.Form("oauth_verifier")
+  oauth_verifier := c.FormValue("oauth_verifier")
 
   store, err := GetRedisStore()
   defer store.Close()
 
-  session, err := store.Get(c.Request(), "twitter-oauth-storage")
+  session, err := store.Get(c.Request().(*standard.Request).Request, "twitter-oauth-storage")
   if err != nil {
     c.Error(err)
     return nil
@@ -133,7 +134,7 @@ func (api *API) TwitterOauthCallback(c echo.Context) error {
     return nil
   }
 
-  jwtSession, err := store.Get(c.Request(), "jwt-storage")
+  jwtSession, err := store.Get(c.Request().(*standard.Request).Request, "jwt-storage")
   if err != nil {
     c.Error(err)
     return nil
@@ -142,7 +143,7 @@ func (api *API) TwitterOauthCallback(c echo.Context) error {
   jwtSession.Values["auth-token"] = jwt
   jwtSession.Values["twitter-token"] = accessToken
 
-  if err = jwtSession.Save(c.Request(), c.Response()); err != nil {
+  if err = jwtSession.Save(c.Request().(*standard.Request).Request, c.Response().(*standard.Response).ResponseWriter); err != nil {
     c.Error(err)
     return nil
   }

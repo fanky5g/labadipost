@@ -1,5 +1,5 @@
-hash: 1432aa48d5f48beb1e15eeef577918aae7d12cd2d922935aefb204b282067741
-updated: 2016-11-29T21:15:13.430057122Z
+hash: 3ccce77031656157f488a88696b769d0db27455782b85a81fa89eeb8bfe3e6f5
+updated: 2016-11-30T08:59:09.877961026Z
 imports:
 - name: bitbucket.org/fanky5g/labadipost
   version: a7bd9182e2b9ed45a22f1b8fdbae8a7991cb24b4
@@ -15,7 +15,7 @@ imports:
 - name: github.com/codegangsta/cli
   version: c31a7975863e7810c92e2e288a9ab074f9a88f29
 - name: github.com/dgrijalva/jwt-go
-  version: 9ed569b5d1ac936e6494082958d63a6aa4fff99a
+  version: 24c63f56522a87ec5339cc3567883f1039378fdb
 - name: github.com/elazarl/go-bindata-assetfs
   version: 57eb5e1fc594ad4b0b1dbea7b286d299e0cb43c2
 - name: github.com/garyburd/redigo
@@ -39,11 +39,21 @@ imports:
   version: 65d795d0c74021e19b2ebadf3c83c01a8290a405
 - name: github.com/jteeuwen/go-bindata
   version: a0ff2567cfb70903282db057e799fd826784d41d
-- name: github.com/labstack/gommon
-  version: 9c0a60557b6840125c331d8c8075119770aa2805
+- name: github.com/labstack/echo
+  version: 245c05330a465e3f3f3471df4b1b1acd250749d2
   subpackages:
+  - context
+  - engine
+  - engine/standard
+  - log
+  - middleware
+- name: github.com/labstack/gommon
+  version: 431777a5117c8de4352a400dad1e2a55f484b189
+  subpackages:
+  - bytes
   - color
   - log
+  - random
 - name: github.com/mattn/go-colorable
   version: 3dac7b4f76f6e17fb39b768b89e3783d16e237fe
 - name: github.com/mattn/go-isatty
@@ -84,7 +94,6 @@ imports:
   - html
   - html/atom
   - publicsuffix
-  - websocket
 - name: golang.org/x/oauth2
   version: d5040cddfc0da40b408c9a1da4728662435176a9
   subpackages:
@@ -107,10 +116,6 @@ imports:
   - urlfetch
 - name: gopkg.in/boj/redistore.v1
   version: fc113767cd6b051980f260d6dbe84b2740c46ab0
-- name: gopkg.in/labstack/echo.v1
-  version: 18a78a34eb4481722eef1ac9034eada58e3cf909
-  subpackages:
-  - middleware
 - name: gopkg.in/mgo.v2
   version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
   subpackages:

@@ -59,7 +59,7 @@ func (r *React) Handle(c echo.Context) error {
     return nil
   }
 
-  session, err := store.Get(c.Request(), "jwt-storage")
+  session, err := store.Get(c.Request().(*standard.Request).Request, "jwt-storage")
   if err != nil {
     c.Error(err)
     return nil
