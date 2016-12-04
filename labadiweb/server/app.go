@@ -67,14 +67,16 @@ func NewApp(opts ...AppOptions) *App {
   // Regular middlewares
   e.Use(middleware.Logger())
   e.Use(middleware.Recover())
-  e.Use(middleware.Gzip())
+  e.Use(middleware.GzipWithConfig(middleware.GzipConfig{
+    Skipper: func(c echo.Context) bool {
+      // use this to configure skipping to go-bindata-assetfs
+      return false
+    },
+  }))
+  e.Use(middleware.Static("server/data/static/build"))
   e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
     AllowOrigins: originsAllowed,
   }))
-
-  e.GET("/favicon.ico", func(c echo.Context) error {
-    return c.Redirect(http.StatusMovedPermanently, "/static/build/favicon.ico")
-  })
 
   std := standard.WithConfig(engine.Config{})
   std.SetHandler(e)
@@ -169,7 +171,6 @@ func NewApp(opts ...AppOptions) *App {
 }
 
 func HandleMobile(c echo.Context) error {
-  fmt.Println("HandleMobile hit")
   re := struct{}{}
   c.Render(200, "mobile.html", re)
   return nil

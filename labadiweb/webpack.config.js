@@ -24,9 +24,7 @@ const PLUGINS = [
   }),
   new CopyWebpackPlugin([{
     from: path.resolve('./client/static'),
-  }, {
-    from: path.resolve('./mobile/build'),
-  }, {from: path.resolve('./mobile/touch-emulator.js')}], {}),
+  }], {}),
 ];
 
 if (process.env.NODE_ENV === 'production') {
