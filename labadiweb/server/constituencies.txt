@@ -1,0 +1,242 @@
+Adansi-Asokwa
+Fomena
+New Edubease
+Kwabre West
+Ahafo Ano North
+Ahafo-Ano South
+Odotobri
+Amansie West
+Asante-Akim North
+Asante-Akim South
+Atwima-Kwanwoma
+Atwima-Mponua
+Atwima-Nwabiagya
+Bekwai
+Bosome-Freho
+Bosomtwe
+Ejisu-Juaben
+Ejura-Sekyedumase
+Mampong
+Asokwa
+Bantama
+Nhyiaeso
+Oforikrom
+Old Tafo
+Suame
+Subin
+Manhyia
+Kwadaso
+Kwabre East
+Akrofuom
+Obuasi
+Offinso North
+Offinso South
+Kumawu
+Nsuta-Kwamang
+Afigya Sekyere West
+Effiduase-Asokore
+Afigya Sekyere East
+
+Asunafo North
+Asunafo South
+Asutifi North
+Asutifi South
+Atebubu-Amantin
+Banda
+Berekum
+Dormaa East
+Dormaa West
+Jaman North
+Jaman South
+Kintampo North
+Kintampo South
+Nkoranza North
+Nkoranza South
+Pru
+Sene
+Sunyani East
+Sunyani West
+Tain
+Tano North
+Tano South
+Techiman North
+Techiman South
+Wenchi
+Abura-Asebu-Kwamankese
+Agona East
+Agona West
+Ajumako-Enyan-Essiam
+Asikuma-Odoben-Brakwa
+Assin North
+Assin South
+Awutu-Senya
+Cape Coast
+Effutu
+Gomoa East
+Gomoa West
+Komenda-Edina-Eguafo-Abirem
+Mfantseman East
+Mfantseman West
+Hemang Lower Denkyira
+Twifo-Atii Morkwaa
+Upper Denkyira East
+Upper Denkyira West
+Akropong
+Okere
+Aburi-Nsawam
+Ofoase-Ayirebi
+Asuogyaman
+Atiwa
+Akim Oda
+Abirem
+Akim Swedru
+Akim Abuakwa North
+Akim Abuakwa South
+Fanteakwa
+Akwatia
+Kade
+Abetifi
+Afram Plains North
+Afram Plains South
+Mpraeso
+Nkawkaw
+Lower Manya
+New Juaben North
+New Juaben South
+Ayensuano
+Suhum
+Upper Manya
+Lower West Akim
+Upper West Akim
+Yilo Krobo
+Ablekuma Central
+Ablekuma North
+Ablekuma South
+Ablekuma West
+Ayawaso Central
+Ayawaso East
+Ayawaso North
+Ayawaso West Wuogon
+Dade Kotopon
+Domeabra-Obom
+Korle Klottey
+Odododiodoo
+Okaikwei North
+Okaikwei South
+Okaikwei Central
+Adenta
+Ashaiman
+Ada
+Sege
+Ningo-Prampram
+Abokobi-Madina
+Dome-Kwabenya
+Trobu-Amasaman
+Weija
+Bortianor
+Krowor
+Ledzokuku
+Kpone-Katamanso
+Shai-Osudoku
+Tema Central
+Tema East
+Tema West
+Bole
+Bunkpurugu-Yunyoo
+Yapei-Kusawgu
+Chereponi
+Salaga
+Nalerigu
+Gushegu
+Karaga
+Kpandai
+Bimbilla
+Wulensi
+Saboba
+Nanton
+Savelugu
+Sawla-Tuna-Kalba
+Tamale Central
+Tamale North
+Tamale South
+Tolon
+Kumbungu
+Damango-Daboya
+Walewale
+Yagaba-Kubori
+Mion
+Yendi
+Zabzugu-Tatale
+Bawku Central
+Binduri
+Pusiga
+Zebilla
+Bolgatanga
+Bongo
+Builsa North
+Builsa South
+Garu-Tempane
+Chiana-Paga
+Navrongo Central
+Nabdam
+Talensi
+Jirapa
+Lambussie
+Lawra-Nandom
+Nadowli East
+Nadowli West
+Sissala East
+Sissala West
+Wa East
+Wa Central
+Wa West
+Adaklu
+Afadjato South
+Agotime-Ziope
+Akatsi North
+Akatsi South
+Biakoye
+Ho Central
+Ho West
+Hohoe South
+Buem
+Akan
+Anlo
+Keta
+Ketu North
+Ketu South
+Kpando
+Krachi East
+Krachi Nchumuru
+Krachi West
+Nkwanta North
+Nkwanta South
+Central Tongu
+North Tongu
+North Dayi
+South Dayi
+South Tongu
+Amenfi Central
+Amenfi East
+Ahanta West
+Aowin
+Suaman
+Bia
+Bibiani-Anhwiaso-Bekwai
+Ellembelle
+Jomoro
+Juabeso
+Mpohor-Wassa East
+Evalue-Gwira
+Prestea-Huni Valley
+Sefwi Akontombra
+Sefwi-Akontombra
+Sefwi Wiawso
+Effia-Kwesimintsim
+Essikado-Ketan
+Sekondi
+Takoradi
+Shama
+Tarkwa-Nsuaem
+Amenfi East
+Amenfi West
