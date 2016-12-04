@@ -31,6 +31,17 @@ gulp.task('reload-js', function () {
     .pipe(connect.reload());
 });
 
+gulp.task('copy-build', function() {
+  return gulp.src(['./build/*', './touch-emulator.js'])
+    .pipe(gulp.dest('../server/data/static/build'));
+});
+
+gulp.task('watch-build', function() {
+  gulp.watch(['./build/*.js'], ['copy-build']);
+});
+
+gulp.task('mobile', ['build', 'watch-build']);
+
 gulp.task('watch', function () {
   gulp.watch(['./build/*.js'], ['reload-js']);
 });

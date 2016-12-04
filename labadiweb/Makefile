@@ -26,6 +26,9 @@ clean:
 build-mobile:
 	@cd mobile && gulp build
 
+watch-mobile:
+	@cd mobile && gulp mobile
+
 $(ON):
 	go install $(IMPORT_PATH)/vendor/github.com/olebedev/on
 
@@ -41,7 +44,8 @@ $(TARGET): $(BUNDLE) $(BINDATA)
 kill:
 	@kill `cat $(PID)` || true
 
-serve: build-mobile $(ON) $(GO_BINDATA) clean $(BUNDLE) restart
+serve: $(ON) $(GO_BINDATA) clean $(BUNDLE) restart
+	@make watch-mobile &
 	@BABEL_ENV=dev node hot.proxy &
 	@$(NODE_BIN)/webpack --watch &
 	@$(ON) -m 2 $(GO_FILES) $(TEMPLATES) | xargs -n1 -I{} make restart || make kill

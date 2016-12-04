@@ -59,7 +59,7 @@ ReactCanvas.registerLayerType('lowerHButton', function (ctx, layer) {
 ReactCanvas.registerLayerType('logo', function(ctx, layer) {
   var img = new Image();
   ctx.globalCompositeOperation = 'source-over';
-  img.src = '/static/images/logo.svg';
+  img.src = '/images/logo.svg';
   img.onload = function() {
     layer.invalidateBackingStore();
   }

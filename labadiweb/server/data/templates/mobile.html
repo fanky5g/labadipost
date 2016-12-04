@@ -14,22 +14,27 @@
       background: #ddd;
     }
 
-    #main {
-      background: #fff;
+    #main, #app {
       position: relative;
       height: 100%;
-      max-width: 420px;
-      max-height: 700px;
+      background: #fff;
+    }
+
+    .fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
     }
   </style>
-  <!-- <link rel="stylesheet" type="text/css" href="styles/style.css"> -->
-  <script src="/static/build/touch-emulator.js"></script>
+  <script src="/touch-emulator.js"></script>
   <script type="text/javascript">
     TouchEmulator();
   </script>
 </head>
 <body>
-  <div id="app"></div>
-  <script src="/static/build/mobile.js"></script>
+  <div id="main"></div>
+  <script src="/mobile.js"></script>
 </body>
 </html>
