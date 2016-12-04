@@ -6,6 +6,7 @@ import (
 	"net/http"
   "strings"
   "os"
+  "fmt"
 
 	"github.com/itsjamie/go-bindata-templates"
   "github.com/nu7hatch/gouuid"
@@ -72,7 +73,7 @@ func NewApp(opts ...AppOptions) *App {
   }))
 
   e.GET("/favicon.ico", func(c echo.Context) error {
-    return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
+    return c.Redirect(http.StatusMovedPermanently, "/static/build/favicon.ico")
   })
 
   std := standard.WithConfig(engine.Config{})
@@ -149,6 +150,7 @@ func NewApp(opts ...AppOptions) *App {
             c.Request().(*standard.Request).Request)
           return nil
         }
+        fmt.Println(c.Request().URI()[1:])
         // if static file not found check if client is mobile
         ua := c.Request().Header().Get("User-Agent")
         isMobile := CheckIsMobile(ua)
@@ -156,7 +158,6 @@ func NewApp(opts ...AppOptions) *App {
           return HandleMobile(c)
         }
         // if client is not mobile,handle request via react application
-        // if static file not found handle request via react application
         return app.React.Handle(c)
       }
       // Move further if err is not `Not Found`
@@ -168,6 +169,7 @@ func NewApp(opts ...AppOptions) *App {
 }
 
 func HandleMobile(c echo.Context) error {
+  fmt.Println("HandleMobile hit")
   re := struct{}{}
   c.Render(200, "mobile.html", re)
   return nil

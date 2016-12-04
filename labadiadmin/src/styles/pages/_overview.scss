@@ -1,0 +1,42 @@
+.Overview {
+  min-height: calc(100vh - 64px);
+  padding: 40px 0;
+  .Overview__inner {
+    display: block;
+    margin: 60px auto;
+    max-width: 50%;
+    vertical-align: middle;
+
+    .Overview__inner--row {
+      padding: 10px 5px;
+      @extend %clearfix;
+      & > * {
+        float: left;
+        display: inline-block;
+        width: 50%;
+      }
+      .Overview__inner--row-main_header {
+        @extend %resetHeaders;
+        font-size: 18px;
+        font-weight: $font-weight--semi-bold;
+        clear: both;
+        text-transform: uppercase;
+        width: 100%;
+      }
+      .Overview__inner--row-header {
+        @extend %resetHeaders;
+        font-size: 18px;
+        font-variant: small-caps;
+        font-weight: $font-weight--semi-bold;
+      }
+      .span{
+        font-size: 18px;
+        font-weight: $font-weight--normal;
+      }
+      padding: 5px;
+      &:nth-of-type(even) {
+        background: $alabaster;
+      }
+    }
+  }
+}

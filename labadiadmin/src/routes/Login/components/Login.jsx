@@ -16,23 +16,24 @@ class Login extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      email: '',
+      username: '',
       password: '',
     };
   }
 
   componentWillReceiveProps(nextProps) {
     const { notify, message } = nextProps;
-    if (message !== '') {
+    if (message !== '' && typeof message !== "undefined") {
       notify(message, this.clearMessage, 5000, 'Ok');
     }
   }
 
   componentWillUpdate = (nextProps) => {
     const { Account } = nextProps;
-
+    const storage = window.localStorage;
     if (Account.get('isAuthenticated')) {
       storage.setItem('token', JSON.stringify(Account.get('token')));
+      storage.setItem('user', JSON.stringify(Account.get('user')));
     }
   };
 
@@ -69,7 +70,7 @@ class Login extends Component {
                     floatingLabel
                     onChange={this.onFieldChanged}
                     required
-                    name="email"
+                    name="username"
                   />
                 </div>
                 <div className="Login__container--body-inputfield">

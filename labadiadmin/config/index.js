@@ -77,6 +77,8 @@ config.globals = {
   'process.env'  : {
     'NODE_ENV' : JSON.stringify(config.env),
     'BROWSER'  : JSON.stringify(true),
+    'PROTOCOL' : JSON.stringify(process.env.PROTOCOL),
+    'API_VERSION': JSON.stringify(process.env.API_VERSION),
   },
   'NODE_ENV'     : config.env,
   '__DEV__'      : config.env === 'development',

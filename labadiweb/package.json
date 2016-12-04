@@ -1,5 +1,5 @@
 {
-  "name": "go-starter-kit",
+  "name": "Labadiweb",
   "version": "0.1.0",
   "description": "",
   "scripts": {
@@ -7,8 +7,8 @@
     "test:coverage": "./node_modules/.bin/babel-node ./node_modules/isparta/bin/isparta cover ./node_modules/mocha/bin/_mocha -- --require ./test/test_helper.js --bail --recursive test/**/**.spec.js",
     "lint": "./node_modules/.bin/eslint --ext .jsx --ext .js ."
   },
-  "author": "olebedev",
-  "license": "MIT",
+  "author": "Benjamin Appiah-Brobbey",
+  "license": "<Private>",
   "dependencies": {
     "async": "^2.1.4",
     "axios": "^0.14.0",
@@ -22,7 +22,6 @@
     "object-assign": "^4.1.0",
     "react": "^15.1.0",
     "react-addons-transition-group": "^15.1.0",
-    "react-canvas": "^1.2.1",
     "react-dom": "^15.1.0",
     "react-helmet": "^3.1.0",
     "react-input-autosize": "^1.1.0",

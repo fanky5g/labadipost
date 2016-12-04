@@ -1,0 +1,197 @@
+.Settings {
+    background: $alabaster;
+    .Settings__tabs {
+        padding: 20px 0 0;
+        .mdl-tabs__tab.is-active {
+            font-weight: 700;
+            &:after {
+                background: $color-accent;
+                height: 4px;
+            }
+        }
+    }
+    .Settings__Content {
+        transition: all .2s ease-in;
+        min-height: calc(100vh - 132px);
+        .DashContent__inner {
+            padding: 40px;
+        }
+        .Settings__main {
+            .Settings__main--big {
+                background: $white;
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                border: 2px solid lighten($color-primary--contrast__active, 15%);
+                span {
+                    border-bottom: none;
+                }
+                & > * {
+                    display: flex;
+                    width: 100%;
+                    border-bottom: 2px solid lighten($color-primary--contrast__active, 15%);
+                    &:last-of-type {
+                        border-bottom: none;
+                    }
+                    .inner-div {
+                        flex-direction: row;
+                        flex: 1 50%;
+                        min-height: 100px;
+                        padding: 10px;
+                        overflow: hidden;
+                        width: 50%;
+                        border-right: 2px solid lighten($color-primary--contrast__active, 15%);
+                        &:last-child {
+                            border-right: none;
+                        }
+                        @include media('<=764px') {
+                            flex-wrap: wrap;
+                        }
+                        h2.dash_title {
+                            line-height: 32px;
+                            font-size: 14px;
+                            margin-top: 0;
+                            padding-bottom: 0;
+                            margin-bottom: 5px;
+                            color: lighten($color-primary--contrast__active, 1);
+                        }
+                        p {
+                            margin-top: 5px;
+                            font-weight: 600;
+                            color: $color-primary--contrast;
+                            font-size: 16px;
+                            &.small-text {
+                                font-size: 14px;
+                                width: 70%;
+                            }
+                        }
+                        input,
+                        textarea {
+                            margin-top: 5px;
+                            font-weight: 600;
+                            color: $color-primary--contrast;
+                            font-size: 16px;
+                            border: none;
+                            cursor: pointer;
+                            min-width: 50px;
+                            margin-left: 5px;
+                            text-overflow: ellipsis;
+                            &.small-text {
+                                font-size: 15px;
+                                width: 70%;
+                            }
+                            @include media('<=800px') {
+                                font-size: 14px;
+                            }
+                        }
+                        textarea {
+                            resize: none;
+                            font-family: $font-family--primary;
+                            line-height: 20px;
+                        }
+                        &.Addresses,
+                        &.Roles {
+                            position: relative;
+                            .Addresses_Add {
+                                position: absolute;
+                                right: 20px;
+                                top: 20px;
+                                color: $color-primary--contrast;
+                            }
+                            .Address_List,
+                            .Role_List {
+                                padding: 10px 0;
+                                li {
+                                    padding-top: 10px;
+                                }
+                                .actions {
+                                    display: inline-block;
+                                    position: absolute;
+                                    right: 20px;
+                                    & > * {
+                                        margin-left: 5px;
+                                        color: $color-primary--contrast;
+                                        &:nth-child(1) {
+                                            margin-left: 0;
+                                        }
+                                    }
+                                }
+                                .Role_Item {}
+                            }
+                            .Role_Add {
+                                transition: all .2s ease;
+                                .Role_Select {
+                                    label {
+                                        font-size: 14px;
+                                    }
+                                }
+                            }
+                            .Role_List,
+                            .Role_Add {
+                                color: $color-primary--contrast;
+                                font-weight: 600;
+                            }
+                        }
+                    }
+                }
+                .Settings--profile_avatar {
+                    padding: 20px 50px;
+                    position: relative;
+                    .mdl-button {
+                        border: 1px solid lighten($color-primary--contrast__active, 1);
+                        border-radius: 35%;
+                        height: 28px;
+                        width: 38px;
+                        margin-left: 5px;
+                        margin-top: 40px;
+                        color: $color-primary--contrast;
+                    }
+                    .DashBarUser {
+                        float: none;
+                        .avatar-icon {
+                            width: 100px;
+                            height: 100px;
+                            border-radius: 50%;
+                            &.merchant {
+                                //width: 200px;
+                                //height: 200px;
+                                //border-radius: 5px;
+                            }
+                        }
+                    }
+                    .actions {
+                        position: absolute;
+                        top: 20px;
+                        right: 20px;
+                    }
+                }
+            }
+            .Settings__action-btn {
+                width: 100%;
+                height: 56px;
+                margin: 20px 0;
+                border-radius: 0;
+                font-weight: 600;
+                .mdl-spinner {
+                    position: absolute;
+                    margin-left: 10px;
+                    & > * {
+                        border-color: $white;
+                    }
+                }
+            }
+        }
+        .Settings__aside {}
+        h2.dash_title {
+            text-transform: uppercase;
+            line-height: 48px;
+            font-size: 18px;
+            font-weight: 600;
+            color: $color-primary--contrast;
+            padding-bottom: 20px;
+            &.variant {
+                text-transform: capitalize;
+            }
+        }
+    }
+}

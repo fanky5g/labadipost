@@ -16,20 +16,6 @@ const Account = (state = defaultState, action) => {
     case 'CREATE_ACCOUNT_REQUEST':
       return state.set('isWaiting', true);
     case 'CREATE_ACCOUNT':
-      if (action.res.data.type === 'delegate') {
-        return state.withMutations((stateIns) => {
-          stateIns
-            .updateIn(['user', 'roles', 'merchant', 'delegates'],
-              arr => arr.concat(action.res.data.delegate))
-            .merge({
-              isWaiting: false,
-              authSuccess: true,
-              message:
-              `successfully created delegate. username:
-               ${action.res.data.username} password: ${action.res.data.password}`,
-            });
-        });
-      }
       return state.merge({
         isWaiting: false,
         shouldRedirect: true,
@@ -63,12 +49,7 @@ const Account = (state = defaultState, action) => {
     // find better implementation of this
       return state.merge({
         isAuthenticated: true,
-        user: {
-          ...action.res.data.user,
-          address: action.res.data.user.address.map((address) => ({
-            ...address, editable: false,
-            isActive: false })),
-        },
+        user: action.res.data.user,
         token: action.res.data.token,
         isWaiting: false,
       });
@@ -104,14 +85,7 @@ const Account = (state = defaultState, action) => {
 
       return state.merge({
         isAuthenticated: true,
-        user: Immutable.fromJS({
-          ...action.res.data.user,
-          address: action.res.data.user.address.map((address) => Immutable.fromJS({
-            ...address,
-            editable: true,
-            isActive: true,
-          })),
-        }),
+        user: action.res.data.user,
         token: action.res.data.token,
         message: 'Account edited successfully',
         isWaiting: false,
@@ -137,7 +111,6 @@ const Account = (state = defaultState, action) => {
           message: 'Avatar reset successful',
         });
       });
-    // state setin bring user type from backend
     case 'DELETE_IMAGE_FAILURE':
       return state.merge({
         isWaiting: false,
@@ -157,102 +130,15 @@ const Account = (state = defaultState, action) => {
       });
     case 'LOGOUT_SUCCESS':
       return state.merge({
-        user: null,
+        user: {},
         isAuthenticated: false,
         token: null,
-        message: action.res.data.message,
+        message: '',
       });
     case 'CLEAN_AUTH_MESSAGE':
       return state.merge({
         message: '',
         isWaiting: false,
-      });
-    case 'CHANGE_SHOP_BANNER_REQUEST':
-      return state.set('bannerLoading', true);
-    case 'CHANGE_SHOP_BANNER':
-      return state.withMutations((stateIns4) => {
-        stateIns4.setIn(['user', 'roles', 'merchant'], Immutable.fromJS(action.res.data))
-          .merge({
-            bannerLoading: false,
-          });
-      });
-    case 'CHANGE_SHOP_BANNER_FAILURE':
-      return state.set({
-        bannerLoading: false,
-      });
-    case 'ONBOARD_MERCHANT_REQUEST':
-      return state.set('isWaiting', true);
-    case 'ONBOARD_MERCHANT':
-      return state.withMutations((stateIns4) => {
-        stateIns4.updateIn(['user', 'roles', 'merchant'], obj => {
-          const edited = obj.toJSON();
-          return Immutable.fromJS({ ...edited, merchantAccount: action.res.data });
-        })
-        .merge({
-          isWaiting: false,
-          message: 'Merchant Transaction Account created successfully',
-          authSuccess: true,
-        });
-      });
-    case 'ONBOARD_MERCHANT_FAILURE':
-      return state.merge({
-        isWaiting: false,
-        message: 'Merchant Transaction Account creation failed',
-        authSuccess: false,
-      });
-    case 'SET_ADDRESS_EDITABLE':
-      return state.updateIn(['user', 'address'], arr => {
-        const toEdit = arr.get(action.index).toJSON();
-        return arr.set(action.index, Immutable.fromJS({ ...toEdit, editable: action.state }));
-      });
-    case 'EDIT_ADDRESS':
-      return state.updateIn(['user', 'address'], arr => {
-        const edited = arr.get(action.index).set(action.key, action.value).toJSON();
-        return arr.set(action.index, Immutable.fromJS(edited));
-      });
-    case 'TOGGLE_ADDRESS_ACTIVE':
-      return state.updateIn(['user', 'address'], arr => {
-        const toEdit = arr.get(action.index).toJSON();
-        return arr.set(action.index, Immutable.fromJS({ ...toEdit, isActive: action.state }));
-      });
-    case 'REVERT_ADDRESS':
-      return state.updateIn(['user', 'address'], () => Immutable.fromJS(action.address));
-    case 'ADD_ADDRESS':
-      return state.updateIn(['user', 'address'], arr => arr.push(Immutable.Map({})));
-    case 'TOGGLE_DELEGATE_ADDRESS_ACTIVE':
-      return state.updateIn(['user', 'roles', 'merchant', 'delegates'], arr => {
-        const activeDelegate = arr.get(action.dIndex).toJSON();
-        const address = activeDelegate.address;
-        address[action.index].isActive = action.state;
-        activeDelegate.address = address;
-
-        return arr.set(action.dIndex, Immutable.fromJS(activeDelegate));
-      });
-    case 'SET_DELEGATE_ADDRESS_EDITABLE':
-      return state.updateIn(['user', 'roles', 'merchant', 'delegates'], arr => {
-        const activeDelegate = arr.get(action.dIndex).toJSON();
-        const address = activeDelegate.address;
-        address[action.index].editable = action.state;
-        activeDelegate.address = address;
-
-        return arr.set(action.dIndex, Immutable.fromJS(activeDelegate));
-      });
-    case 'EDIT_DELEGATE_ADDRESS':
-      return state.updateIn(['user', 'roles', 'merchant', 'delegates'], arr => {
-        const activeDelegate = arr.get(action.dIndex).toJSON();
-        const address = activeDelegate.address;
-        address[action.index][action.key] = action.value;
-        activeDelegate.address = address;
-
-        return arr.set(action.dIndex, Immutable.fromJS(activeDelegate));
-      });
-    case 'ADD_DELEGATE_ADDRESS':
-      return state.updateIn(['user', 'roles', 'merchant', 'delegates'], arr => {
-        const activeDelegate = arr.get(action.dIndex).toJSON();
-        const address = activeDelegate.address.push({});
-        activeDelegate.address = address;
-
-        return arr.set(action.dIndex, Immutable.fromJS(activeDelegate));
       });
     case 'RECEIVE_SOCKET':
       if (state.get('user')) {

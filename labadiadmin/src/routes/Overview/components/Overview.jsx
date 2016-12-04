@@ -4,7 +4,7 @@ const Overview = () => (
   <div className="Overview">
     <div className="Overview__inner">
       <div className="Overview__inner--row">
-        <h3 className="Overview__inner--row-main_header">IPSF Custom CMS Backend</h3>
+        <h3 className="Overview__inner--row-main_header">Labadipost Admin</h3>
       </div>
       <div className="Overview__inner--row">
         <h3 className="Overview__inner--row-header">Developer:</h3>
