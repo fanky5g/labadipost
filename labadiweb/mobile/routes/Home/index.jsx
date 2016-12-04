@@ -1,92 +1,117 @@
-import React, { Component } from '#node_modules/react';
-import ReactCanvas from '#node_modules/react-canvas';
-import Page from './components/Page';
-import articles from './data';
-// import buttonPath from './logo.svg';
+import React, { Component, PropTypes } from 'react';
+import Home from './components/Home';
 
-const Surface = ReactCanvas.Surface;
-const ListView = ReactCanvas.ListView;
-const Button = ReactCanvas.Layer;
-// const ButtonSVG = new Path2D(buttonPath);
+export default class RootComponent extends Component {
+  static contextTypes = {
+    router: PropTypes.object.isRequired,
+  };
 
+  state = {
+    canvasActive: true,
+    nestedRouteActive: false,
+  };
 
-export default class Home extends Component {
-  componentWillMount() {
-    global.addEventListener('resize', this.handleViewportResize, true);
+  getTransitionStyle = () => {
+    const { canvasActive } = this.state;
+
+    const size = this.getSize();
+    let translateTo = 0;
+
+    const baseTransision = (to) => ({
+      position: 'absolute',
+      left: '0px',
+      top: '0px',
+      bottom: '0px',
+      right: '0px',
+      transitionProperty: 'transform',
+      transitionDuration: '380ms',
+      transform: `translate(0px, ${to}px) scale(1, 1)`,
+    });
+
+    if (canvasActive) {
+      translateTo = size.height - 48;
+      this.setState({
+       canvasActive: false,
+      });
+      return baseTransision(translateTo);
+    }
+
+    if (!canvasActive) {
+      this.setState({
+       canvasActive: true,
+      });
+      return baseTransision(translateTo);
+    }
   }
 
-  handleViewportResize = () => {
-    this.forceUpdate();
-  };
-
-  renderPage = (pageIndex, scrollTop) => {
-    var size = this.getSize();
-    var article = articles[pageIndex % articles.length];
-    var pageScrollTop = pageIndex * this.getPageHeight() - scrollTop;
-    return (
-      <Page
-        width={size.width}
-        height={size.height}
-        article={article}
-        pageIndex={pageIndex}
-        scrollTop={pageScrollTop} />
-    );
-  };
-
-  getSize = () => {
-    return document.getElementById('app').getBoundingClientRect();
-  };
-
-  getListViewStyle = () => {
-    var size = this.getSize();
+  getAppStyles = () => {
     return {
-      top: 0,
-      left: 0,
-      width: size.width,
-      height: size.height
+      background: '#f7f7f7',
+      height: this.getSize().height,
     };
   };
 
-  getNumberOfPages = () => {
-    return 1000;
-  };
-
-  getPageHeight = () => {
-    return this.getSize().height;
-  };
-
-  getButtonStyle = () => {
+  getBoundStyle = () => {
     return {
-      left: 8,
       position: 'absolute',
-      zIndex: -1,
-      backgroundColor: 'red',
-      top: 8,
-      width: 40,
-      height: 40,
-    }; 
+      left: 0,
+      top: 0,
+      bottom: 0,
+      right: 0,
+    };
   };
 
-  handleButtonClick = () => {
-    console.log('the icon button was clicked');
+  getSize = () => {
+    return document.getElementById("main").getBoundingClientRect();
+  };
+
+  toggleClearCanvas = () => {
+    const { canvasActive, nestedRouteActive } = this.state;
+    const canvasSurface = document.getElementById("surface");
+    Object.assign(canvasSurface.style, this.getTransitionStyle());
+
+    if (!canvasActive) {
+      setTimeout(() => {
+        canvasSurface.removeAttribute('style');
+      }, 380);
+    }
+  };
+
+  visitNestedRoute = (name) => {
+    const { canvasActive } = this.state;
+    const { router } = this.context;
+
+    if (canvasActive) {
+      this.toggleClearCanvas();
+      this.setState({ nestedRouteActive: true});
+      router.push(name);
+    } else {
+      // we are already in navigated state, bring canvas back to live
+      this.toggleClearCanvas();
+      this.setState({ nestedRouteActive: false });
+      router.goBack();
+    }
   };
 
   render() {
-    const size = this.getSize();
+    const { nestedRouteActive } = this.state;
+
     return (
-      <Surface top={0} left={0} width={size.width} height={size.height}>
-        <Button style={this.getButtonStyle()} onTouchStart={this.handleButtonClick}></Button>
-        <ListView
-          style={this.getListViewStyle()}
-          snapping={true}
-          scrollingDeceleration={0.92}
-          scrollingPenetrationAcceleration={0.13}
-          numberOfItemsGetter={this.getNumberOfPages}
-          itemHeightGetter={this.getPageHeight}
-          itemGetter={this.renderPage} />
-      </Surface>
+      <div id="app" className="fill" style={this.getAppStyles()} ref="pageContainer">
+        {
+          nestedRouteActive &&
+          <div className="fill">
+            {this.props.children}
+          </div>
+        }
+        <div className="fill" id="surface">
+          <div style={this.getBoundStyle()}>
+            <div className="fill">
+              <Home goToURL={this.visitNestedRoute} />
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
-
-// getDepth if depth is 3 show white, else show blackk

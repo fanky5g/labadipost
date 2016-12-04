@@ -1,6 +1,8 @@
 var path = require('path');
 
 module.exports = {
+  cache: true,
+  watch: true,
   entry: {
     mobile: ['./'],
   },

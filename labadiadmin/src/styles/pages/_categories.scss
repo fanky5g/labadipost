@@ -1,0 +1,22 @@
+$cat-border: darken(#F6F8F8, 3%);
+
+.Categories {
+  padding-top: 20px;
+  .Category-container {
+    .category {
+      padding: 10px 20px;
+      background: $white;
+      margin-bottom: 20px;
+      cursor: pointer;
+      @extend %clearfix;
+      i {
+        font-size: 1.8em;
+        float: left;
+      }
+      span {
+        padding: 4px 0 0 10px;
+        float: left;
+      }
+    }
+  }
+}

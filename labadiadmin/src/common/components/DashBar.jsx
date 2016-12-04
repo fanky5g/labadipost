@@ -1,14 +1,14 @@
 import React, { PropTypes } from 'react';
 import { Header, Badge, Icon, IconButton, Menu, MenuItem } from 'react-mdl';
 
-const DashBar = ({ messageCount, goToUrl, title }) => (
+const DashBar = ({ messageCount, goToUrl, title, logout }) => (
   <Header className="DashBar" title={<span><strong>#</strong>{title}</span>} scroll>
     <div className="DashBar__right">
       <Badge text={messageCount || '0'}>
         <Icon
           name="announcement"
           style={{ cursor: 'pointer' }}
-          onClick={() => goToUrl('/dashboard/messages')}
+          onClick={() => goToUrl('/messages')}
         />
       </Badge>
       <IconButton id="account-menu-toggle" name="account_circle" style={{ marginTop: '-15px' }} />
@@ -20,8 +20,7 @@ const DashBar = ({ messageCount, goToUrl, title }) => (
         align="right"
         style={{ marginLeft: 0 }}
       >
-        <MenuItem onClick={() => goToUrl('/')}>Home</MenuItem>
-        <MenuItem onClick={() => goToUrl('/dashboard')}>Dashboard</MenuItem>
+        <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
     </div>
   </Header>

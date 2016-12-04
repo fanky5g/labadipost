@@ -1,26 +1,13 @@
 {
-  "name": "react-canvas",
-  "version": "1.2.1",
-  "description": "High performance <canvas> rendering for React components",
-  "main": "lib/ReactCanvas.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Flipboard/react-canvas.git"
-  },
+  "name": "labadiweb_mobile",
+  "version": "0.0.1",
+  "description": "News component built with react-canvas",
   "scripts": {
-    "start": "./node_modules/.bin/gulp",
-    "test": "./node_modules/.bin/jest"
+    "start": "./node_modules/.bin/gulp"
   },
-  "keywords": [
-    "react",
-    "canvas"
-  ],
-  "author": "Michael Johnston <mj@flipboard.com>",
-  "license": "BSD-3-Clause",
-  "homepage": "https://github.com/Flipboard/react-canvas",
-  "bugs": {
-    "url": "https://github.com/Flipboard/react-canvas/issues"
-  },
+  "author": "Benjamin Appiah-Brobbey",
+  "license": "<Private>",
+  "homepage": "labadipost.com",
   "devDependencies": {
     "babel-loader": "^6.2.8",
     "brfs": "^1.4.0",
@@ -43,7 +30,7 @@
   "dependencies": {
     "fbjs": "^0.4.0",
     "linebreak": "^0.3.0",
-    "react-canvas": "^1.2.1",
+    "react-canvas": "git+https://github.com/Techdevt/react-canvas.git#f207455b9f421ac999f23e23e2d6c4576ce4d900",
     "react-router": "^3.0.0",
     "scroll-behavior": "^0.3.2",
     "scroller": "git://github.com/mjohnston/scroller"

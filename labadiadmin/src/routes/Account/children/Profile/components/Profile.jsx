@@ -25,23 +25,19 @@ class Profile extends Component {
 
   constructor(props) {
     super(props);
-    const { user, type } = this.props;
+    const { user } = this.props;
     this.state = {
-      firstName: user.roles[type].firstName,
-      lastName: user.roles[type].lastName,
+      firstname: user.firstname,
+      lastname: user.lastname,
       username: user.username,
       email: user.email,
-      title: user.roles[type].title,
-      gender: user.roles[type].gender,
       modalIsOpen: false,
     };
     this.currValues = {
-      firstName: user.roles[type].firstName,
-      lastName: user.roles[type].lastName,
+      firstname: user.firstname,
+      lastname: user.lastname,
       username: user.username,
       email: user.email,
-      title: user.roles[type].title,
-      gender: user.roles[type].gender,
     };
     this.$dirty = false;
   }
@@ -69,13 +65,13 @@ class Profile extends Component {
     return true;
   }
 
-  onInputClick = () => {
-    // evt.target.readOnly = false;
-    // evt.target.onblur = this.onLoseFocus.bind(this);
+  onInputClick = (evt) => {
+    evt.target.readOnly = false;
+    evt.target.onblur = this.onLoseFocus.bind(this);
   };
 
-  onLoseFocus = () => {
-    // evt.target.readOnly = true;
+  onLoseFocus = (evt) => {
+    evt.target.readOnly = true;
   };
 
   onFieldChange = (evt) => {
@@ -85,7 +81,7 @@ class Profile extends Component {
   };
 
   checkChanged(obj1, obj2) {
-    const deepEquals = mixin({
+    const _ = mixin({
       deepEquals: (ar1, ar2) => {
         let stillMatches;
         const fail = () => {
@@ -101,15 +97,14 @@ class Profile extends Component {
         each(ar1, (prop1, n) => {
           const prop2 = ar2[n];
           if (prop1 !== prop2 && (n !== '$dirty' && n !== 'modalIsOpen')
-            && !deepEquals(prop1, prop2)) {
+            && !_.deepEquals(prop1, prop2)) {
             fail();
           }
         });
         return stillMatches;
       },
     });
-
-    if (!deepEquals(obj1, obj2)) {
+    if (!_.deepEquals(obj1, obj2)) {
       return true;
     }
     return false;
@@ -171,92 +166,88 @@ class Profile extends Component {
   };
 
   render() {
-    const { type, user } = this.props;
-    const passedAvatar = user.roles[type].avatarUrl[1] || user.roles[type].avatarUrl[0];
+    const { user } = this.props;
+    const passedAvatar = user.avatar;
+
     return (
-      <div>
-     {
-       (type === 'admin') &&
-         <div className="DashContent__inner">
-           <Cell className="Settings__main" col={10} phone={4} tablet={8}>
-             <h2 className="dash_title">Basic Info</h2>
-             <div className="Settings__main--big">
-               <div>
-                 <div className="Settings--profile_avatar inner-div">
-                   <User className="avatar-icon" ref="avatarImg" passedAvatar={passedAvatar} />
-                   <input
-                     type="file"
-                     ref="avatarInput"
-                     style={{ display: 'none' }}
-                     accept="image/*"
-                   />
-                   <div className="actions">
-                     <IconButton name="edit" onClick={this.editImageClicked} />
-                     <IconButton name="delete" onClick={this.deleteImageClicked} />
-                   </div>
-                 </div>
-                 <div className="inner-div">
-                   <h2 className="dash_title">Name</h2>
-                   <AutosizeInput
-                     type="text"
-                     name="firstName"
-                     value={this.state.firstName}
-                     onChange={this.onFieldChange}
-                     readOnly
-                     onClick={this.onInputClick}
-                   />
-                   <AutosizeInput
-                     type="text"
-                     name="lastName"
-                     value={this.state.lastName}
-                     onChange={this.onFieldChange}
-                     readOnly
-                     onClick={this.onInputClick}
-                   />
+       <div className="DashContent__inner">
+         <Cell className="Settings__main" col={10} phone={4} tablet={8}>
+           <h2 className="dash_title">Basic Info</h2>
+           <div className="Settings__main--big">
+             <div>
+               <div className="Settings--profile_avatar inner-div">
+                 <User className="avatar-icon" ref="avatarImg" passedAvatar={passedAvatar} />
+                 <input
+                   type="file"
+                   ref="avatarInput"
+                   style={{ display: 'none' }}
+                   accept="image/*"
+                 />
+                 <div className="actions">
+                   <IconButton name="edit" onClick={this.editImageClicked} />
+                   <IconButton name="delete" onClick={this.deleteImageClicked} />
                  </div>
                </div>
-               <div>
-                 <div className="inner-div">
-                   <h2 className="dash_title">Username</h2>
-                   <AutosizeInput
-                     type="text"
-                     name="username"
-                     value={this.state.username}
-                     onChange={this.onFieldChange}
-                     readOnly
-                     onClick={this.onInputClick}
-                   />
-                 </div>
-                 <div className="inner-div">
-                   <h2 className="dash_title">Email Id</h2>
-                   <AutosizeInput
-                     type="email"
-                     name="email"
-                     value={this.state.email}
-                     onChange={this.onFieldChange}
-                     readOnly
-                     onClick={this.onInputClick}
-                   />
-                 </div>
+               <div className="inner-div">
+                 <h2 className="dash_title">Name</h2>
+                 <AutosizeInput
+                   type="text"
+                   name="firstname"
+                   value={this.state.firstname}
+                   onChange={this.onFieldChange}
+                   readOnly
+                   onClick={this.onInputClick}
+                 />
+                 <AutosizeInput
+                   type="text"
+                   name="lastname"
+                   value={this.state.lastname}
+                   onChange={this.onFieldChange}
+                   readOnly
+                   onClick={this.onInputClick}
+                 />
                </div>
              </div>
-             <Button
-               raised
-               accent
-               className="Settings__action-btn"
-               disabled={!this.$dirty}
-               onClick={this.handleSubmit}
-             >
-               Update Admin
-               <Spinner
-                 singleColor
-                 style={{ display: this.props.isWaiting ? 'inline-block' : 'none' }}
-               />
-             </Button>
-           </Cell>
-         </div>
-      }
-      </div>
+             <div>
+               <div className="inner-div">
+                 <h2 className="dash_title">Username</h2>
+                 <AutosizeInput
+                   type="text"
+                   name="username"
+                   value={this.state.username}
+                   onChange={this.onFieldChange}
+                   readOnly
+                   onClick={this.onInputClick}
+                 />
+               </div>
+               <div className="inner-div">
+                 <h2 className="dash_title">Email Id</h2>
+                 <AutosizeInput
+                   type="email"
+                   name="email"
+                   value={this.state.email}
+                   onChange={this.onFieldChange}
+                   readOnly
+                   onClick={this.onInputClick}
+                 />
+               </div>
+             </div>
+           </div>
+           <Button
+             raised
+             accent
+             className="Settings__action-btn"
+             disabled={!this.$dirty}
+             onClick={this.handleSubmit}
+           >
+             Update Admin
+             <Spinner
+               singleColor
+               style={{ display: this.props.isWaiting ? 'inline-block' : 'none' }}
+             />
+           </Button>
+         </Cell>
+       </div>
     );
   }
 }

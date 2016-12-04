@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
+import { Notification } from 'react-notification';
 
 const NotificationComponent = ({ message, label, dismissTimeout, styles, active, action }) => (
-  <div
+  <Notification
     isActive={active}
     message={message}
     action={label}
@@ -13,7 +14,7 @@ const NotificationComponent = ({ message, label, dismissTimeout, styles, active,
     barStyle={styles.bar}
   >
   {message}
-  </div>
+  </Notification>
 );
 
 NotificationComponent.propTypes = {

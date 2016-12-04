@@ -9,30 +9,21 @@ const createRoutes = (store) => {
     path: '/',
     component: App,
     getChildRoutes(location, cb) {
-      if (process.env.BROWSER) {
-        require.ensure([], (require) => {
-          cb(null, [
-            // require('./Account').default,
-            // require('./Contact').default,
-            // require('./Users').default,
-            require('./NotFound').default(store),
-          ]);
-        });
-      } else {
+      require.ensure([], (require) => {
         cb(null, [
-          // require('./Account').default,
+          require('./Account').default(),
           // require('./Contact').default,
           // require('./Users').default,
+          require('./Categories').default(store),
           require('./NotFound').default(store),
         ]);
-      }
+      });
     },
     indexRoute: {
       name: 'Overview',
       component: Overview,
     },
   }];
-
   return root;
 };
 

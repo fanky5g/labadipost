@@ -48,6 +48,8 @@ services:
       - redis
       - mongo
       - labadipics
+    ports:
+      - "5000:5000"
     command: make serve
     environment:
       MONGO_URL: mongo

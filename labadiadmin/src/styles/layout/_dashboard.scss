@@ -1,0 +1,70 @@
+.mdl-layout__inner-container {
+    .DashContent {
+        margin-top: 64px;
+        @include media('<=1024px') {
+            margin-top: 56px;
+        }
+    }
+    .mdl-layout__drawer {
+        background: #1E2124;
+        border: none;
+        position: fixed;
+        .Drawer__Header {
+            height: 128px;
+            position: relative;
+            background: url('http://admin.labadipost.com#{$path-img}/abstract.jpg') no-repeat center center;
+            .Drawer__Header_avatar {
+                border-radius: 50%;
+                border-color: $color-primary;
+                border-width: 2px;
+                width: 80px;
+                height: 80px;
+                background: $color-primary--contrast__active;
+                background-position: center center;
+                background-repeat: no-repeat;
+                background-size: contain;
+                position: absolute;
+                top: 20px;
+                left: 30px;
+            }
+            .Drawer__Header_title {
+                position: absolute;
+                bottom: 2px;
+                left: 30px;
+                font-weight: 600;
+                text-overflow: ellipsis;
+            }
+            .Drawer__Header_home {
+                position: absolute;
+                bottom: 0;
+                right: 5px;
+            }
+        }
+        .mdl-navigation {
+            padding-top: 4px;
+            a {
+              @extend %clearfix;
+                background: #2E3136;
+                transition: all ease .5s;
+                &.active {
+                    background: #282B30;
+                    border-left: 3px solid $color-accent;
+                }
+                &:hover {
+                    background: #282B30;
+                }
+                span {
+                  font-weight: $font-weight--normal;
+                  font-size: 14px;
+                  color: $color-primary__contrast--active;
+                  display: inline;
+                  float: left;
+                }
+                .link-icon {
+                  display: inline;
+                  float: right;
+                }
+            }
+        }
+    }
+}

@@ -98,7 +98,7 @@ class AppView extends Component {
 
   render() {
     // this is where basic structure shud live
-    const { user, dispatch, Account } = this.props;
+    const { user, dispatch, Account, location } = this.props;
     const { message, dismissTimeout, label, active, isMounted } = this.state;
     const currentRoute = this.props.routes[this.props.routes.length - 1];
     const children = React.cloneElement(this.props.children, {
@@ -107,8 +107,8 @@ class AppView extends Component {
       dispatch,
       Account,
     });
-    const isAuth = Account.get('isAuthenticated');
 
+    const isAuth = Account.get('isAuthenticated');
     const Notification = (<NotificationComponent
       message={message}
       active={active}
@@ -124,6 +124,9 @@ class AppView extends Component {
         notify={this.notify}
         dispatch={dispatch}
         Account={Account}
+        location={location}
+        currentRoute={currentRoute}
+        isMounted={isMounted}
       >
         {children}
       </DashLayout>
@@ -137,7 +140,7 @@ class AppView extends Component {
           active && Notification
         }
         {
-          isAuth ? <Dashboard /> : <Login />
+          isAuth ? Dashboard : <Login notify={this.notify}/>
         }
         
       </div>

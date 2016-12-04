@@ -15,6 +15,7 @@ import * as presets from 'lib/transitions';
 import NotificationComponent from 'common/components/NotificationComponent';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import { logoutUser } from 'common/actions/Auth';
 
 class Dashboard extends Component {
   static propTypes = {
@@ -23,27 +24,12 @@ class Dashboard extends Component {
     user: PropTypes.object,
     children: PropTypes.object,
     location: PropTypes.object.isRequired,
+    currentRoute: PropTypes.object,
+    isMounted: PropTypes.bool,
   };
 
   static contextTypes = {
     router: PropTypes.object.isRequired,
-  };
-
-  state = {
-    active: false,
-    message: '',
-    dismissTimeout: 3000,
-    label: 'ok',
-  };
-
-  componentDidMount() {
-    this.onMount();
-  }
-
-  onMount = () => {
-    const { dispatch } = this.props;
-    this.setState({ isMounted: true });
-    dispatch(initEnvironment());
   };
 
   toggleDrawer = () => {
@@ -54,17 +40,21 @@ class Dashboard extends Component {
 
   generateLinks() {
     const links = [{
-      to: '/dashboard/overview',
+      to: '/',
       name: 'Overview',
       icon: 'note',
     }, {
-      to: '/dashboard/settings',
+      to: '/settings',
       name: 'Settings',
       icon: 'settings',
     }, {
-      to: '/dashboard/users',
+      to: '/users',
       name: 'Users',
-      icon: 'event',
+      icon: 'people',
+    }, {
+      to: '/categories',
+      name: 'Categories',
+      icon: 'list',
     }];
 
     return links;
@@ -76,36 +66,10 @@ class Dashboard extends Component {
     router.push(path);
   };
 
-  getNotificationStyles = () => {
-    const bar = {
-      background: '#263238',
-      zIndex: '10000000000000',
-    };
-    let noteDimensions = { width: 0 };
-    let note;
-    let active;
-
-    if (process.env.BROWSER) {
-      note = document.querySelector('.notification-bar');
-      if (note) {
-        noteDimensions = note.getBoundingClientRect();
-      }
-      active = {
-        left: `${(Math.floor(window.innerWidth - noteDimensions.width) / 2)}px`,
-      };
-    }
-
-    const action = {
-      color: '#FFCCBC',
-    };
-
-    return { bar, active, action };
-  };
-
   getTransition = () => {
-    const { location: { state } } = this.props;
+    const { location: { state }, isMounted } = this.props;
     let transition;
-    if (this.state.isMounted && state && state.hasOwnProperty('transition')) {
+    if (isMounted && state && state.hasOwnProperty('transition')) {
       transition = presets[state.transition];
     } else {
       transition = presets.noTransition;
@@ -113,44 +77,23 @@ class Dashboard extends Component {
     return transition;
   };
 
-  notify = (message, action, dismissTimeout, label = 'ok') => {
-    this.setState({
-      active: true,
-      message,
-      dismissTimeout,
-      label,
-      nAction: action,
-    });
+  logout = () => {
+    const { dispatch } = this.props;
+    dispatch(logoutUser());
   };
 
   render() {
-    const { user } = this.props;
+    const { user, notify, currentRoute } = this.props;
     const transition = this.getTransition();
     const avatar = user.avatar;
     const fullName = `${user.firstname} ${user.lastname}`;
     const links = this.generateLinks();
-    const currentRoute = this.props.routes[this.props.routes.length - 1];
-
-    const { message, dismissTimeout, label, active, isMounted } = this.state;
-
-    const Notification = (<NotificationComponent
-      message={message}
-      active={active}
-      styles={this.getNotificationStyles()}
-      label={label}
-      dismissTimeout={dismissTimeout}
-      action={this.action}
-    />);
 
     return (
       <div style={{ minHeight: '100%', height: '100%', position: 'relative' }}>
         <Helmet title={`${currentRoute.name} - Labadipost`} />
         <Layout fixedHeader fixedDrawer>
-          {isMounted && <DevTools />}
-          {
-            active && Notification
-          }
-          <DashBar title={currentRoute.name} goToUrl={this.goToUrl} />
+          <DashBar title={currentRoute.name} goToUrl={this.goToUrl} logout={this.logout} />
           <Drawer onClick={this.toggleDrawer}>
             <Header className="Drawer__Header">
               <User className="Drawer__Header_avatar" passedAvatar={avatar} />
@@ -167,6 +110,7 @@ class Dashboard extends Component {
                   to={link.to}
                   key={index}
                   activeClassName="active"
+                  onlyActiveOnIndex={link.to === '/'}
                 >
                   {link.name}
                   <Icon name={link.icon} className="link-icon" />
@@ -184,7 +128,7 @@ class Dashboard extends Component {
               {
                 this.props.children && React.cloneElement(this.props.children, {
                   user,
-                  notify: this.notify,
+                  notify: notify,
                 })
               }
             </RouteTransition>
