@@ -26,6 +26,10 @@ func (api *API) Bind(group *echo.Group) {
 
   group.GET("/v1/feeds/categories", api.GetAllCategories)
   group.GET("/v1/feeds/news", api.GetNews)
+
+  group.GET("/v1/election2016/parlc", api.GetParliamentaryByConstituency)
+  group.GET("/v1/election2016/prec", api.GetPresidentialCandidates)
+  group.POST("/v1/election2016/report", api.SubmitResult)
 }
 
 // ConfHandler handle the app config, for example

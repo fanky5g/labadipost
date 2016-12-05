@@ -1,7 +1,7 @@
 package main
 
 import (
-  "fmt"
+  // "fmt"
   "log"
   "net/http"
   "strconv"
@@ -9,18 +9,20 @@ import (
   "sync/atomic"
   "time"
 
-  // "github.com/garyburd/redigo/redis"
   "github.com/gorilla/websocket"
+
 )
 
 const (
-  maxMessageSize = 256
-  pingPeriod     = 5 * time.Minute
+  maxMessageSize = 512
+  pongWait     = 60 * time.Second
+  pingPeriod = (pongWait * 9) / 10
+  writeWait = 10 * time.Second
 )
 
 var upgrader = websocket.Upgrader{
-  ReadBufferSize:  16,
-  WriteBufferSize: maxMessageSize,
+  ReadBufferSize:  1024,
+  WriteBufferSize: 1024,
 }
 
 var (
@@ -33,15 +35,64 @@ var (
   failed    int64
 )
 
-func main() {
-  go func() {
-    start := time.Now()
-    for {
-      fmt.Printf("server elapsed=%0.0fs connected=%d failed=%d\n", time.Now().Sub(start).Seconds(), atomic.LoadInt64(&connected), atomic.LoadInt64(&failed))
-      time.Sleep(1 * time.Second)
-    }
-  }()
+type connection struct {
+    ws *websocket.Conn
+    send chan []byte
+}
 
+func (c *connection) write(mt int, payload []byte) error {
+    c.ws.SetWriteDeadline(time.Now().Add(writeWait))
+    return c.ws.WriteMessage(mt, payload)
+}
+
+func (s subscription) readPump() {
+    c := s.conn
+    defer func() {
+        h.unregister <- s
+        c.ws.Close()
+    }()
+    c.ws.SetReadLimit(maxMessageSize)
+    c.ws.SetReadDeadline(time.Now().Add(pongWait))
+    c.ws.SetPongHandler(func(string) error { c.ws.SetReadDeadline(time.Now().Add(pongWait)); return nil })
+    for {
+        _, msg, err := c.ws.ReadMessage()
+        if err != nil {
+            if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
+                log.Printf("error: %v", err)
+            }
+            break
+        }
+        m := message{msg, s.room}
+        h.broadcast <- m
+    }
+}
+
+func (s *subscription) writePump() {
+    c := s.conn
+    ticker := time.NewTicker(pingPeriod)
+    defer func() {
+        ticker.Stop()
+        c.ws.Close()
+    }()
+    for {
+        select {
+        case message, ok := <-c.send:
+            if !ok {
+                c.write(websocket.CloseMessage, []byte{})
+                return
+            }
+            if err := c.write(websocket.TextMessage, message); err != nil {
+                return
+            }
+        case <-ticker.C:
+            if err := c.write(websocket.PingMessage, []byte{}); err != nil {
+                return
+            }
+        }
+    }
+}
+
+func main() {
   http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
     ws, err := upgrader.Upgrade(w, r, nil)
     if err != nil {
@@ -54,7 +105,7 @@ func main() {
     go handleConnection(ws, channel)
   })
 
-  for i := 0; i < 1000; i++ {
+  for i := 0; i < 100; i++ {
     i := i
     go func() {
       if err := http.ListenAndServe(":"+strconv.Itoa(10000+i), nil); err != nil {
@@ -63,85 +114,19 @@ func main() {
     }()
   }
 
-  // receiveRedisMessages()
-  select {}
+  go ListenToQueue("electionlive")
+  h.run()
 }
 
 func handleConnection(ws *websocket.Conn, channel string) {
-  sub := subscribe(channel)
   atomic.AddInt64(&connected, 1)
-  t := time.NewTicker(pingPeriod)
 
-  var message []byte
+  c := &connection{send: make(chan []byte, 256), ws: ws}
+  s := subscription{c, channel}
+  h.register <- s
+  go s.writePump()
+  s.readPump()
 
-  for {
-    select {
-    case <-t.C:
-      message = nil
-    case message = <-sub:
-    }
-
-    ws.SetWriteDeadline(time.Now().Add(30 * time.Second))
-    err := ws.WriteMessage(websocket.TextMessage, message)
-    if err != nil {
-      break
-    }
-  }
   atomic.AddInt64(&connected, -1)
   atomic.AddInt64(&failed, 1)
-
-  t.Stop()
-  ws.Close()
-  unsubscribe(channel, sub)
-}
-
-// func receiveRedisMessages() {
-//   c, err := redis.Dial("tcp", ":6379")
-//   if err != nil {
-//     log.Fatal(err)
-//   }
-
-//   psc := redis.PubSubConn{c}
-//   if err := psc.PSubscribe("*"); err != nil {
-//     log.Fatal(err)
-//   }
-
-//   for {
-//     switch v := psc.Receive().(type) {
-//     case redis.PMessage:
-//       subscriptionsMutex.Lock()
-//       subs := subscriptions[v.Channel]
-//       subscriptionsMutex.Unlock()
-//       for _, s := range subs {
-//         select {
-//         case s <- v.Data:
-//         default:
-//           // drop the message if nobody is ready to receive it
-//         }
-//       }
-//     case error:
-//       log.Fatal(err)
-//     }
-//   }
-// }
-
-func subscribe(channel string) chan []byte {
-  sub := make(chan []byte)
-  subscriptionsMutex.Lock()
-  subscriptions[channel] = append(subscriptions[channel], sub)
-  subscriptionsMutex.Unlock()
-  return sub
-}
-
-func unsubscribe(channel string, sub chan []byte) {
-  subscriptionsMutex.Lock()
-  newSubs := []chan []byte{}
-  subs := subscriptions[channel]
-  for _, s := range subs {
-    if s != sub {
-      newSubs = append(newSubs, s)
-    }
-  }
-  subscriptions[channel] = newSubs
-  subscriptionsMutex.Unlock()
 }

@@ -1,66 +1,75 @@
 package main
 
-// import (
-//   "log"
-// )
+import (
+  "fmt"
+)
 
-// type Hub struct {
-//   clients map[*Client]bool
+type message struct {
+    data []byte
+    room string
+}
 
-//   // Register requests from the clients.
-//   register chan *Client
+type subscription struct {
+    conn *connection
+    room string
+}
 
-//   // Unregister requests from clients.
-//   unregister chan *Client
+type hub struct {
+    rooms map[string]map[*connection]bool
 
-//   broadcast chan *Message
-// }
+    broadcast chan message
 
-// func NewHub() {
-//   return &Hub{
-//     clients:   map[*Client]bool,
-//     register: make(chan *Client),
-//     unregister: make(chan *Client),
-//     broadcast: make(chan *Message),
-//   }
-// }
+    register chan subscription
 
-// func (h *Hub) run() {
-//   for {
-//     select {
-//     case client := <-h.register:
-//       h.clients[client] = true
-//     case client := <-h.unregister:
-//       if _, ok := h.clients[client]; ok {
-//         delete(h.clients, client)
-//         close(client.send)
-//       }
+    unregister chan subscription
+}
 
-//     case message := <-h.broadcast:
-//       for client := range h.clients {
-//         select {
-//           case client.send <- message:
-//           default:
-//             close(client.send)
-//             delete(h.clients, client)
-//         }
-//       }
-//     case err := h.err:
-//       log.Println("Error: ", err.Error())
-//     case <-h.close:
-//       return
-//     }
-//   }
-// }
 
-// func (h *Hub) AddClient(c *Client) {
-//   h.register <- c
-// }
+var h = hub{
+    broadcast:  make(chan message),
+    register:   make(chan subscription),
+    unregister: make(chan subscription),
+    rooms:      make(map[string]map[*connection]bool),
+}
 
-// func (h *Hub) DeleteClient(c *Client) {
-//   h.unregister <- c
-// }
-
-// func (h *Hub) Broadcast(msg *Message) {
-//   h.message <- msg
-// }
+func (h *hub) run() {
+  forever := make(chan bool)
+  go func() {
+    for {
+      select {
+        case s := <-h.register:
+          connections := h.rooms[s.room]
+          if connections == nil {
+              connections = make(map[*connection]bool)
+              h.rooms[s.room] = connections
+          }
+          h.rooms[s.room][s.conn] = true
+        case s := <-h.unregister:
+          connections := h.rooms[s.room]
+          if connections != nil {
+              if _, ok := connections[s.conn]; ok {
+                  delete(connections, s.conn)
+                  close(s.conn.send)
+                  if len(connections) == 0 {
+                      delete(h.rooms, s.room)
+                  }
+              }
+          }
+        case m := <-h.broadcast:
+          connections := h.rooms[m.room]
+          for c := range connections {
+              select {
+              case c.send <- m.data:
+              default:
+                  close(c.send)
+                  delete(connections, c)
+                  if len(connections) == 0 {
+                      delete(h.rooms, m.room)
+                  }
+              }
+          }
+      }
+    }
+  }()
+  <-forever
+}
