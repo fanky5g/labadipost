@@ -13,6 +13,7 @@ if (process.env.BROWSER) {
   // move this to require.ensure block for root
   require('react-mdl/extra/material.min');
   // in production change to cdn files
+  require('react-select/dist/react-select.css');
   require('material-design-icons/iconfont/material-icons.css');
   require('styles/mdl-styles/material-design-lite.scss');
   // application styles

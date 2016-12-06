@@ -1,6 +1,8 @@
-hash: 5c2496ade0b4e25b47c66d311705be8424b1aa64f6fea032cc4fca3292df5bd7
-updated: 2016-11-28T02:54:52.453952348Z
+hash: a83eb9ef235087b9ad3fa9a5a05dc02b9ee4f3d646b08b61ebc4142c243e486b
+updated: 2016-12-05T11:33:39.211828463Z
 imports:
 - name: github.com/gorilla/websocket
   version: 1f512fc3f05332ba7117626cdfb4e07474e58e60
+- name: github.com/streadway/amqp
+  version: 1b8853833a94be8ba57fd121a8651f7221e5b051
 testImports: []

@@ -1,0 +1,12 @@
+.Broadcast {
+  .Broadcast_Body {
+    .Form-control {
+      .mdl-textfield__input {
+        background: $white;
+        padding: 8px;
+        border-radius: 5px;
+        color: $text-color--primary;
+      }
+    }
+  }
+}

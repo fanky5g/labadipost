@@ -47,14 +47,20 @@ class Dashboard extends Component {
       to: '/settings',
       name: 'Settings',
       icon: 'settings',
-    }, {
-      to: '/users',
-      name: 'Users',
-      icon: 'people',
-    }, {
+    },
+    // {
+    //   to: '/users',
+    //   name: 'Users',
+    //   icon: 'people',
+    // },
+     {
       to: '/categories',
       name: 'Categories',
       icon: 'list',
+    }, {
+      to: '/electionlive',
+      name: 'ElectionLive',
+      icon: 'check_box_outline_blank',
     }];
 
     return links;

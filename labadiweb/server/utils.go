@@ -9,6 +9,9 @@ import (
   "errors"
   "os"
   "fmt"
+  "bufio"
+  "github.com/streadway/amqp"
+  "encoding/json"
 )
 
 // Must raises an error if it not nil
@@ -61,6 +64,10 @@ func GetRedisStore() (*redistore.RediStore, error) {
   return redistore.NewRediStore(10, "tcp", os.Getenv("REDIS_URL_RAW"), "", []byte(os.Getenv("JWT_KEY")))
 }
 
+func RabbitMQConnect() (*amqp.Connection, error) {
+  return amqp.Dial(os.Getenv("RABBITMQ_URL"))
+}
+
 func isEmpty(object interface{}) bool {
     //First check normal definitions of empty
     if object == nil {
@@ -95,4 +102,65 @@ func SendActivationEmail(email string, token string) error{
     return err
   }
   return err
+}
+
+func ReadLines(path string) ([]string, error) {
+  file, err := os.Open(path)
+  if err != nil {
+    return nil, err
+  }
+  defer file.Close()
+
+  var lines []string
+  scanner := bufio.NewScanner(file)
+  for scanner.Scan() {
+    lines = append(lines, scanner.Text())
+  }
+  return lines, scanner.Err()
+}
+
+func BroadCastToQueue(name string, payload interface{}) error {
+  redisConn, err := RabbitMQConnect()
+  if err != nil {
+    return err
+  }
+
+  defer redisConn.Close()
+  
+  ch, err := redisConn.Channel()
+  if err != nil {
+    return err
+  }
+
+  defer ch.Close()
+
+  q, err := ch.QueueDeclare(
+    name,
+    false,
+    false,
+    false,
+    false,
+    nil,
+  )
+
+  if err != nil {
+    return err
+  }
+
+  p, err := json.Marshal(payload)
+
+  err = ch.Publish(
+  "",
+  q.Name,
+  false,
+  false,
+  amqp.Publishing {
+    ContentType: "application/json",
+    Body:  p,
+  })
+
+  if err != nil {
+    return err
+  }
+  return nil
 }

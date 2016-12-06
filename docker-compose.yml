@@ -31,10 +31,14 @@ services:
   labadihub:
     build: ./labadihub
     expose:
-      - "10000-11000"
+      - "10000-10100"
     volumes:
       - ./labadihub:/go/src/labadihub
     command: /bin/sh -c "go build && ./labadihub"
+    links:
+      - rabbitmq
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq
 
   labadiweb:
     build: ./labadiweb
@@ -65,6 +69,7 @@ services:
       REDIS_URL_RAW: redis:6379
       REDIS_URL: redis://redis
       ALLOWED_ORIGINS: http://admin.labadipost.com, http://server.labadipost.com
+      RABBITMQ_URL: amqp://rabbitmq
 
   labadipics:
     build: ./labadipics
@@ -89,6 +94,7 @@ services:
       - labadiweb
       - labadipics
       - labadiadmin
+      - labadihub
 
   redis:
     image: redis:3.0.7-alpine

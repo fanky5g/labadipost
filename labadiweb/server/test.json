@@ -1,0 +1,28 @@
+{
+  "data": [
+    {
+      "type": "Parliamentary",
+      "candidate": "58452aa4ca54fe153ddb2965",
+      "constituency": "ADANSI ASOKWA",
+      "votes": {
+        "count": 2000
+      }
+    },
+    {
+      "type": "Parliamentary",
+      "candidate": "58452aa4ca54fe153ddb2966",
+      "constituency": "ADANSI ASOKWA",
+      "votes": {
+        "count": 4000
+      }
+    },
+    {
+      "type": "Parliamentary",
+      "candidate": "58452aa4ca54fe153ddb2967",
+      "constituency": "ADANSI ASOKWA",
+      "votes": {
+        "count": 12000
+      }
+    }
+  ]
+}

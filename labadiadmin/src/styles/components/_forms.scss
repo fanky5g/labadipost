@@ -1,0 +1,113 @@
+.Form {
+    position: relative;
+    margin: 40px auto;
+    .ReactModalPortal & {
+        margin: 0;
+   }
+    .Form__container--header {
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        text-align: center;
+        padding: 2px 0;
+        h4 {
+            color: $text-color--secondary;
+            font-weight: $font-weight--bold;
+            font-size: 20px;
+       }
+        strong {
+            font-weight: $font-weight--semi-bold;
+            font-variant: small-caps;
+       }
+   }
+    .Form__container--step {
+        background: $white;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 20px 20px;
+        .Form__container--fieldrow {
+            width: 100%;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            & > * {
+                margin-left: 20px;
+           }
+            &.doubly {
+                &:nth-child(1) {
+                    flex: 1;
+               }
+                &:nth-child(2) {
+                    flex: 3;
+               }
+           }
+            &.roles {
+                padding: 20px;
+           }
+            .mdl-textfield {
+                width: 100%;
+           }
+            .mdl-checkbox {
+                width: 50%;
+                padding-bottom: 10px;
+           }
+            &.actions {
+                .mdl-button {
+                    flex: 1;
+                    max-width: 50%;
+                    &.success {
+                        background: green;
+                        position: relative;
+                        transition: background .2s ease-in;
+                        &:before {
+                            content: "\2713";
+                            color: green;
+                            background-color: $white;
+                            width: 1.2em;
+                            line-height: 1.2em;
+                            border-radius: 1.2em;
+                            position: absolute;
+                            right: 20px;
+                            top: 10px;
+                       }
+                   }
+               }
+           }
+       }
+   }
+}
+
+.mdl-textfield {
+    .mdl-textfield__error {
+        display: none;
+   }
+    &.is-dirty {
+        .mdl-textfield__error {
+            display: block;
+       }
+        &.is-invalid .mdl-textfield__input {
+            border-color: rgb(222, 50, 38);
+       }
+   }
+    &.is-invalid  {
+        .mdl-textfield__input {
+            border-color: inherit;
+       }
+   }
+}
+
+.mdl-textfield--floating-label {
+    &.is-invalid .mdl-textfield__label {
+        color: inherit;
+        font-size: 12px;
+   }
+    &.dirty.is-invalid .mdl-textfield__label {
+        color: rgb(222, 50, 38);
+   }
+}
+
+.Form-control {
+    padding: 0 8px;
+    .mdl-textfield {
+        min-width: 100%;
+   }
+}
