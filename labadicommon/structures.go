@@ -14,6 +14,8 @@ type News struct {
   Subcategory Subcategory      `json:"subcategory"  bson:"subcategory"`
   ImageWidth  int      `json:"imagewidth"   bson:"imagewidth"`
   ImageHeight int      `json:"imageheight"   bson:"imageheight"`
+  Agency      string   `json:"agency" bson:"agency"`
+  AgencyImage string   `json:"agencyImage" bson:"agencyimage"`
 }
 
 type Subcategory struct {

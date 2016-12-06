@@ -39,13 +39,17 @@ const ParliamentaryReducer = (state = defaultState, action) => {
         message: 'Failed to get constituencies',
       });
     case 'SUBMIT_RESULT_SUCCESS':
-      return state.update(action.type, arr => {
-        const entries = array.filter((item) => {
-          return item.constituency !== action.constituency;
-        });
+      return state.withMutations((stateObject) => {
+        stateObject.update('data', arr => {
+          const entries = arr.filter((item) => {
+            return item.constituency !== action.constituency;
+          });
 
-        return entries;
+          return entries;
+        })
+        .update('constituencies', arr => arr.filter(item => item.get('name') !== action.data.constituency));
       });
+      return ;
     case 'SUBMIT_RESULT_FAILURE':
       console.log(action.error.data);
       return state.set('message', 'Results failed to submit')

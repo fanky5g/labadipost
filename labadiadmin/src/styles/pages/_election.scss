@@ -1,5 +1,4 @@
 $color-accent-lighter: #c00000;
-
 .ElectionLive {
     .Election__tabs {
         padding: 20px 0 0;
@@ -8,14 +7,126 @@ $color-accent-lighter: #c00000;
             &:after {
                 background: $color-accent-lighter;
                 height: 4px;
-           }
-       }
-   }
+            }
+        }
+    }
     .Election__Content {
-      transition: all .2s ease-in;
-      min-height: calc(100vh - 132px);
-      .ElectionContent__inner {
-          padding: 40px;
-     }
-  }
+        transition: all .2s ease-in;
+        min-height: calc(100vh - 132px);
+        .ElectionContent__inner {
+            padding: 40px;
+            .candidate__entry {
+                background: $white;
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                border: 2px solid lighten($color-primary--contrast__active, 15%);
+                span {
+                    border-bottom: none;
+                }
+                & > * {
+                    display: flex;
+                    width: 100%;
+                    border-bottom: 2px solid lighten($color-primary--contrast__active, 15%);
+                    &:last-of-type {
+                        border-bottom: none;
+                    }
+                    .inner-div {
+                        &.head {
+                          @extend %clearfix;
+                          .input {
+                            float: left;
+                            margin-left: 10px;
+                            max-width: 70%;
+                            display: inline-block;
+                            text-overflow: ellipsis;
+                            padding-top: 4px;
+                            overflow: hidden;
+                            white-space: nowrap;
+                          }
+                        }
+
+                        flex-direction: row;
+                        flex: 1 50%;
+                        min-height: 100px;
+                        padding: 10px;
+                        overflow: hidden;
+                        width: 50%;
+                        border-right: 2px solid lighten($color-primary--contrast__active, 15%);
+                        &:last-child {
+                            border-right: none;
+                        }
+                        @include media('<=764px') {
+                            flex-wrap: wrap;
+                        }
+                        h2.dash_title {
+                            line-height: 32px;
+                            font-size: 14px;
+                            margin-top: 0;
+                            padding-bottom: 0;
+                            margin-bottom: 5px;
+                            color: lighten($color-primary--contrast__active, 1);
+                        }
+                        p {
+                            margin-top: 5px;
+                            font-weight: 600;
+                            color: $color-primary--contrast;
+                            font-size: 16px;
+                            &.small-text {
+                                font-size: 14px;
+                                width: 70%;
+                            }
+                        }
+                        input,
+                        textarea {
+                            margin-top: 5px;
+                            font-weight: 600;
+                            color: $color-primary--contrast;
+                            font-size: 16px;
+                            border: none;
+                            cursor: pointer;
+                            min-width: 50px;
+                            margin-left: 5px;
+                            text-overflow: ellipsis;
+                            &.small-text {
+                                font-size: 15px;
+                                width: 70%;
+                            }
+                            @include media('<=800px') {
+                                font-size: 14px;
+                            }
+                        }
+                        textarea {
+                            resize: none;
+                            font-family: $font-family--primary;
+                            line-height: 20px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.candidate__avatar {
+    display: inline-block;
+    float: left;
+    position: relative;
+
+    .DashBarUser {
+        float: none;
+        .avatar-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            &:hover {
+              border: 1px solid $text-color--secondary;
+            }
+        }
+    }
+    .actions {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
 }

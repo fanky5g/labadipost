@@ -28,10 +28,15 @@ export function submitResult(data) {
   }
 }
 
+export function undoResetCount() {
+  return {
+    type: 'UNDO_RESET_COUNT',
+  };
+}
+
 function postResults(data) {
-  return request.post('/election2016/report', {
-    data: data,
-  });
+  const baseEndpoint = `${process.env.PROTOCOL}://labadipost.com/api/${process.env.API_VERSION}`;
+  return request.post(`${baseEndpoint}/election2016/report`, data);
 }
 
 // receive live results

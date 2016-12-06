@@ -14,13 +14,13 @@ class DashBarUser extends Component {
   }
 
   render() {
-    const { user, passedAvatar } = this.props;
+    const { user, passedAvatar, onClick } = this.props;
     let avatar;
     if (!passedAvatar && !!user) avatar = user.avatar;
     const avatarUrl = passedAvatar || avatar;
 
     return (
-      <div className="DashBarUser" style={{ display: 'inline-block' }}>
+      <div className="DashBarUser" style={{ display: 'inline-block' }} onClick={onClick} >
       {
         avatarUrl &&
           <img

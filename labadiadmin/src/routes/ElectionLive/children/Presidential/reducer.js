@@ -6,6 +6,7 @@ const defaultState = Immutable.Map({
   constituenciesLoaded: false,
   constituencies: [],
   data: [],
+  resetCount: false,
   message: '',
 });
 
@@ -16,7 +17,7 @@ const PresidentialReducer = (state = defaultState, action) => {
     case 'GET_PRESIDENTIAL':
       return state.merge({
         loading: false,
-        presidential: action.res.data,
+        data: action.res.data,
       });
     case 'GET_PRESIDENTIAL_FAILURE':
       return state.merge({
@@ -38,15 +39,15 @@ const PresidentialReducer = (state = defaultState, action) => {
         message: 'Failed to get constituencies',
       });
     case 'SUBMIT_RESULT_SUCCESS':
-      return state.update(action.type, arr => {
-        const entries = array.filter((item) => {
-          return item.constituency !== action.constituency;
-        });
-
-        return entries;
+      return state.withMutations((stateObject) => {
+        stateObject
+          .update('constituencies', arr => arr.filter(item => item.get('name') !== action.data.constituency))
+          .set('resetCount', true);
       });
     case 'SUBMIT_RESULT_FAILURE':
-      return state.set('message', action.error.data)
+      return state.set('message', action.error.data);
+    case 'UNDO_RESET_COUNT':
+      return state.set('resetCount', false);
     default:
       return state;
   }
