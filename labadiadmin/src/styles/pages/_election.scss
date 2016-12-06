@@ -1,0 +1,21 @@
+$color-accent-lighter: #c00000;
+
+.ElectionLive {
+    .Election__tabs {
+        padding: 20px 0 0;
+        .mdl-tabs__tab.is-active {
+            font-weight: 700;
+            &:after {
+                background: $color-accent-lighter;
+                height: 4px;
+           }
+       }
+   }
+    .Election__Content {
+      transition: all .2s ease-in;
+      min-height: calc(100vh - 132px);
+      .ElectionContent__inner {
+          padding: 40px;
+     }
+  }
+}

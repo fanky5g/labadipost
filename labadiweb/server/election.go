@@ -58,13 +58,15 @@ type ResultObject struct {
 
 type ResultArray struct {
   Data []ResultObject `json:"data"`
+  Constituency string `json:"constituency"`
+  Type string `json:"type"`
 }
 
 type Constituency struct {
   Id bson.ObjectId `json:"id" bson:"_id,omitempty"`
   Name string `json:"name"`
-  District string  `json:"district"`
-  Results []Result  `json:"results"`
+  PresidentialSubmitted bool `json:"presidentialSubmitted"`
+  ParliamentarySubmitted bool `json:"parliamentarySubmitted"`
 }
 
 type Task struct{
@@ -197,12 +199,7 @@ func (api *API) GetParliamentaryByConstituency(c echo.Context) error {
             "_id": "$constituency",
             "count": bson.M{ "$sum": 1 },
             "candidates": bson.M{
-              "$push": bson.M {
-                "candidate": "$candidate",
-                "party": "$party",
-                "candidateImage": "$candidateImage",
-                "constituency": "$constituency",
-              },
+              "$push": "$$ROOT",
             },
         },
       },
@@ -272,6 +269,20 @@ func (api *API) SubmitResult(c echo.Context) error {
   var sumConstVotes int
   var sumVotes int
   var tasks []Task
+
+  constic := conn.DB("Election2016").C("Constituencies")
+  var consty Constituency
+
+  err = constic.Find(bson.M{"name": resultBody.Constituency}).One(&consty)
+
+  if fail:= resultBody.Type == "Presidential" && consty.PresidentialSubmitted; fail {
+    c.Error(errors.New("Result already submitted for " + resultBody.Constituency + " constituency"))
+    return nil
+  } else if fail := resultBody.Type == "Parliamentary" && consty.ParliamentarySubmitted; fail {
+    c.Error(errors.New("Result already submitted for " + resultBody.Constituency + " constituency"))
+    return nil
+  }
+
   for _, result := range resultBody.Data {
       if result.Type == "Presidential" {
         candidate := mgo.DBRef{
@@ -342,6 +353,8 @@ func (api *API) SubmitResult(c echo.Context) error {
           SumCandVotes: sumCandVotes,
           Result: accumulatedResult,
         }
+
+
         
         tasks = append(tasks, task)
       } else {
@@ -393,6 +406,24 @@ func (api *API) SubmitResult(c echo.Context) error {
         
         tasks = append(tasks, task)
       }
+  }
+
+  if resultBody.Type == "Presidential" {
+    consty.PresidentialSubmitted = true;
+    err := consty.Save()
+
+    if err != nil {
+      c.Error(err)
+      return nil
+    }
+  } else if resultBody.Type == "Parliamentary" {
+    consty.ParliamentarySubmitted = true;
+    err := consty.Save()
+
+    if err != nil {
+      c.Error(err)
+      return nil
+    }
   }
 
   return CompleteResults(c, conn, sumVotes, sumConstVotes,  tasks)
@@ -507,9 +538,48 @@ func (parlc *ParliamentaryCandidate) Save() error {
   return nil
 }
 
-// func GetConstituencies() []Constituency {
+func (consty *Constituency) Save() error {
+  conn, err := ConnectMongo()
+  if err != nil {
+    return err
+  }
 
-// }
+  c := conn.DB("Election2016").C("Constituencies")
+  err = c.Update(bson.M{"_id": consty.Id}, consty)
+
+  if err != nil {
+    return err
+  }
+
+  return nil
+}
+
+func (api *API) GetConstituencies(c echo.Context) error {
+  t := c.QueryParam("type")
+  conn, err := ConnectMongo()
+  if err != nil {
+    return err
+  }
+
+  constic := conn.DB("Election2016").C("Constituencies")
+  var q *mgo.Query
+  var constituencies []Constituency
+
+  if t == "Presidential" {
+    q = constic.Find(bson.M{"presidentialsubmitted": false})
+  } else {
+    q = constic.Find(bson.M{"parliamentarysubmitted": false})
+  }
+
+  err = q.All(&constituencies)
+  if err != nil {
+    c.Error(err)
+    return nil
+  }
+
+  c.JSON(200, constituencies)
+  return nil
+}
 
 // func ReportResult() error {
 

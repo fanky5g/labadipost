@@ -15,6 +15,7 @@ const createRoutes = (store) => {
           // require('./Contact').default,
           // require('./Users').default,
           require('./Categories').default(store),
+          require('./ElectionLive').default(store),
           require('./NotFound').default(store),
         ]);
       });
