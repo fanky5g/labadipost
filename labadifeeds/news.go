@@ -58,18 +58,18 @@ func (f *Feed) SaveItems(parent string, prevItemMap map[string]struct{}) (itemRe
         Category: f.Category,
         Subcategory: f.Subcategory,
         Agency: f.Agency,
-        AgencyImage: f.Feed.Image,
+        AgencyImage: f.Feed.Image.Url,
         ImageWidth: w,
         ImageHeight: h,
       }
 
-      // err = c.Insert(bson.M{
-      //   "_id": id,
-      //   "item": news.Item,
-      //   "parent": news.Parent,
-      //   "category": news.Category,
-      //   "subcategory": news.Subcategory,
-      // })
+      err = c.Insert(bson.M{
+        "_id": id,
+        "item": news.Item,
+        "parent": news.Parent,
+        "category": news.Category,
+        "subcategory": news.Subcategory,
+      })
       err = c.Insert(news)
 
       if err != nil {

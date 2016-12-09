@@ -4,19 +4,19 @@ import:
   repo: git@bitbucket.org:fanky5g/labadipost.git
   vcs: git
   subpackages:
-    - labadicommon
+  - labadicommon
 - package: gopkg.in/mgo.v2
   subpackages:
   - bson
 - package: github.com/Techdevt/rss
+  version: ae8953acae36a7d9fe6352d971861c921498ca97
 - package: github.com/garyburd/redigo
   version: ~1.0.0
   subpackages:
   - redis
 - package: github.com/streadway/amqp
 - package: github.com/tealeg/xlsx
-  repo:    git@github.com:tealeg/xlsx.git
+  repo: git@github.com:tealeg/xlsx.git
   vcs: git
-  branch: master
 - package: github.com/asaskevich/govalidator
   version: ~5.0.0
