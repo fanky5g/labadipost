@@ -54,13 +54,9 @@ class Dashboard extends Component {
     //   icon: 'people',
     // },
      {
-      to: '/categories',
-      name: 'Categories',
+      to: '/topics',
+      name: 'Topics',
       icon: 'list',
-    }, {
-      to: '/electionlive',
-      name: 'ElectionLive',
-      icon: 'check_box_outline_blank',
     }];
 
     return links;

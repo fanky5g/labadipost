@@ -1,6 +1,6 @@
-export function getCategories() {
+export function getTopics() {
   return {
-    type: 'GET_CATEGORIES',
+    type: 'GET_TOPICS',
     promise: (client) => client.get('/feeds/categories'),
   };
 }

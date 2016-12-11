@@ -2,8 +2,9 @@
 <!-- http://images.labadipost.com/display?url=https://cdn.pixabay.com/photo/2016/11/08/05/37/adult-1807554_960_720.jpg&w=500&h=300&op=resize&upscale=0 -->
 <!-- setup bundle loader and code splitting for webpack -> couldn't still achieve that coupled with maintaining ssr -->
 
-work on rss so that we always have some content to show
+work on rss so that we always have some content to show - done
 finish admin changing of topics images
+code following concept serverside
 do following concept interface on mobile client
 redo web client header
 do following concept on web client

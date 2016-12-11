@@ -35,11 +35,8 @@ func (cat *Category) AddSubcategory(subcategory string, imageURL string) (sub Su
     if err != nil {
       return sub, err
     }
-    a := Subcategory{
-      Type: sub.Type,
-      Image: sub.Image,
-    }
-    cat.Subcategories = append(cat.Subcategories, a)
+
+    cat.Subcategories = append(cat.Subcategories, sub)
     err = cat.Save()
     if err != nil {
       return sub, err
@@ -102,7 +99,9 @@ func CreateSubcategory(subcategory string, imageURL string) (sub Subcategory, er
     return sub, nil
   }
 
+  id := bson.NewObjectId()
   sub = Subcategory{
+    Id: id,
     Type: subcategory,
     Image: imageURL,
   }

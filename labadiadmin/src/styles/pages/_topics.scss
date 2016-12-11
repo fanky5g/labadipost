@@ -1,0 +1,79 @@
+$cat-border: darken(#F6F8F8, 3%);
+.Topics {
+    padding-top: 20px;
+    .Topics-container {
+        .topic {
+            padding: 10px 20px;
+            //background: $white;
+            margin-bottom: 20px;
+            display: block;
+            text-align: center;
+            cursor: pointer;
+            &:hover {
+                background: darken($alabaster, 5%);
+                transition: background .5s ease;
+            }
+            //@extend %clearfix;
+            //i {
+            //  font-size: 1.8em;
+            //  float: left;
+            //}
+            span {
+                  font-weight: 500;
+                  font-size: 16px;
+                  line-height: 16px;
+                  padding: 14px;
+                  margin: 10px 0;
+                  text-transform: uppercase;
+                  text-align: center;
+            }
+        }
+        .topic-content {
+            .subcat {
+                  position: relative;
+                  display: inline-block;
+                  width: 118.66666666666667px;
+                  height: 142.4px;
+                  background-color: #333;
+                  margin-bottom: 2px;
+                  margin-right: 2px;
+                  cursor: pointer;
+                  &:hover{
+                    .subcat_editicon {
+                      display: block;
+                    }
+                  }
+                .subcat_title {
+                  position: absolute;
+                  left: 10px;
+                  top: 10px;
+                  right: 10px;
+                  z-index: 3;
+                  color: #fff;
+                  font-size: 13px;
+                  line-height: 16px;
+                  font-weight: 600;
+                }
+                .subcat_img {
+                  position: absolute;
+                  left: 0;
+                  top: 0;
+                  bottom: 0;
+                  right: 0;
+                  z-index: 1;
+                }
+                .subcat_editicon {
+                  position: absolute;
+                  left: 51px;
+                  top: 61px;
+                  right: 10px;
+                  z-index: 3;
+                  color: #fff;
+                  font-size: 13px;
+                  line-height: 16px;
+                  display: none;
+                }
+            }
+        }
+    }
+}

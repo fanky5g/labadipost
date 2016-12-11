@@ -11,7 +11,7 @@ function formatUrl(path) {
 class _ApiClient {
   constructor(req) {
     methods.forEach((method) => {
-      this[method] = (path, { params } = {}) => {
+      this[method] = (path, { params, data } = {}) => {
         // const request = axios[method](formatUrl(path));
 
         if (params) {
@@ -22,7 +22,7 @@ class _ApiClient {
           request.defaults.headers.common.Authorization =
             `Bearer ${JSON.parse(window.localStorage.getItem('token'))}`;
         }
-        return request[method](formatUrl(path));
+        return request[method](formatUrl(path), data);
       };
     });
   }

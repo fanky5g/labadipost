@@ -4,9 +4,9 @@ const defaultState = Immutable.Map({
   data: [],
 });
 
-const CategoriesReducer = (state = defaultState, action) => {
+const TopicsReducer = (state = defaultState, action) => {
   switch(action.type) {
-    case 'GET_CATEGORIES':
+    case 'GET_TOPICS':
       return state.merge({
         data: action.res.data,
       });
@@ -15,4 +15,4 @@ const CategoriesReducer = (state = defaultState, action) => {
   }
 };
 
-export default CategoriesReducer;
+export default TopicsReducer;
