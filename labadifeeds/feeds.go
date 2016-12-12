@@ -3,11 +3,18 @@ package main
 import (
   "github.com/Techdevt/rss"
   models "bitbucket.org/fanky5g/labadipost/labadicommon"
+  "gopkg.in/mgo.v2"
   "fmt"
   "time"
 )
 
 func NewFeed(feed *rss.Feed, agency string, category models.Category, subcategory models.Subcategory) (out Feed) {
+  subRef := mgo.DBRef{
+    Database: "labadifeeds",
+    Collection: "Subcategories",
+    Id: subcategory.Id,
+  }
+
   out = Feed {
     Feed: &rss.Feed {
       Nickname: feed.Nickname,
@@ -24,7 +31,7 @@ func NewFeed(feed *rss.Feed, agency string, category models.Category, subcategor
     },
     Agency: agency,
     Category: category,
-    Subcategory: subcategory,
+    Subcategory: subRef,
   }
   return
 }

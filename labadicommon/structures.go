@@ -29,7 +29,7 @@ type Category struct {
   Name string  `json:"name"  bson:"name"`
   Image string `json:"image"  bson:"image"`
   Subcategories []mgo.DBRef `json:"subcategories"  bson:"subcategories"`
-  Stories []mgo.DBRef `json:"stories"  bson:"stories"  bson:"stories"`
+  Stories []mgo.DBRef `json:"stories"  bson:"stories"`
 }
 
 type Feed struct {
