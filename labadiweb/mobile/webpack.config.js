@@ -40,7 +40,14 @@ module.exports = {
       test: /\.jsx?$/,
       exclude: /node_modules/,
       loader: 'babel',
-    }, ],
+    }, {
+      test: /\.svg/,
+      loader: 'url-loader',
+      query: {
+        limit: 26000,
+        mimetype: 'image/svg+xml',
+      },
+    },],
     postLoaders: [
       { loader: "transform?brfs" }
     ]

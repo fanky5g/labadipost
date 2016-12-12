@@ -3,7 +3,8 @@
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ReactCanvas: Timeline</title>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Labadipost</title>
   <style type="text/css">
     html, body {
       margin: 0;
@@ -20,6 +21,11 @@
       background: #fff;
     }
 
+    .svg-24px {
+      width: 24px;
+      height: 24px;
+    }
+
     .fill {
         position: absolute;
         left: 0;
@@ -28,13 +34,15 @@
         right: 0;
     }
   </style>
-  <script src="/touch-emulator.js"></script>
+  <script src="/mobile/touch-emulator.js"></script>
+  <script src="/mobile/svg4Everybody.js"></script>
   <script type="text/javascript">
     TouchEmulator();
+    svg4everybody();
   </script>
 </head>
 <body>
   <div id="main"></div>
-  <script src="/mobile.js"></script>
+  <script src="/mobile/mobile.js"></script>
 </body>
 </html>

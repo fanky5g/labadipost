@@ -10,7 +10,6 @@ import browserHistory from '#node_modules/react-router/lib/browserHistory';
 import match from '#node_modules/react-router/lib/match';
 import useScroll from '#node_modules/scroll-behavior/lib/useStandardScroll';
 import { trigger } from '#node_modules/redial';
-// import AppLoading     from 'lib/appLoading';
 
 const token = window.localStorage.getItem('token');
 const user = window.localStorage.getItem('user');
