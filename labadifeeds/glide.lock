@@ -1,8 +1,8 @@
-hash: 4af12a60fc85f9e4476c33fcaf58746516661abc99e646c35180e734a1a1f818
-updated: 2016-12-11T17:54:12.285436819Z
+hash: ddeac3a6a88aa2639a183a7e9c628e9d98bccdee60e07bb83d22f155a859eccd
+updated: 2016-12-12T02:47:55.580359284Z
 imports:
 - name: bitbucket.org/fanky5g/labadipost
-  version: acdb7af7eece73cb41dfb0b5c0adf8a1fc361cbf
+  version: c54fb333b48224bcc1950afbc7d0f8aa339d89b2
   repo: git@bitbucket.org:fanky5g/labadipost.git
   vcs: git
   subpackages:
@@ -21,9 +21,9 @@ imports:
 - name: github.com/PuerkitoBio/goquery
   version: 152b1a2c8f5d0340f658bb656032a39b94e52958
 - name: github.com/Sirupsen/logrus
-  version: 6c28e16200e55c2549705ac24ea58976c07f18ac
+  version: 881bee4e20a5d11a6a88a5667c6f292072ac1963
 - name: github.com/streadway/amqp
-  version: 1b8853833a94be8ba57fd121a8651f7221e5b051
+  version: cb4fb930736ebd61a54da180a6aa4e92b206ff13
 - name: github.com/tealeg/xlsx
   version: a8490cf686defe538b45b05af838d9eeb7d8fe64
   repo: git@github.com:tealeg/xlsx.git
@@ -31,10 +31,14 @@ imports:
 - name: github.com/Techdevt/rss
   version: ae8953acae36a7d9fe6352d971861c921498ca97
 - name: golang.org/x/net
-  version: 5df5483e0518a11a6ef1e894c70236eb3f639557
+  version: b1a2d6e8c8b5fc8f601ead62536f02a8e1b6217d
   subpackages:
   - html
   - html/atom
+- name: golang.org/x/sys
+  version: 478fcf54317e52ab69f40bb4c7a1520288d7f7ea
+  subpackages:
+  - unix
 - name: gopkg.in/mgo.v2
   version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
   subpackages:

@@ -11,7 +11,7 @@ type News struct {
   Id         bson.ObjectId `json:"id"  bson:"_id,omitempty"`
   Parent     string       `json:"parent"  bson:"parent"`
   Category   Category       `json:"category"  bson:"category"`
-  Subcategory Subcategory      `json:"subcategory"  bson:"subcategory"`
+  Subcategory mgo.DBRef      `json:"subcategory"  bson:"subcategory"`
   ImageWidth  int      `json:"imagewidth"   bson:"imagewidth"`
   ImageHeight int      `json:"imageheight"   bson:"imageheight"`
   Agency      string   `json:"agency" bson:"agency"`

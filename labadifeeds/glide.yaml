@@ -2,7 +2,6 @@ package: bitbucket.org/fanky5g/labadipost/labadifeeds
 import:
 - package: bitbucket.org/fanky5g/labadipost
   repo: git@bitbucket.org:fanky5g/labadipost.git
-  version: acdb7af7eece73cb41dfb0b5c0adf8a1fc361cbf
   vcs: git
   subpackages:
   - labadicommon
