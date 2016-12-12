@@ -5,6 +5,8 @@
 work on rss so that we always have some content to show - done
 finish admin changing of topics images
 code following concept serverside
+do initial page with subcategories(topics) shown to user to select which he wants and press go or to login and then save preferences for later
+allow user to login
 do following concept interface on mobile client
 redo web client header
 do following concept on web client

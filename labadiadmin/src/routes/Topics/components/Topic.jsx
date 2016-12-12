@@ -5,8 +5,7 @@ import { AccordionItem } from 'react-sanfona';
 
 export default class Topic extends Component {
   render() {
-    const { topic, index, expanded, onClick } = this.props;
-    console.log(topic)
+    const { topic, index, expanded, onClick, dispatch } = this.props;
 
     return(
       <AccordionItem
@@ -22,7 +21,7 @@ export default class Topic extends Component {
             topic.subcategories.length > 0 &&
             topic.subcategories.map((subcat, index) => {
               return (
-                <Subcategory subcat={subcat} key={index} />
+                <Subcategory subcat={subcat} key={index} parentId={topic.id} dispatch={dispatch} />
               );
             })
           }

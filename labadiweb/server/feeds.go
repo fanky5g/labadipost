@@ -7,6 +7,7 @@ import(
   "github.com/icza/minquery"
   "strconv"
   "fmt"
+  "errors"
 )
 
 func GetCategory(catName string) (cat models.Category, stories []models.News, err error) {
@@ -106,6 +107,48 @@ func (api *API) GetNews(c echo.Context) error{
   }
 
   c.JSON(200, newsArray)
+  return nil
+}
+
+type UploadImage struct {
+  Filename string `json:"filename"`
+  Height int `json:"height"`
+  Width int `json:"width"`
+  Path string `json:"path"`
+  Url string `json:"url"`
+}
+
+type UploadSubcategoryInput struct {
+  Id bson.ObjectId `json:"id"`
+  Image UploadImage `json:"image"`
+}
+
+func (api *API) UpdateSubcategoryImage(c echo.Context) error {
+  var inputVars UploadSubcategoryInput
+  err := c.Bind(&inputVars)
+  if err != nil {
+    c.Error(err)
+    return nil
+  }
+
+  conn, err := ConnectMongo()
+  if err != nil {
+    c.Error(err)
+    return nil
+  }
+
+  subcol := conn.DB("labadifeeds").C("Subcategories")
+  err = subcol.Update(bson.M{"_id": inputVars.Id}, bson.M{"image": inputVars.Image.Url})
+  if err != nil {
+    if err.Error() == "not found" {
+      c.Error(errors.New("Subcategory not found"))
+      return nil
+    }
+    c.Error(err)
+    return nil
+  }
+
+  c.NoContent(200)
   return nil
 }
 

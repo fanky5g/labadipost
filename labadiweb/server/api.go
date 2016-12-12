@@ -26,6 +26,7 @@ func (api *API) Bind(group *echo.Group) {
 
   group.GET("/v1/feeds/categories", api.GetAllCategories)
   group.GET("/v1/feeds/news", api.GetNews)
+  group.PUT("/v1/feeds/subcategory", api.UpdateSubcategoryImage)
 
   group.GET("/v1/election2016/parlc", api.GetParliamentaryByConstituency)
   group.GET("/v1/election2016/prec", api.GetPresidentialCandidates)

@@ -13,8 +13,8 @@
   },
   "storage": {
     "src": {
-      "type": "http+fs",
-      "base_url": "https://labadipost.s3.amazonaws.com/",
+      "type": "http+s3",
+      "base_url": "https://labadipics.s3.amazonaws.com/",
       "access_key_id": "AKIAJDGLHUP3FX6ESQZQ",
       "secret_access_key": "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",
       "bucket_name": "labadipics",
@@ -23,16 +23,17 @@
       "location": "images"
     },
     "dst": {
-      "type": "fs",
+      "type": "s3",
       "access_key_id": "AKIAJDGLHUP3FX6ESQZQ",
       "secret_access_key": "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",
       "bucket_name": "labadipics",
       "acl": "bucket-owner-full-control",
       "region": "us-west-2",
-      "location": "images"
+      "location": "images",
+      "base_url": "https://labadipics.s3.amazonaws.com/"
     }
   },
   "allowed_headers": ["Content-Type", "Authorization", "Accept", "Accept-Encoding", "Accept-Language"],
   "allowed_origins": ["*"],
-  "allowed_methods": ["GET", "HEAD", "POST", "PUT"]
+  "allowed_methods": ["GET", "HEAD", "POST", "PUT", "OPTIONS"]
 }

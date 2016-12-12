@@ -17,10 +17,10 @@ class _ApiClient {
         if (params) {
           request.query(params);
         }
- 
+        
         if (!!window.localStorage.getItem('token')) {
-          request.defaults.headers.common.Authorization =
-            `Bearer ${JSON.parse(window.localStorage.getItem('token'))}`;
+          // request.defaults.headers.common.Authorization =
+            // `Bearer ${JSON.parse(window.localStorage.getItem('token'))}`;
         }
         return request[method](formatUrl(path), data);
       };

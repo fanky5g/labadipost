@@ -8,7 +8,7 @@ import Topic from './Topic';
 
 class Topics extends Component {
   render() {
-    const { topics } = this.props;
+    const { topics, dispatch } = this.props;
     return (
       <div className="Topics container">
         <Accordion allowMultiple className="Topics-container">
@@ -16,7 +16,7 @@ class Topics extends Component {
               topics.length > 0 &&
               topics.map((topic, index) => {
                 return (
-                  <Topic key={index} topic={topic} index={index}/>
+                  <Topic key={index} topic={topic} index={index} dispatch={dispatch} />
                 );
               })
             }

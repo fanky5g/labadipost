@@ -1,8 +1,8 @@
 hash: 3ccce77031656157f488a88696b769d0db27455782b85a81fa89eeb8bfe3e6f5
-updated: 2016-12-11T10:38:08.120873822Z
+updated: 2016-12-11T18:00:11.656430246Z
 imports:
 - name: bitbucket.org/fanky5g/labadipost
-  version: cd9f2501e0c183030a7337cac657dc37b34b1072
+  version: acdb7af7eece73cb41dfb0b5c0adf8a1fc361cbf
   repo: git@bitbucket.org:fanky5g/labadipost.git
   subpackages:
   - labadicommon
@@ -24,7 +24,7 @@ imports:
   - internal
   - redis
 - name: github.com/golang/protobuf
-  version: 2402d76f3d41f928c7902a765dfc872356dd3aad
+  version: 8ee79997227bf9b34611aee7946ae64735e6fd93
   subpackages:
   - proto
 - name: github.com/gorilla/context
@@ -77,7 +77,7 @@ imports:
 - name: github.com/streadway/amqp
   version: 1b8853833a94be8ba57fd121a8651f7221e5b051
 - name: github.com/tealeg/xlsx
-  version: abbe40bca7f65a68f0c8a4410aba36b9aa000dcc
+  version: a8490cf686defe538b45b05af838d9eeb7d8fe64
 - name: github.com/Techdevt/rss
   version: ae8953acae36a7d9fe6352d971861c921498ca97
 - name: github.com/valyala/fasttemplate
@@ -95,11 +95,11 @@ imports:
   - html/atom
   - publicsuffix
 - name: golang.org/x/oauth2
-  version: d5040cddfc0da40b408c9a1da4728662435176a9
+  version: da3ce8d62a7f77aadfda06cb82bd604d6469c645
   subpackages:
   - internal
 - name: golang.org/x/sys
-  version: 30237cf4eefd639b184d1f2cb77a581ea0be8947
+  version: 478fcf54317e52ab69f40bb4c7a1520288d7f7ea
   subpackages:
   - unix
 - name: golang.org/x/text
