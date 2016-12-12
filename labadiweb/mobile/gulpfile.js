@@ -33,7 +33,7 @@ gulp.task('reload-js', function () {
 
 gulp.task('copy-build', function() {
   return gulp.src(['./build/*', './touch-emulator.js'])
-    .pipe(gulp.dest('../server/data/static/build'));
+    .pipe(gulp.dest('../server/data/static/build/mobile'));
 });
 
 gulp.task('watch-build', function() {

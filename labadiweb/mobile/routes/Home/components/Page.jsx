@@ -25,13 +25,31 @@ var Page = React.createClass({
 
   componentWillMount: function () {
     // Pre-compute headline/excerpt text dimensions.
+
     var article = this.props.article;
     var maxWidth = this.props.width - 2 * CONTENT_INSET;
     var titleStyle = this.getTitleStyle();
     var excerptStyle = this.getExcerptStyle();
+
     this.titleMetrics = measureText(article.title, maxWidth, titleStyle.fontFace, titleStyle.fontSize, titleStyle.lineHeight);
-    this.excerptMetrics = measureText(article.excerpt, maxWidth, excerptStyle.fontFace, excerptStyle.fontSize, excerptStyle.lineHeight);
+    this.excerptMetrics = measureText(article.summary || article.content, maxWidth, excerptStyle.fontFace, excerptStyle.fontSize, excerptStyle.lineHeight);
   },
+
+// agency
+// "TV3"
+// agencyImage
+// "http://3news.com/wp-content/uploads/2015/12/newson3_logo-150x150.png"
+// category
+// content
+// date
+// "2016-12-05T20:34:54Z"
+// id"584666f0ad42c500c4f316ea"
+// image"http://3news.com/wp-content/uploads/2016/12/Ballot-thumbprint.jpg"
+// imageheight
+// imagewidth
+// link
+// "http://3news.com/veep-accuses-npp-of-staging-thumb-printed-ballots-wants-akufo-addo-to-condemn-it/"
+// "Elections2016 – 3News"
 
   render: function () {
     var groupStyle = this.getGroupStyle();
@@ -46,10 +64,10 @@ var Page = React.createClass({
 
     return (
       <Group style={groupStyle}>
-        <Image style={imageStyle} src={this.props.article.imageUrl} fadeIn={true} useBackingStore={true} />
+        <Image style={imageStyle} src={`http://images.labadipost.com/display?url=${this.props.article.image}&op=noop`} fadeIn={true} useBackingStore={true} />
         <Group style={this.getTextGroupStyle()} useBackingStore={true}>
           <Text style={titleStyle}>{this.props.article.title}</Text>
-          <Text style={excerptStyle}>{this.props.article.excerpt}</Text>
+          <Text style={excerptStyle}>{this.props.article.summary || this.props.article.content}</Text>
         </Group>
       </Group>
     );

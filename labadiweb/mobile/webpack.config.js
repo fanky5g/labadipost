@@ -1,4 +1,27 @@
 var path = require('path');
+var webpack = require('webpack');
+
+const PLUGINS = [
+  new webpack.DefinePlugin({
+    'process.env': {
+      BROWSER: JSON.stringify(true),
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+    },
+  }),
+  new webpack.optimize.OccurrenceOrderPlugin,
+  new webpack.optimize.DedupePlugin(),
+];
+
+if (process.env.NODE_ENV === 'production') {
+  PLUGINS.push(new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false,
+    },
+    output: {
+      comments: false,
+    },
+  }));
+}
 
 module.exports = {
   cache: true,
@@ -8,8 +31,10 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    outputPath: './build'
+    outputPath: './build',
+    publicPath: '/mobile/',
   },
+  plugins: PLUGINS,
   module: {
     loaders: [{
       test: /\.jsx?$/,
@@ -26,6 +51,8 @@ module.exports = {
       '#routes': path.join(__dirname, 'routes'),
       '#containers': path.join(__dirname, 'containers'),
       '#node_modules': path.join(__dirname, 'node_modules'),
+      '#lib': path.join(__dirname, 'lib'),
+      '#common': path.join(__dirname, 'common'),
     },
   },
   devtool: 'source-map'

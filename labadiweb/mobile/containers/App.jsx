@@ -1,4 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from '#node_modules/react';
+
+
+/* eslint global-require: "off" */
+// move this to require.ensure block for root
+require('#node_modules/react-mdl/extra/material.min');
 
 export default class App extends Component {
   getAppStyles = () => {
@@ -13,7 +18,6 @@ export default class App extends Component {
   };
 
   render() {
-
     return (
       <div id="app" className="fill" style={this.getAppStyles()} ref="pageContainer">
         {this.props.children}

@@ -1,16 +1,14 @@
-import React from 'react';
-import { Route, IndexRoute } from '#node_modules/react-router';
+if (typeof require.ensure !== 'function') require.ensure = (d, c) => c(require);
+
+import React from '#node_modules/react';
+import { Route, IndexRoute } from 'react-router';
 import App from '#containers/App';
-import Home from '#routes/Home';
-import Settings from '#routes/Settings';
 
 const createRoutes = (store) => {
   const routes = (
     <Route component={App}>
-      <Route path="/" component={Home} name="Home">
-        <Route path="settings" getComponents={require('./Settings').default()} name="Preferences" />
-      </Route>
-      <Route name="Page not Found" path="*" getComponents={require('./NotFound').default()} />
+      <Route path="/" getComponents={require('./Home').default(store)} name="Home"></Route>
+      <Route name="Page not Found" path="*" getComponents={require('./NotFound').default(store)} />
     </Route>
   );
 

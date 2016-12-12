@@ -28,10 +28,21 @@
     "react": "^0.14.0"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "fbjs": "^0.4.0",
+    "immutable": "^3.8.1",
     "linebreak": "^0.3.0",
+    "material-design-icons": "^3.0.1",
+    "object-assign": "^4.1.0",
     "react-canvas": "git+https://github.com/Techdevt/react-canvas.git#f207455b9f421ac999f23e23e2d6c4576ce4d900",
+    "react-input-autosize": "^1.1.0",
+    "react-mdl": "^1.9.0",
+    "react-redux": "^4.4.6",
     "react-router": "^3.0.0",
+    "react-select": "^0.9.1",
+    "redial": "^0.5.0",
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.1.0",
     "scroll-behavior": "^0.3.2",
     "scroller": "git://github.com/mjohnston/scroller"
   }

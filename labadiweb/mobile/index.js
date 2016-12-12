@@ -1,28 +1,92 @@
-import React from './node_modules/react';
-import { render } from './node_modules/react-dom';
-import { Router, browserHistory } from './node_modules/react-router';
-import match from './node_modules/react-router/lib/match';
-import useScroll from './node_modules/scroll-behavior/lib/useStandardScroll';
+import React from '#node_modules/react';
+import ReactDOM from '#node_modules/react-dom';
 import createRoutes from '#routes';
+import { Provider } from '#node_modules/react-redux';
+import immutifyState from './lib/immutifyState';
+import createStore from './common/store/create';
+import ApiClient from './lib/ApiClient';
+import Router from '#node_modules/react-router/lib/Router';
+import browserHistory from '#node_modules/react-router/lib/browserHistory';
+import match from '#node_modules/react-router/lib/match';
+import useScroll from '#node_modules/scroll-behavior/lib/useStandardScroll';
+import { trigger } from '#node_modules/redial';
+// import AppLoading     from 'lib/appLoading';
 
+const token = window.localStorage.getItem('token');
+const user = window.localStorage.getItem('user');
+let initialState = {};
+if (user) {
+  const state = {
+    Account: {
+      user: JSON.parse(user),
+      isAuthenticated: true,
+      token: JSON.parse(token),
+    },
+  };
 
+  initialState = immutifyState(state);
+}
+
+const client = new ApiClient();
 const history = useScroll(() => browserHistory)();
+const store = createStore(client, initialState);
+const routes = createRoutes(store);
+
 const { pathname, search, hash } = window.location;
-const $location = `${pathname}${search}${hash}`;
-const container = document.getElementById('main');
+const location = `${pathname}${search}${hash}`;
 
-const routes = createRoutes();
+const { dispatch } = store;
+const MOUNT_NODE = document.getElementById('main');
 
-// if ('serviceWorker' in navigator) {
-//   navigator.serviceWorker.register('/serviceWorker.js', {
-//     scope: '/',
-//   });
-// }
+let render = () => {
+  match({ routes, location }, (error, redirectLocation, renderProps) => {
+    const { components } = renderProps;
+    const locals = {
+      path: renderProps.location.pathname,
+      query: renderProps.location.query,
+      params: renderProps.params,
+      dispatch,
+      client,
+      store,
+    };
 
-match({ routes, location: $location }, () => {
-  const component = (
-    <Router history={history} routes={routes} />
-  );
+    const component = (
+      <Provider store={store}>
+        <Router history={history} routes={routes} />
+      </Provider>
+    );
 
-  render(component, container);
-});
+    // load dependencies for first render since we aren't using ssr
+    loadDeps(components, locals);
+    ReactDOM.render(component, MOUNT_NODE);
+  });
+
+  browserHistory.listen((location) => {
+    match({ routes, location }, (error, redirectLocation, renderProps) => {
+      const { components } = renderProps;
+      const locals = {
+        path: renderProps.location.pathname,
+        query: renderProps.location.query,
+        params: renderProps.params,
+        dispatch,
+        client,
+        store,
+      };
+
+      loadDeps(components, locals);
+    });
+  });
+}
+
+function loadDeps(components, locals) {
+  var fetch
+  if (window.INITIAL_STATE) {
+    delete window.INITIAL_STATE;
+    fetch = Promise.resolve(true);
+  } else {
+    fetch = trigger('fetch', components, locals);
+  }
+  fetch.then(() => { return trigger('defer', components, locals); });
+}
+
+render();
