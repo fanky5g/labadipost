@@ -37,5 +37,5 @@ type Feed struct {
   Id          bson.ObjectId `json:"id"  bson:"_id,omitempty"`
   Agency      string              `json:"agency"  bson:"agency"`
   Category    Category           `json:"category" bson:"category"`
-  Subcategory Subcategory        `json:"subcategory"  bson:"subcategory"`  
+  Subcategory mgo.DBRef        `json:"subcategory"  bson:"subcategory"`  
 }
