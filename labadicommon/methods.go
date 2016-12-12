@@ -36,7 +36,13 @@ func (cat *Category) AddSubcategory(subcategory string, imageURL string) (sub Su
       return sub, err
     }
 
-    cat.Subcategories = append(cat.Subcategories, sub)
+    ref := mgo.DBRef{
+      Database: "labadifeeds",
+      Collection: "Subcategories",
+      Id: sub.Id,
+    }
+
+    cat.Subcategories = append(cat.Subcategories, ref)
     err = cat.Save()
     if err != nil {
       return sub, err
@@ -65,14 +71,19 @@ func (cat *Category) Save() error {
 func (cat *Category) HasSubcategory(subcategory string) (Subcategory, bool) {
   found := false
   var sub Subcategory
+  conn, err := ConnectMongo()
+  defer conn.Close()
+  if err != nil {
+    return sub, false
+  }
+
   for _, val := range cat.Subcategories {
-    if val.Type == subcategory {
-      found = true
-      sub = Subcategory{
-        Type: val.Type,
-        Image: val.Image,
+    err := conn.FindRef(&val).One(&sub)
+    if err.Error() != "not found" && err == nil {
+      if sub.Type == subcategory {
+        found = true
+        break
       }
-      break
     }
   }
 

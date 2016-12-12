@@ -28,7 +28,7 @@ type Category struct {
   Id bson.ObjectId `json:"id"  bson:"_id,omitempty"`
   Name string  `json:"name"  bson:"name"`
   Image string `json:"image"  bson:"image"`
-  Subcategories []Subcategory `json:"subcategories"  bson:"subcategories"`
+  Subcategories []mgo.DBRef `json:"subcategories"  bson:"subcategories"`
   Stories []mgo.DBRef `json:"stories"  bson:"stories"  bson:"stories"`
 }
 
