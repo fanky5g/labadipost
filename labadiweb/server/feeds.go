@@ -3,10 +3,10 @@ package main
 import(
   models "bitbucket.org/fanky5g/labadipost/labadicommon"
   "gopkg.in/mgo.v2/bson"
+  "gopkg.in/mgo.v2"
   "github.com/labstack/echo"
   "github.com/icza/minquery"
   "strconv"
-  "fmt"
   "errors"
 )
 
@@ -17,7 +17,6 @@ func GetCategory(catName string) (cat models.Category, stories []models.News, er
   if err != nil {
     return cat, stories, err
   }
-  fmt.Println("get category done")
 
   c := conn.DB("labadifeeds").C("Categories")
   err = c.Find(bson.M{"name": catName}).One(&cat)
@@ -39,6 +38,14 @@ func GetCategory(catName string) (cat models.Category, stories []models.News, er
   return cat, stories, nil
 }
 
+type CategoryReturn struct{
+  Id bson.ObjectId `json:"id"  bson:"_id,omitempty"`
+  Name string  `json:"name"  bson:"name"`
+  Image string `json:"image"  bson:"image"`
+  Subcategories []models.Subcategory `json:"subcategories"  bson:"subcategories"`
+  Stories []mgo.DBRef `json:"stories"  bson:"stories"  bson:"stories"`
+}
+
 func (api *API) GetAllCategories(c echo.Context) error {
   conn, err := ConnectMongo()
   defer conn.Close()
@@ -47,14 +54,36 @@ func (api *API) GetAllCategories(c echo.Context) error {
   }
 
   var categories []models.Category
+  var categoryReturns []CategoryReturn
 
   collection := conn.DB("labadifeeds").C("Categories")
   err = collection.Find(nil).All(&categories)
+  for _, cat := range categories {
+    var subs []models.Subcategory
+    for _, subcat := range cat.Subcategories {
+      var sub models.Subcategory
+      err := conn.FindRef(&subcat).One(&sub)
+      if err != nil {
+        c.Error(err)
+        return nil
+      }
+      subs = append(subs, sub)
+    }
+    
+    unitCat := CategoryReturn{
+      Id: cat.Id,
+      Name: cat.Name,
+      Image: cat.Image,
+      Subcategories: subs,
+      Stories: cat.Stories,
+    }
+    categoryReturns = append(categoryReturns, unitCat)
+  }
   if err != nil {
     c.Error(err)
     return nil
   }
-  c.JSON(200, categories)
+  c.JSON(200, categoryReturns)
   return nil
 }
 

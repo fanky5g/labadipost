@@ -41,7 +41,7 @@ class Subcategory extends Component {
   render() {
     const { subcat } = this.props;
     const name = subcat.type.split(':')[0];
-    console.log(subcat.image)
+
     return (
       <div className="subcat">
         <div className="subcat_img">
@@ -55,7 +55,7 @@ class Subcategory extends Component {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center center',
                 backgroundRepeat: 'no-repeat',
-                backgroundImage: `url(${subcat.image})`
+                backgroundImage: `url(http://images.labadipost.com/display?url=${subcat.image}&op=noop)`
               }}>
             </div>
           </div>

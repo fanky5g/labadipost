@@ -35,7 +35,7 @@ const TopicsReducer = (state = defaultState, action) => {
             subcat.id === action.id
           ), s => s.merge({
             isUpdating: false,
-            image: action.imageSrc,
+            image: action.imgSrc,
           }))
         ));
       });

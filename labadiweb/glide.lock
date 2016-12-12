@@ -1,8 +1,8 @@
 hash: 3ccce77031656157f488a88696b769d0db27455782b85a81fa89eeb8bfe3e6f5
-updated: 2016-12-12T03:06:22.258077349Z
+updated: 2016-12-12T03:11:13.523052032Z
 imports:
 - name: bitbucket.org/fanky5g/labadipost
-  version: 86d4b31bdc6f812649dd9b6e4552b6be83732bd8
+  version: f22902141ca8b50701f7ea6a54d307fd186f296f
   repo: git@bitbucket.org:fanky5g/labadipost.git
   subpackages:
   - labadicommon
