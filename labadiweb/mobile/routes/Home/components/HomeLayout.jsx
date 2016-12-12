@@ -3,6 +3,7 @@ import Home from './Home';
 import { connect } from '#node_modules/react-redux';
 import { provideHooks } from '#node_modules/redial';
 import { getStories } from '../actions';
+import { getTopics } from '#common/actions/Topics';
 
 class RootComponent extends Component {
   static contextTypes = {
@@ -108,7 +109,7 @@ class RootComponent extends Component {
 
   render() {
     const { nestedRouteActive } = this.state;
-    const { stories, cursor } = this.props;
+    const { stories, cursor, topics } = this.props;
 
     return (
       <div id="app" className="fill" style={this.getAppStyles()} ref="pageContainer">
@@ -133,10 +134,15 @@ class RootComponent extends Component {
 const hooks = {
   defer: ({dispatch, store: {getState}}) => {
     const storiesLoaded = getState().Stories.get('loaded');
+    const topicsLoaded = getState().Topics.get('loaded');
     const promises = [];
 
     if (!storiesLoaded) {
       promises.push(dispatch(getStories()));
+    }
+
+    if (!topicsLoaded) {
+      promises.push(dispatch(getTopics()));
     }
 
     return Promise.all(promises);
@@ -144,6 +150,7 @@ const hooks = {
 };
 
 const mapStateToProps = (state) => ({
+  topics: state.Topics.toJSON().data,
   stories: state.Stories.toJSON().data,
   cursor: state.Stories.toJSON().cursor,
 });

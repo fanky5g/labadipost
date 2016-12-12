@@ -3,7 +3,8 @@
 <!-- setup bundle loader and code splitting for webpack -> couldn't still achieve that coupled with maintaining ssr -->
 
 work on rss so that we always have some content to show - done
-finish admin changing of topics images
+finish admin changing of topics images - done - revisit later to add images for categories
+list categories and topics on client -> let user explore or sign-in to save choices
 code following concept serverside
 do initial page with subcategories(topics) shown to user to select which he wants and press go or to login and then save preferences for later
 allow user to login
