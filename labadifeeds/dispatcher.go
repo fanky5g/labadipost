@@ -25,9 +25,9 @@ func (d *Dispatcher) Run() {
 func (d *Dispatcher) dispatch() {
   for {
     select {
-      case job := <-JobQueue:
+      case jobChannel := <-d.WorkerPool:
+        job := <-JobQueue
         go func(job Job) {
-          jobChannel := <-d.WorkerPool
           jobChannel <- job
         }(job)
     }

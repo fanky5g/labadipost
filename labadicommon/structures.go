@@ -22,11 +22,15 @@ type Subcategory struct {
   Id bson.ObjectId `json:"id"  bson:"_id,omitempty"`
   Type string `json:"type"  bson:"type"`
   Image string `json:"image"  bson:"image"`
+  Agency      string   `json:"agency" bson:"agency"`
+  AgencyImage string   `json:"agencyImage" bson:"agencyimage"`
 }
 
 type Category struct {
   Id bson.ObjectId `json:"id"  bson:"_id,omitempty"`
   Name string  `json:"name"  bson:"name"`
+  Agency      string   `json:"agency" bson:"agency"`
+  AgencyImage string   `json:"agencyImage" bson:"agencyimage"`
   Image string `json:"image"  bson:"image"`
   Subcategories []mgo.DBRef `json:"subcategories"  bson:"subcategories"`
   Stories []mgo.DBRef `json:"stories"  bson:"stories"`

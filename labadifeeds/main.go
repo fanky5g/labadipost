@@ -4,6 +4,7 @@ import (
   // "time"
   "strconv"
   "os"
+  "log"
 )
 
 var (
@@ -25,15 +26,15 @@ func main() {
     JobQueue <- work
   }
 
-
   dispatcher := NewDispatcher(MaxWorker)
   dispatcher.Run()
+  select{}
 }
 
 func HandleError(err error) {
   if err != nil {
     // write logging mechanism here that will catch for errors
-    panic(err)
+    log.Println(err)
   }
 }
 

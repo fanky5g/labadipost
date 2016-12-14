@@ -78,8 +78,8 @@ func (cat *Category) HasSubcategory(subcategory string) (Subcategory, bool) {
   }
 
   for _, val := range cat.Subcategories {
-    err := conn.FindRef(&val).One(&sub)
-    if err.Error() != "not found" && err == nil {
+    err = conn.FindRef(&val).One(&sub)
+    if !IsEmpty(sub) && err == nil {
       if sub.Type == subcategory {
         found = true
         break
@@ -139,4 +139,18 @@ func FindSubcategory(subcategory string) (sub Subcategory, err error) {
     return sub, err
   }
   return sub, nil
+}
+
+func (sub *Subcategory) Save() error {
+  conn, err := ConnectMongo()
+  defer conn.Close()
+  if err != nil {
+    return err
+  }
+  c := conn.DB("labadifeeds").C("Subcategories")
+  err = c.Update(bson.M{"type": sub.Type}, sub)
+  if err != nil {
+    return err
+  }
+  return nil
 }

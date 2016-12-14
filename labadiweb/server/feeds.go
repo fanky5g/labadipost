@@ -167,7 +167,7 @@ func (api *API) UpdateSubcategoryImage(c echo.Context) error {
   }
 
   subcol := conn.DB("labadifeeds").C("Subcategories")
-  err = subcol.Update(bson.M{"_id": inputVars.Id}, bson.M{"image": inputVars.Image.Url})
+  err = subcol.Update(bson.M{"_id": inputVars.Id}, bson.M{"$set": bson.M{"image": inputVars.Image.Url}})
   if err != nil {
     if err.Error() == "not found" {
       c.Error(errors.New("Subcategory not found"))

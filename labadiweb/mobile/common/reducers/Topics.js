@@ -2,6 +2,7 @@ import Immutable from 'immutable';
 
 const defaultState = Immutable.Map({
   loading: false,
+  option: 'agency',
   data: [],
   loaded: false,
 });
@@ -18,6 +19,8 @@ const TopicsReducer = (state = defaultState, action) => {
   	  });
   	case 'GET_TOPICS_FAILURE':
   	  return state.set('loading', false);
+    case 'SET_OPTION':
+      return state.set('option', action.option);
   	default:
   	  return state;
   }

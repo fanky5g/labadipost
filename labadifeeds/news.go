@@ -35,10 +35,14 @@ func (f *Feed) SaveItems(parent string, prevItemMap map[string]struct{}) (itemRe
       item := newItems[i]
       id := bson.NewObjectId()
 
-      w, h, err := GetImageDimensions(item.Image)
-      if err != nil {
-        return itemRefs, err
-      }
+      // w, h, err := GetImageDimensions(item.Image)
+
+      // if err != nil {
+      //   return itemRefs, err
+      // }
+      // skip fetching images to save data in local environment
+      w := 0
+      h := 0
 
       news := &News{
         Item: &rss.Item{

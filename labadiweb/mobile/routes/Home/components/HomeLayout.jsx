@@ -4,10 +4,15 @@ import { connect } from '#node_modules/react-redux';
 import { provideHooks } from '#node_modules/redial';
 import { getStories } from '../actions';
 import { getTopics } from '#common/actions/Topics';
+import TopicSelect from './TopicSelect';
 
 class RootComponent extends Component {
   static contextTypes = {
     router: PropTypes.object.isRequired,
+  };
+
+  static propTypes = {
+    isAuthenticated: PropTypes.bool,
   };
 
   state = {
@@ -109,23 +114,38 @@ class RootComponent extends Component {
 
   render() {
     const { nestedRouteActive } = this.state;
-    const { stories, cursor, topics } = this.props;
+    const { stories, cursor, isAuthenticated } = this.props;
+    const isBrowsing = false;
 
     return (
-      <div id="app" className="fill" style={this.getAppStyles()} ref="pageContainer">
+      <div id="app" style={this.getAppStyles()} ref="pageContainer">
         {
           nestedRouteActive &&
           <div className="fill">
             {this.props.children}
           </div>
         }
-        <div className="fill" id="surface">
-          <div style={this.getBoundStyle()}>
-            <div className="fill">
-              <Home goToURL={this.visitNestedRoute} stories={stories} />
+        {
+          (!isAuthenticated || !isBrowsing) &&
+          <div
+            className="fill vbox valign overflow-scroll"
+            style={{
+              background: '#fff',
+              color: '#333',
+            }}>
+            <TopicSelect />
+          </div>
+        }
+        {
+          (isAuthenticated || isBrowsing) &&
+          <div className="fill" id="surface">
+            <div style={this.getBoundStyle()}>
+              <div className="fill">
+                <Home goToURL={this.visitNestedRoute} stories={stories} />
+              </div>
             </div>
           </div>
-        </div>
+        }
       </div>
     );
   }
@@ -150,7 +170,6 @@ const hooks = {
 };
 
 const mapStateToProps = (state) => ({
-  topics: state.Topics.toJSON().data,
   stories: state.Stories.toJSON().data,
   cursor: state.Stories.toJSON().cursor,
 });

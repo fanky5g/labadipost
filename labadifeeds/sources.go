@@ -73,6 +73,20 @@ func (s *Source) Get() {
     feed, err := rss.Fetch(s.URL)
     HandleError(err)
     if err == nil {
+      if s.Category.Agency == "" {
+        s.Category.Agency = s.Agency
+        s.Category.AgencyImage = feed.Image.Url
+        err = s.Category.Save()
+        HandleError(err)
+      }
+
+      if s.Subcategory.Agency == "" {
+        s.Subcategory.Agency = s.Agency
+        s.Subcategory.AgencyImage = feed.Image.Url
+        err = s.Subcategory.Save()
+        HandleError(err)
+      }
+
       f := NewFeed(feed, s.Agency, s.Category, s.Subcategory)
       f.Save(s.PrevItemMap)
 

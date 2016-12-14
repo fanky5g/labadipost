@@ -24,8 +24,8 @@ func NewWorker(workerPool chan chan Job) Worker {
 
 func (w *Worker) Start() {
   go func() {
+    w.WorkerPool <- w.JobChannel
     for {
-      w.WorkerPool <- w.JobChannel
       select {
         case job := <-w.JobChannel:
           go func() {
@@ -33,9 +33,11 @@ func (w *Worker) Start() {
             if reflect.TypeOf(payload).String() == "main.Source" {
               source := payload.(Source)
               source.Get()
+              w.WorkerPool <- w.JobChannel
             } else if reflect.TypeOf(payload).String() == "main.Feed" {
               feed := payload.(Feed)
               feed.SaveUpdates()
+              w.WorkerPool <- w.JobChannel
             }
           }()
         case <-w.quit:

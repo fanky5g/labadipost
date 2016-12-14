@@ -149,7 +149,12 @@ export default class Home extends Component {
     const size = this.getSize();
 
     return (
-      <Surface top={0} left={0} width={size.width} height={size.height} id="surface">
+      <Surface
+        top={0}
+        left={0}
+        width={1080}
+        height={1680}
+        id="surface" style={{width: `${size.width}px`, height: `${size.height}px`}}>
         <ListView
           style={this.getListViewStyle()}
           snapping={true}

@@ -13,7 +13,7 @@ services:
       REDIS_URL: redis://redis
       RABBITMQ_URL: amqp://rabbitmq
       MONGO_URL: mongo
-      MAX_WORKERS: 10
+      MAX_WORKERS: 4
       MAX_QUEUE: 100000
     command: /bin/sh -c "go build && ./labadifeeds"
 

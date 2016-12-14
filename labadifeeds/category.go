@@ -40,8 +40,9 @@ func FindCategory(category string) (cat models.Category, err error) {
     return cat, err
   }
 
-  c := conn.DB("labadipost").C("Categories")
+  c := conn.DB("labadifeeds").C("Categories")
   err = c.Find(bson.M{"name": category}).One(&cat)
+
   if err != nil {
     return cat, err
   }

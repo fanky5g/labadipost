@@ -26,6 +26,26 @@
       height: 24px;
     }
 
+    .vbox.valign {
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+    }
+
+    .overflow-scroll {
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .vbox {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+    }
+
     .fill {
         position: absolute;
         left: 0;
