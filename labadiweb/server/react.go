@@ -79,7 +79,6 @@ func (r *React) Handle(c echo.Context) error {
     validateErr := userClaims.Valid()
     isAuthenticated = validateErr == nil
   }
-  
 
 	defer func() {
 		if r := recover(); r != nil {

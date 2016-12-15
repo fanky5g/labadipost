@@ -5,8 +5,6 @@ import(
   "gopkg.in/mgo.v2/bson"
   "gopkg.in/mgo.v2"
   "github.com/labstack/echo"
-  "github.com/icza/minquery"
-  "strconv"
   "errors"
 )
 
@@ -92,51 +90,6 @@ func (api *API) GetAllCategories(c echo.Context) error {
 type NewsReturn struct {
   Cursor string `json:"cursor"`
   News []models.News `json:"stories"`
-}
-
-func (api *API) GetNews(c echo.Context) error{
-  l := c.QueryParam("limit")
-  cursor := c.QueryParam("cursor")
-
-  var limit int
-
-  if l != "" {
-    count, err := strconv.Atoi(l)
-    if err != nil {
-      limit = 50
-    }
-    limit = count
-  } else {
-    limit = 50
-  }
-
-  conn, err := ConnectMongo()
-  defer conn.Close()
-  if err != nil {
-    return err
-  }
-
-  q := minquery.New(conn.DB("labadifeeds"), "Stories", nil).Sort("title", "_id").Limit(limit)
-
-  if cursor != "" {
-    q = q.Cursor(cursor)
-  }
-
-  var stories []models.News
-  newCursor, err := q.All(&stories, "_id")
-
-  if err != nil {
-    c.Error(err)
-    return nil
-  }
-
-  newsArray := NewsReturn{
-    Cursor: newCursor,
-    News: stories,
-  }
-
-  c.JSON(200, newsArray)
-  return nil
 }
 
 type UploadImage struct {

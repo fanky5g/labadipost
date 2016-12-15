@@ -21,6 +21,26 @@ const TopicsReducer = (state = defaultState, action) => {
   	  return state.set('loading', false);
     case 'SET_OPTION':
       return state.set('option', action.option);
+    case 'SELECT_SUBCATEGORY':
+      return state.update('data', arr => {
+        return arr.update(arr.findIndex((item) => {
+          return item.get('id') == action.parentId;
+        }), cat => cat.update('subcategories', subcat =>
+          subcat.update(subcat.findIndex(sub =>
+            sub.get('id') === action.id
+          ), s => s.set('selected', true))
+        ));
+      });
+    case 'DESELECT_SUBCATEGORY':
+      return state.update('data', arr => {
+        return arr.update(arr.findIndex((item) => {
+          return item.get('id') == action.parentId;
+        }), cat => cat.update('subcategories', subcat =>
+          subcat.update(subcat.findIndex(sub =>
+            sub.get('id') === action.id
+          ), s => s.set('selected', false))
+        ));
+      });
   	default:
   	  return state;
   }

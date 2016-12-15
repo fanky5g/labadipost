@@ -2,15 +2,37 @@ import React, { Component } from '#node_modules/react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setOption } from '#common/actions/Topics';
+import groupBy from '#node_modules/lodash/groupBy';
+import Subgroup from './Subgroup';
+import { disableSelectState, savePrefs } from '#common/actions/Prefs';
+import Avatar from '#common/components/Avatar';
+import { getButtonChromelessStyles, getButtonStyles } from '#lib/commonStyles';
 
 class TopicSelect extends Component {
   state = {
     options: ['agency', 'type'],
   };
 
+  componentWillMount() {
+    global.addEventListener('resize', this.handleViewportResize, true);
+  }
+
+  componentWillReceiveProps(nextProps) {
+  	const { topics, selectState } = nextProps;
+  	if (selectState) {
+  	  setTimeout(() => {
+  	  	this.enableSelectCountMatch();
+  	  }, 500);
+  	}
+  }
+
+  handleViewportResize = () => {
+    this.forceUpdate();
+  };
+
   getTopicStyles = () => {
     return {
-      background: '#f7f7f7',
+      background: '#fff',
       height: this.getSize().height,
     };
   };
@@ -20,17 +42,13 @@ class TopicSelect extends Component {
       display: 'flex',
       flex: '1 100%',
       justifyContent: 'center',
-      padding: '20px 5px',
+      padding: '5px',
     };
   };
 
-  getSize = () => {
-    return document.getElementById("main").getBoundingClientRect();
-  };
-
   getOptionButtonStyle = (opt, index) => {
-  	const { option } = this.props;
-  	const isActive = opt == option;
+    const { option } = this.props;
+    const isActive = opt == option;
     return {
       flex: '1 1',
       borderTop: `2px solid ${isActive ? '#BE0100' : 'silver'}`,
@@ -38,14 +56,14 @@ class TopicSelect extends Component {
       borderLeft: index == 0 ? `2px solid ${isActive ? '#BE0100' : 'silver'}` : 0,
       borderRight: index == 0 ? `2px solid #BE0100` : `2px solid ${isActive ? '#BE0100' : 'silver'}`,
       color: `${isActive ? '#BE0100' : 'silver'}`,
-      padding: '10px 0',
+      padding: '5px 0',
       textAlign: 'center',
       textTransform: 'capitalize',
       cursor: 'pointer',
-      borderTopLeftRadius: index == 0 ? '10px' : 0,
-      borderBottomLeftRadius: index == 0 ? '10px' : 0,
-      borderTopRightRadius: index == 1 ? '10px' : 0,
-      borderBottomRightRadius: index == 1 ? '10px' : 0,
+      borderTopLeftRadius: index == 0 ? '5px' : 0,
+      borderBottomLeftRadius: index == 0 ? '5px' : 0,
+      borderTopRightRadius: index == 1 ? '5px' : 0,
+      borderBottomRightRadius: index == 1 ? '5px' : 0,
       background: '#fff',
       transition: 'border-color .5s ease',
     };
@@ -57,45 +75,197 @@ class TopicSelect extends Component {
   };
 
   collectSubcategories = () => {
-    const { topics } = this.props;
+    const { topics, option } = this.props;
     const subcategories = topics.reduce((prev, curr) => {
-      return curr.subcategories && curr.subcategories.length ? prev.concat(curr.subcategories) : prev;
+      return curr.subcategories && curr.subcategories.length ?
+        prev.concat(curr.subcategories.map(subcat => ({
+          ...subcat,
+          category: curr.name,
+          categoryId: curr.id,
+        }))) : prev;
     }, []);
 
-    return subcategories;
+    if (option == 'type') {
+      return groupBy(subcategories, 'category');
+    } else {
+      return groupBy(subcategories, 'agency');
+    }
+  };
+
+  enableSelectCountMatch = () => {
+  	const { topics, dispatch } = this.props;
+    const subcategories = topics.reduce((prev, curr) => {
+      return curr.subcategories && curr.subcategories.length ?
+        prev.concat(curr.subcategories.map(subcat => ({
+          ...subcat,
+          category: curr.name,
+          categoryId: curr.id,
+        }))) : prev;
+    }, []);
+
+    const selectCount = subcategories.reduce((prev, curr) => {
+      return curr && curr.selected ? ++prev : prev;
+    }, 0);
+    
+    if (selectCount == 0) {
+      dispatch(disableSelectState());
+    }
+  };
+
+  getHeaderStyles = () => {
+    return {
+      width: '95%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'space-around',
+      paddingLeft: '8px',
+      paddingTop: '4px',
+    };
+  };
+
+  getContentStyles = () => {
+    const headerHeight = 36;
+    const selectHeight = 42;
+    const bottomOptions = 42;
+    const topMargin = 16;
+    const effectiveHeight = this.getSize().height - (headerHeight + selectHeight + bottomOptions + topMargin);
+
+
+    return {
+      height: `${effectiveHeight}px`,
+      width: `${this.getSize().width + 20}px`,
+      margin: '1em 0 0',
+    };
+  };
+
+  getLinkStyle = () => {
+    const buttonChromelessStyle = getButtonChromelessStyles();
+    return Object.assign(buttonChromelessStyle, {
+      lineHeight: '30px!important',
+      height: '32px!important',
+    });
+  };
+
+  getSize = () => {
+    return document.getElementById("main").getBoundingClientRect();
+  };
+
+  goToLogin = () => {
+
+  };
+
+  getActionButtonStyles = () => {
+    const chromeless = getButtonChromelessStyles();
+    // #3BA9EE #BE0100
+    return Object.assign(chromeless, {
+      display: 'flex',
+      flex: '1 100%',
+      background: 'silver',
+      color: '#BE0100',
+      justifyContent: 'center',
+      height: '42px',
+      textTransform: 'uppercase',
+      fontWeight: 600,
+    });
+  };
+
+  explore = () => {
+    const { prefs, dispatch } = this.props;
+    if (prefs.length) {
+      dispatch(savePrefs(prefs));
+    }
   };
 
   render() {
-  	const { topics, option, dispatch } = this.props;
-  	const { options } = this.state;
-  	// const subcategories = this.collectSubcategories();
-  	console.log(this.collectSubcategories())
+    const { topics, option, dispatch, loading, isAuthenticated, prefsLoading } = this.props;
+    const { options } = this.state;
+    const subgroups = this.collectSubcategories();
 
-  	return (
+    return (
       <div style={this.getTopicStyles()}>
-        <div style={this.getSelectStyle()}>
-          {
-          	options.map((opt, index) => {
-          	  return (
-                <a
-                  style={this.getOptionButtonStyle(opt, index)}
-                  key={index}
-                  onClick={() => this.setOptionType(opt)}
+        <div style={this.getHeaderStyles()}>
+          <img src="images/logo.png" />
+          <div>
+              {
+                isAuthenticated &&
+                <div>
+                  <Avatar />
+                </div>
+              }
+              {
+                !isAuthenticated &&
+                <span
+                  onClick={this.goToLogin}
+                  style={this.getLinkStyle()}
                 >
-                  {`By ${opt}`}
-                </a>
-          	  );
-          	})
-          }
+                  Sign in
+                </span>
+              }
+            </div>
         </div>
+        {
+        	(loading || prefsLoading) &&
+          <div className="loader">
+				    <svg viewBox="0 0 32 32" width="32" height="32">
+				      <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
+				    </svg>
+				  </div>
+        }
+        {
+          !loading && !prefsLoading &&
+          <div style={this.getSelectStyle()}>
+            {
+          	  options.map((opt, index) => {
+          	    return (
+                  <a
+                    style={this.getOptionButtonStyle(opt, index)}
+                    key={index}
+                    onClick={() => this.setOptionType(opt)}
+                  >
+                    {`By ${opt}`}
+                  </a>
+          	    );
+          	  })
+            }
+          </div>
+        }
+        {
+          !loading && !prefsLoading &&
+          <div className="vbox overflow-scroll" style={this.getContentStyles()}>
+	          {
+	          	Object.keys(subgroups).length > 0 &&
+	          	Object.keys(subgroups).map((key, index) => {
+	          	  const group = subgroups[key];
+	              return (
+	                <div key={index}>
+	                  <div style={{textAlign: 'center', width: '100%'}}>
+	                  	<span style={{textTransform: 'uppercase', fontSize: '16px', fontWeight: '500'}}>{key}</span>
+	                  </div>
+	                  <Subgroup group={group} option={option} screen={this.getSize()}/>
+	                </div>
+	              );
+	          	})
+	          }
+        	</div>
+        }
+        {
+        	!loading && !prefsLoading &&
+        	<div style={{maxHeight: '42px', display: 'flex', flex: '100%'}}>
+	          <button style={this.getActionButtonStyles()} onClick={this.explore}>{`${isAuthenticated ? 'Save Preferences' : 'Explore'}`}</button>
+	        </div>
+        }
       </div>
-  	);
+    );
   }
 }
 
 const mapStateToProps = (state) => ({
+  selectState: state.Prefs.get('selectState'),
+  loading: state.Topics.get('loading'),
+  prefsLoading: state.Prefs.get('loading'),
   option: state.Topics.toJSON().option,
   topics: state.Topics.toJSON().data,
+  prefs: state.Prefs.toJSON().prefs,
 });
 
 export default connect(mapStateToProps)(TopicSelect);

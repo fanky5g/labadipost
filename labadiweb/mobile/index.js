@@ -10,21 +10,22 @@ import browserHistory from '#node_modules/react-router/lib/browserHistory';
 import match from '#node_modules/react-router/lib/match';
 import useScroll from '#node_modules/scroll-behavior/lib/useStandardScroll';
 import { trigger } from '#node_modules/redial';
+import { getCookie } from "#lib/cookie";
 
-const token = window.localStorage.getItem('token');
-const user = window.localStorage.getItem('user');
-let initialState = {};
-if (user) {
-  const state = {
-    Account: {
-      user: JSON.parse(user),
-      isAuthenticated: true,
-      token: JSON.parse(token),
-    },
-  };
+const token = window.localStorage.getItem('token') || 'null';
+const user = window.localStorage.getItem('user') || '{}';
+const hasPrefs = getCookie("prefs-storage") !== null;
 
-  initialState = immutifyState(state);
-}
+let initialState = immutifyState({
+  Account: {
+    user: JSON.parse(user),
+    isAuthenticated: user !== '{}',
+    token: JSON.parse(token),
+  },
+  Prefs: {
+    hasPrefs: hasPrefs,//set hasprefs no if its first user login
+  },
+});
 
 const client = new ApiClient();
 const history = useScroll(() => browserHistory)();
@@ -85,7 +86,8 @@ function loadDeps(components, locals) {
   } else {
     fetch = trigger('fetch', components, locals);
   }
-  fetch.then(() => { return trigger('defer', components, locals); });
+  fetch.then(() => {
+    return trigger('defer', components, locals); });
 }
 
 render();

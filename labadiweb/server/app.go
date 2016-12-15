@@ -6,7 +6,6 @@ import (
 	"net/http"
   "strings"
   "os"
-  "fmt"
 
 	"github.com/itsjamie/go-bindata-templates"
   "github.com/nu7hatch/gouuid"
@@ -129,6 +128,13 @@ func NewApp(opts ...AppOptions) *App {
     ),
   )
 
+  PrefRoutes := &PrefRoutes{}
+  PrefRoutes.Bind(
+    app.Engine.Group(
+      app.Conf.UString("api.prefix"),
+    ),
+  )
+
 	// Create file http server from bindata
 	fileServerHandler := http.FileServer(&assetfs.AssetFS{
 		Asset:     Asset,
@@ -152,7 +158,7 @@ func NewApp(opts ...AppOptions) *App {
             c.Request().(*standard.Request).Request)
           return nil
         }
-        fmt.Println(c.Request().URI()[1:])
+
         // if static file not found check if client is mobile
         ua := c.Request().Header().Get("User-Agent")
         isMobile := CheckIsMobile(ua)

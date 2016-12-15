@@ -22,7 +22,7 @@ const TopicsReducer = (state = defaultState, action) => {
           return item.get('id') == action.parentId;
         }), cat => cat.update('subcategories', subcat =>
           subcat.update(subcat.findIndex(sub =>
-            subcat.id === action.id
+            sub.get('id') === action.id
           ), s => s.set('isUpdating', true))
         ));
       });
@@ -32,7 +32,7 @@ const TopicsReducer = (state = defaultState, action) => {
           return item.get('id') == action.parentId;
         }), cat => cat.update('subcategories', subcat =>
           subcat.update(subcat.findIndex(sub =>
-            subcat.id === action.id
+            sub.get('id') === action.id
           ), s => s.merge({
             isUpdating: false,
             image: action.imgSrc,

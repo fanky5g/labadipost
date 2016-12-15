@@ -114,8 +114,7 @@ class RootComponent extends Component {
 
   render() {
     const { nestedRouteActive } = this.state;
-    const { stories, cursor, isAuthenticated } = this.props;
-    const isBrowsing = false;
+    const { stories, cursor, isAuthenticated, hasPrefs } = this.props;
 
     return (
       <div id="app" style={this.getAppStyles()} ref="pageContainer">
@@ -126,18 +125,18 @@ class RootComponent extends Component {
           </div>
         }
         {
-          (!isAuthenticated || !isBrowsing) &&
+          !hasPrefs &&
           <div
-            className="fill vbox valign overflow-scroll"
+            className="fill"
             style={{
               background: '#fff',
               color: '#333',
             }}>
-            <TopicSelect />
+            <TopicSelect isAuthenticated={isAuthenticated} />
           </div>
         }
         {
-          (isAuthenticated || isBrowsing) &&
+          (isAuthenticated || hasPrefs) &&
           <div className="fill" id="surface">
             <div style={this.getBoundStyle()}>
               <div className="fill">
@@ -170,6 +169,7 @@ const hooks = {
 };
 
 const mapStateToProps = (state) => ({
+  hasPrefs: state.Prefs.get('hasPrefs'),
   stories: state.Stories.toJSON().data,
   cursor: state.Stories.toJSON().cursor,
 });

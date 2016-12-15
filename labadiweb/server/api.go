@@ -8,6 +8,7 @@ import (
 
 type API struct{}
 type AuthRoutes struct{}
+type PrefRoutes struct{}
 
 // Bind attaches api routes
 func (api *API) Bind(group *echo.Group) {
@@ -25,13 +26,7 @@ func (api *API) Bind(group *echo.Group) {
   group.GET("/v1/oauth/twitter/callback", api.TwitterOauthCallback)
 
   group.GET("/v1/feeds/categories", api.GetAllCategories)
-  group.GET("/v1/feeds/news", api.GetNews)
   group.PUT("/v1/feeds/subcategory", api.UpdateSubcategoryImage)
-
-  group.GET("/v1/election2016/parlc", api.GetParliamentaryByConstituency)
-  group.GET("/v1/election2016/prec", api.GetPresidentialCandidates)
-  group.POST("/v1/election2016/report", api.SubmitResult)
-  group.GET("/v1/election2016/constituencies", api.GetConstituencies)
 }
 
 // ConfHandler handle the app config, for example
@@ -65,7 +60,6 @@ func (api *API) ActivateUser(c echo.Context) error {
   return nil
 }
 
-
 func (api *AuthRoutes) Bind(group *echo.Group) {
   group.Use(api.AuthMiddleware)
   group.GET("/v1/firstauth", api.GetFirst)
@@ -75,4 +69,10 @@ func (api *AuthRoutes) GetFirst(c echo.Context) error {
   u := c.Get("user")
   c.JSON(200, u)
   return nil
+}
+
+func (api *PrefRoutes) Bind(group *echo.Group) {
+  group.Use(api.BaseMiddleware)
+  group.POST("/v1/feeds/prefs", api.SaveUserPrefs)
+  group.GET("/v1/feeds/news", api.GetNews)
 }

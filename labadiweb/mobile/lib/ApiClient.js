@@ -2,7 +2,7 @@ import request from 'axios';
 
 const methods = ['get', 'post', 'put', 'patch', 'delete'];
 
-function formatUrl(path) {
+export  function formatUrl(path) {
   const adjustedPath = `http://labadipost.com/api/v1${path[0] !== '/' ? '/': ''}${path}`;
   // Prepend `/api` to relative URL, to proxy to API server.
   return adjustedPath;
