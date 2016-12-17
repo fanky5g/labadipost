@@ -1,10 +1,13 @@
 import React, { Component, PropTypes } from '#node_modules/react';
 import Icon from '#common/components/Icon';
-import { constructOv, disposeOv, replaceOv } from '#common/actions/Overlay';
+import { disposeOv } from '#common/actions/Overlay';
 import Login from '#routes/Login';
 import OverlayComponent from '#common/components/OverlayComponent';
 import { connect } from '#node_modules/react-redux';
-
+import { getCookie } from "#lib/cookie";
+import { getLoggedUser } from '#routes/Account/actions';
+import { provideHooks } from 'redial';
+import { getPrefs } from '#common/actions/Prefs';
 
 /* eslint global-require: "off" */
 // move this to require.ensure block for root
@@ -19,66 +22,25 @@ class App extends Component {
     };
   };
 
+  getSize = () => {
+    return document.getElementById("main").getBoundingClientRect();
+  };
+
   disposeOverlay = () => {
     const { dispatch } = this.props;
     dispatch(disposeOv());
   };
 
-  constructOverlay = ({comp, props}) => {
-    const { dispatch } = this.props;
-    dispatch(constructOv({
-      component: comp,
-      props,
-    }));
-  };
-
-  replaceOvComponent = ({comp, props}) => {
-    const { dispatch } = this.props;
-    dispatch(replaceOv({
-      component: comp,
-      props,
-    }));
-  };
-
-  goToLogin = () => {
-    const Header = React.createClass({
-      render() {
-        return (
-          <h3 className="overlay-title">
-            <div>
-              <span>
-                logo
-              </span>
-            </div>
-          </h3>
-        );
-      },
-    });
-
-    this.constructOverlay({
-      comp: Login,
-      props: {
-        classes: 'overlay-dialog--signin',
-        headerComponent: Header,
-        replaceOverlay: this.replaceOvComponent,
-      }
-    });
-  };
-
-  getSize = () => {
-    return document.getElementById("main").getBoundingClientRect();
-  };
-
   render() {
-    const {isAuthenticated, overlay: { ovActive, ovComponent, ovProps}} = this.props;
+    const {isAuthenticated, overlay: { ovActive, ovComponent, ovProps}, loading} = this.props;
 
     return (
       <div id="app" className="fill" style={this.getAppStyles()} ref="pageContainer">
         {ovActive && <OverlayComponent component={ovComponent} isActive={ovActive} props={ovProps} dispose={this.disposeOverlay} />}
         {
           React.cloneElement(this.props.children, {
-            goToLogin: this.goToLogin,
             isAuthenticated: isAuthenticated,
+            loading,
           })
         }
       </div>
@@ -86,9 +48,29 @@ class App extends Component {
   }
 }
 
+const hooks = {
+  defer: ({dispatch, store: {getState}}) => {
+    const promises = [];
+    const jwtCookie = getCookie("jwt-storage");
+    const isAuthenticated = getState().Account.get('isAuthenticated');
+    const prefsLoaded = getState().Prefs.get('loaded');
+
+    if (jwtCookie && !isAuthenticated) {
+      promises.push(dispatch(getLoggedUser()));
+    }
+
+    if (!prefsLoaded) {
+      promises.push(dispatch(getPrefs()));
+    }
+
+    return Promise.all(promises);
+  },
+};
+
 const mapStateToProps = (state) => ({
+  loading: state.Account.get('loading') || state.Prefs.get('loading') || state.Topics.get('loading') || state.Stories.get('loading'),
   isAuthenticated: state.Account.toJSON().isAuthenticated,
   overlay: state.Overlay.toJSON(),
 });
 
-export default connect(mapStateToProps)(App);
+export default provideHooks(hooks)(connect(mapStateToProps)(App));

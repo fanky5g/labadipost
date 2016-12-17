@@ -2,6 +2,7 @@ import Immutable from 'immutable';
 
 const defaultState = Immutable.Map({
 	loading: false,
+  loaded: false,
   selectState: false,
   hasPrefs: false,
   prefs: [],
@@ -36,6 +37,17 @@ const PrefsReducer = (state = defaultState, action) => {
   	  });
   	case 'SAVE_PREFS_FAILURE':
   	  return state.set('loading', false);
+    case 'GET_PREFS_REQUEST':
+      return state.set('loading', true);
+    case 'GET_PREFS':
+      return state.merge({
+        prefs: action.res.data || [],
+        loaded: true,
+        loading: false,
+        hasPrefs: Array.isArray(action.res.data) && action.res.data.length ? true : false,
+      });
+    case 'GET_PREFS_FAILURE':
+      return state.set('loading', false);
   	default:
   	  return state;
   }

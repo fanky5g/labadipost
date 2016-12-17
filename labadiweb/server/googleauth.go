@@ -91,7 +91,7 @@ func (api *API) GoogleOauthCallback(c echo.Context) error {
       GoogleToken: token,
     }
     if err := user.Save(); err == nil {
-      clientLocation = clientLocation + "?nu=1"
+      // do nothing for now
     }
   }
   

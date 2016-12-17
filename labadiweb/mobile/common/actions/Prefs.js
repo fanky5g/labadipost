@@ -36,3 +36,10 @@ export function savePrefs(prefs) {
       });
   };
 }
+
+export function getPrefs() {
+  return {
+    type: 'GET_PREFS',
+    promise: (client) => client.get('/feeds/prefs'),
+  };
+}

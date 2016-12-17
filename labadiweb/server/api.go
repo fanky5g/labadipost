@@ -62,17 +62,28 @@ func (api *API) ActivateUser(c echo.Context) error {
 
 func (api *AuthRoutes) Bind(group *echo.Group) {
   group.Use(api.AuthMiddleware)
-  group.GET("/v1/firstauth", api.GetFirst)
+  group.GET("/v1/auth/user", api.GetUser)
 }
 
-func (api *AuthRoutes) GetFirst(c echo.Context) error {
+func (api *AuthRoutes) GetUser(c echo.Context) error {
   u := c.Get("user")
-  c.JSON(200, u)
+  token := c.Get("token")
+
+  out := struct{
+    User Claims `json:"user"`
+    Token string `json:"token"`
+  }{
+    User: u.(Claims),
+    Token: token.(string),
+  }
+
+  c.JSON(200, out)
   return nil
 }
 
 func (api *PrefRoutes) Bind(group *echo.Group) {
   group.Use(api.BaseMiddleware)
   group.POST("/v1/feeds/prefs", api.SaveUserPrefs)
+  group.GET("/v1/feeds/prefs", api.GetPrefs)
   group.GET("/v1/feeds/news", api.GetNews)
 }

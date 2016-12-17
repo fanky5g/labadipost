@@ -7,12 +7,7 @@ import LogoFacebook from '#common/components/LogoFacebook';
 import LogoGPlus from '#common/components/LogoGPlus';
 import LogoTwitter from '#common/components/LogoTwitter';
 import Signup from '#routes/Signup';
-
-const Header = React.createClass({
-  render() {
-    return (<h3 className="overlay-title">Sign up to Labadipost</h3>);
-  }
-});
+import { getButtonStyles } from '#lib/commonStyles';
 
 class Login extends Component {
   static propTypes = {
@@ -35,25 +30,7 @@ class Login extends Component {
     };
   }
 
-  goToSignup = () => {
-    const { replaceOverlay } = this.props;
-    replaceOverlay({
-      comp: Signup,
-      props: {
-        classes: 'overlay-dialog--signup',
-        headerComponent: Header,
-        replaceOverlay: replaceOverlay
-      },
-    });
-  };
-
   onFieldChanged = evt => this.setState({ [evt.target.name]: evt.target.value });
-
-  onSubmit = (evt) => {
-    // evt.preventDefault();
-    // const { dispatch } = this.props;
-    // dispatch(login(this.state));
-  };
 
   clearMessage = () => {};
 
@@ -63,52 +40,121 @@ class Login extends Component {
     window.location = dest;
   };
 
+  getLoginHeaderStyle = () => {
+    return {
+      display: 'inherit',
+      textAlign: 'center',
+      textTransform: 'uppercase',
+      marginBottom: '10px',
+      lineHeight: '30px!important',
+      height: '32px!important',
+    };
+  };
+
+  getSocialButtonStyles = () => {
+    return {
+      display: 'flex',
+      WebkitJustifyContent: 'space-between',
+      MsFlexPack: 'justify',
+      justifyContent: 'space-between',
+      WebkitAlignItems: 'center',
+      MsFlexAlign: 'center',
+      alignItems: 'center',
+    };
+  };
+
+  getSocialLinkStyle = () => {
+    return {
+      position: 'relative',
+      display: 'inline-block',
+      color: '#fff',
+      cursor: 'pointer',
+      height: '50px',
+      width: '32.5%',
+      display: 'inline-flex',
+      WebkitJustifyContent: 'center',
+      MsFlexPack: 'center',
+      justifyContent: 'center',
+      WebkitAlignItems: 'center',
+      MsFlexAlign: 'center',
+      alignItems: 'center',
+      height: '40px',
+    };
+  };
+
+  getInputStyle = () => {
+    return {
+      color: '#333',
+      fontWeight: 500,
+      fontSize: '16px',
+      lineHeight: '22px',
+      backgroundColor: '#fbfbfb',
+      padding: '10px',
+      marginBottom: '10px',
+      width: '100%',
+      WebkitBoxSizing: 'border-box',
+      MozBoxSizing: 'border-box',
+      MsBoxSizing: 'border-box',
+      boxSizing: 'border-box',
+      borderColor: '#f7f7f7',
+    };
+  };
+
   render() {
     return (
-      <div className="Login">
-        <span className="login-header l-lineHeight30 l-height32">Sign in to Labadipost via</span>
-        <div className="Login__container">
-          <div className="social-buttons">
-            <a className="facebook-login" onClick={() => this.startOauth('http://labadipost.com/api/v1/oauth/fb')}>
+      <div>
+        <span style={this.getLoginHeaderStyle()}>Sign in to Labadipost via</span>
+        <div style={{position: 'relative'}}>
+          <div style={this.getSocialButtonStyles()}>
+            <a
+              style={{...this.getSocialLinkStyle(), background: '#3B5999'}}
+              onClick={() => this.startOauth('http://labadipost.com/api/v1/oauth/fb')}>
               <LogoFacebook />
             </a>
-            <a className="twitter-login" onClick={() => this.startOauth('http://labadipost.com/api/v1/oauth/twitter')}>
-              <LogoTwitter />
+            <a
+              style={{...this.getSocialLinkStyle(), background: '#3BA9EE'}}
+              onClick={() => this.startOauth('http://labadipost.com/api/v1/oauth/twitter')}>
+              <LogoTwitter style={{height: '15px'}}/>
             </a>
-            <a className="google-login" onClick={() => this.startOauth('http://labadipost.com/api/v1/oauth/google')}>
+            <a
+              style={{...this.getSocialLinkStyle(), background: '#DC4A38'}}
+              onClick={() => this.startOauth('http://labadipost.com/api/v1/oauth/google')}>
               <LogoGPlus />
             </a>
           </div>
-          <form className="Login__container--body" onSubmit={this.onSubmit}>
-            <div className="Login__container--body-inputfield">
-              <Textfield
-                label="Username/Email"
-                floatingLabel
+          <form style={{padding: '10px 0'}} onSubmit={this.onSubmit}>
+            <div>
+              <input
+                placeholder="Username/Email"
+                style={this.getInputStyle()}
                 onChange={this.onFieldChanged}
                 required
                 name="email"
               />
             </div>
-            <div className="Login__container--body-inputfield">
-              <Textfield
-                label="Password"
-                floatingLabel
+            <div>
+              <input
+                placeholder="Password"
+                style={this.getInputStyle()}
                 type="password"
                 name="password"
                 onChange={this.onFieldChanged}
                 required
               />
             </div>
-            <div className="Login__container--body-submit">
-              <Button raised ripple>Sign In</Button>
+            <div>
+              <button style={{
+                  ...getButtonStyles(),
+                  width: '100%',
+                  background: '#09c',
+                  color: '#fff',
+                  textTransform: 'none',
+                  borderRadius: 0,
+              }}>
+                Sign In
+              </button>
             </div>
           </form>
-          <button
-            className="button button--primary button--large button--chromeless button--link l-marginTop15 l-marginAuto l-block"
-            onClick={this.goToSignup}
-          >
-            Sign up with email
-          </button>
         </div>
       </div>
     );

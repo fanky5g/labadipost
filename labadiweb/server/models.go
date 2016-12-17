@@ -12,9 +12,9 @@ type Admin struct {
 
 type User struct {
   Id        bson.ObjectId `json:"id"  bson:"_id,omitempty"`
-  GId       string        `json:"id"`
-  FbId      string        `json:"id"`
-  TwitterId string        `json:"id"`
+  GId       string        `json:"gid"  bson:"gid,omitempty"`
+  FbId      string        `json:"fbid" bson:"fbid,omitempty"`
+  TwitterId string        `json:"twittid"   bson:"twittid,omitempty"`
   Username  string        `json:"username"`
   Password  string        `json:"-"`
   OauthToken AccessToken  `json:"oauthtoken"`

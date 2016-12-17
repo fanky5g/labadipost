@@ -8,7 +8,6 @@ import (
   "github.com/labstack/echo/engine/standard"
   "github.com/icza/minquery"
   "strconv"
-  "strings"
   "encoding/gob"
 )
 
@@ -21,7 +20,10 @@ type Pref struct {
 type Prefs []Pref
 
 type PrefModel struct {
-  UID bson.ObjectId `json:"uid"  bson:"uid"`
+  UID bson.ObjectId `json:"uid"  bson:"uid,omitempty"`
+  FbId string `json:"fbid"  bson:"fbid"`
+  GId string `json:"gid"  bson:"gid"`
+  TwitterId string `json:"twittid"  bson:"twittid"`
   Provider string `json:"provider"  bson:"provider"`
   Prefs Prefs `json:"prefs"  bson:"prefs"`
 }
@@ -39,15 +41,15 @@ func (api *PrefRoutes) SaveUserPrefs(c echo.Context) error {
     return nil
   }
 
-  var user *Claims
+  var user Claims
   activeUser := c.Get("user")
   if activeUser != nil {
-    user = activeUser.(*Claims)
-  } else {
-    user = nil
+    user = activeUser.(Claims)
   }
 
-  if user == nil {
+  //@todo:user already has prefs for whatever reason-> remove all previous prefs
+
+  if isEmpty(user) {
     // save user preferences to session
     store, err := GetRedisStore()
     defer store.Close()
@@ -79,6 +81,9 @@ func (api *PrefRoutes) SaveUserPrefs(c echo.Context) error {
   prefcol := conn.DB("labadipost").C("Preferences")
   objToSave := PrefModel{
     UID: user.Id,
+    FbId: user.FbId,
+    GId: user.GId,
+    TwitterId: user.TwitterId,
     Provider: user.StandardClaims.Issuer,
     Prefs: prefBody,
   }
@@ -110,11 +115,11 @@ func (api *PrefRoutes) GetNews(c echo.Context) error{
     limit = 50
   }
 
-  //@todo:getuserprefs should also check prefs database
-  prefs, err := GetUserPrefs(c)
-  if err != nil {
-    c.Error(err)
-    return nil
+  var prefs *Prefs
+  p := c.Get("prefs")
+
+  if p != nil {
+    prefs = p.(*Prefs)
   }
 
   conn, err := ConnectMongo()
@@ -124,8 +129,7 @@ func (api *PrefRoutes) GetNews(c echo.Context) error{
   }
 
   var q minquery.MinQuery
-
-  if !isEmpty(prefs) {
+  if prefs != nil {
     query := bson.M{}
     query["$or"] = []bson.M{}
 
@@ -140,6 +144,7 @@ func (api *PrefRoutes) GetNews(c echo.Context) error{
     
     q = minquery.New(conn.DB("labadifeeds"), "Stories", query).Sort("title", "_id").Limit(limit)
   } else {
+      //@todo::fetch posts based on user timezone
       q = minquery.New(conn.DB("labadifeeds"), "Stories", nil).Sort("title", "_id").Limit(limit)
   }
 
@@ -166,68 +171,106 @@ func (api *PrefRoutes) GetNews(c echo.Context) error{
 
 func (api *PrefRoutes) BaseMiddleware(page echo.HandlerFunc) echo.HandlerFunc {
   return func(c echo.Context) error {
-    AuthHeader := c.Request().Header().Get("Authorization")
-
-    if len(AuthHeader) == 0 {
-      c.Set("user", nil)
-      return page(c)
-    }
-
-    //feels like hackery to get token..find a better way
-    token := strings.TrimSpace(strings.Split(string(AuthHeader[:]), "Bearer")[1])
-    claims, err := DecryptToken(token)
+    claims, err := UserFromContext(c)
 
     if err != nil {
-      errorMsg := struct {
-        Message string `json:"message"`
-      }{
-        Message: "unauthorized to access resource",
-      }
-      c.JSON(401, errorMsg)
+      c.Error(err)
       return nil
     }
 
-    c.Set("user", *claims)
+    if claims != nil {
+      c.Set("user", *claims)
+      // get user prefs and save to context
+      prefs, err := GetUserPrefs(c)
+      if err != nil {
+        c.Error(err)
+        return nil
+      }
+      c.Set("prefs", prefs)
+    }
+
+    if err == nil && claims == nil {
+      c.Set("user", nil)
+      prefs, err := GetUserPrefs(c)
+      if err != nil {
+        c.Error(err)
+        return nil
+      }
+      c.Set("prefs", prefs)
+    }
+
     return page(c)
   }
 }
 
-func UserHasPrefs(c echo.Context) bool {
-  store, err := GetRedisStore()
-  defer store.Close()
-  if err != nil {
-    return false
-  }
-
-  session, err := store.Get(c.Request().(*standard.Request).Request, "prefs-storage")
-  if err != nil {
-    return false
-  }
-
-  prefs := session.Values["user-prefs"]
-  
-  if ok := prefs != nil; ok {
-    return true
-  }
-  return false
+func (api *PrefRoutes) GetPrefs(c echo.Context) error{
+    prefs, err := GetUserPrefs(c)
+    if err != nil {
+      c.Error(err)
+      return nil
+    }
+    c.JSON(200, prefs)
+    return nil
 }
 
 func GetUserPrefs(c echo.Context) (prefs *Prefs, err error) {
-  store, err := GetRedisStore()
-  defer store.Close()
-  if err != nil {
-    return prefs, nil
+  //@todo:getuserprefs should also check prefs database
+  var user Claims
+  activeUser := c.Get("user")
+  if activeUser != nil {
+    user = activeUser.(Claims)
   }
-
-  session, err := store.Get(c.Request().(*standard.Request).Request, "prefs-storage")
-  if err != nil {
-    return prefs, nil
-  }
-
-  userPrefs := session.Values["user-prefs"]
   
-  if ok := userPrefs != nil; ok {
-    prefs = userPrefs.(*Prefs)
+  if isEmpty(user) {
+    // check if visitor has saved preferences earlier
+    store, err := GetRedisStore()
+    defer store.Close()
+    if err != nil {
+      return prefs, nil
+    }
+
+    session, err := store.Get(c.Request().(*standard.Request).Request, "prefs-storage")
+    if err != nil {
+      return prefs, nil
+    }
+
+    userPrefs := session.Values["user-prefs"]
+  
+    if ok := userPrefs != nil; ok {
+      prefs = userPrefs.(*Prefs)
+    } else {
+      prefs = nil
+    }
+  } else {
+    conn, err := ConnectMongo()
+    if err != nil {
+      return prefs, err
+    }
+
+    var p PrefModel
+    var q *mgo.Query
+
+    prefcol := conn.DB("labadipost").C("Preferences")
+
+    if user.Id.Valid() {
+      q = prefcol.Find(bson.M{"uid": user.Id})
+    } else if user.FbId != "" {
+      q = prefcol.Find(bson.M{"fbid": user.FbId, "provider": "https://facebook.com"})
+    } else if user.GId != "" {
+      q = prefcol.Find(bson.M{"gid": user.GId, "provider": "https://google.com"})
+    } else if user.TwitterId != "" {
+      q = prefcol.Find(bson.M{"twittid": user.TwitterId, "provider": "https://twitter.com"})
+    }
+    
+    err = q.One(&p)
+    if err != nil && err.Error() != "not found" {
+      return nil, err
+    }
+    if len(p.Prefs) > 0 {
+      prefs = &p.Prefs
+    } else {
+      prefs = nil
+    }
   }
 
   return

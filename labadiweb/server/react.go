@@ -50,34 +50,11 @@ func NewReact(filePath string, debug bool, server http.Handler) *React {
 // handler or other middlewares.
 func (r *React) Handle(c echo.Context) error {
 	UUID := c.Get("uuid").(*uuid.UUID)
-  
-  //get session
-  store, err := GetRedisStore()
-  defer store.Close()
-  if err != nil {
+
+	userClaims, jwt, isAuthenticated, err := getLoggedUser(c)
+  if err != nil{
     c.Error(err)
     return nil
-  }
-
-  session, err := store.Get(c.Request().(*standard.Request).Request, "jwt-storage")
-  if err != nil {
-    c.Error(err)
-    return nil
-  }
-
-  var userClaims *Claims
-  var isAuthenticated bool
-
-  jwt := session.Values["auth-token"]
-  
-  if ok := jwt != nil; ok {
-    userClaims, err = DecryptToken(jwt.(string))
-
-    if err != nil {
-      c.Error(err)
-    }
-    validateErr := userClaims.Valid()
-    isAuthenticated = validateErr == nil
   }
 
 	defer func() {

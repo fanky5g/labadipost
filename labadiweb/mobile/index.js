@@ -11,19 +11,16 @@ import match from '#node_modules/react-router/lib/match';
 import useScroll from '#node_modules/scroll-behavior/lib/useStandardScroll';
 import { trigger } from '#node_modules/redial';
 import { getCookie } from "#lib/cookie";
+import { parseQueryString } from '#lib/helpers';
 
 const token = window.localStorage.getItem('token') || 'null';
 const user = window.localStorage.getItem('user') || '{}';
-const hasPrefs = getCookie("prefs-storage") !== null;
 
 let initialState = immutifyState({
   Account: {
     user: JSON.parse(user),
     isAuthenticated: user !== '{}',
     token: JSON.parse(token),
-  },
-  Prefs: {
-    hasPrefs: hasPrefs,//set hasprefs no if its first user login
   },
 });
 

@@ -1,7 +1,7 @@
 import React, { Component } from '#node_modules/react';
 import ReactCanvas from '#node_modules/react-canvas';
 import Page from './Page';
-// import articles from '../data';
+import articles from '../data';
 
 const Surface = ReactCanvas.Surface;
 const ListView = ReactCanvas.ListView;
@@ -104,15 +104,14 @@ export default class Home extends Component {
   renderPage = (pageIndex, scrollTop) => {
     const { stories } = this.props;
     var size = this.getSize();
-    var news = stories[pageIndex % stories.length];
+    var article = stories[pageIndex];
     var pageScrollTop = pageIndex * this.getPageHeight() - scrollTop;
-    this.pageScrollTop = pageScrollTop;
 
     return (
       <Page
         width={size.width}
         height={size.height}
-        article={news}
+        article={article}
         pageIndex={pageIndex}
         scrollTop={pageScrollTop} />
     );

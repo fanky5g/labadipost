@@ -5,7 +5,6 @@ import { setOption } from '#common/actions/Topics';
 import groupBy from '#node_modules/lodash/groupBy';
 import Subgroup from './Subgroup';
 import { disableSelectState, savePrefs } from '#common/actions/Prefs';
-import Avatar from '#common/components/Avatar';
 import { getButtonChromelessStyles, getButtonStyles } from '#lib/commonStyles';
 
 class TopicSelect extends Component {
@@ -112,17 +111,6 @@ class TopicSelect extends Component {
     }
   };
 
-  getHeaderStyles = () => {
-    return {
-      width: '95%',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'space-around',
-      paddingLeft: '8px',
-      paddingTop: '4px',
-    };
-  };
-
   getContentStyles = () => {
     const headerHeight = 36;
     const selectHeight = 42;
@@ -138,20 +126,8 @@ class TopicSelect extends Component {
     };
   };
 
-  getLinkStyle = () => {
-    const buttonChromelessStyle = getButtonChromelessStyles();
-    return Object.assign(buttonChromelessStyle, {
-      lineHeight: '30px!important',
-      height: '32px!important',
-    });
-  };
-
   getSize = () => {
     return document.getElementById("main").getBoundingClientRect();
-  };
-
-  goToLogin = () => {
-
   };
 
   getActionButtonStyles = () => {
@@ -177,42 +153,14 @@ class TopicSelect extends Component {
   };
 
   render() {
-    const { topics, option, dispatch, loading, isAuthenticated, prefsLoading } = this.props;
+    const { topics, option, dispatch, loading, isAuthenticated } = this.props;
     const { options } = this.state;
     const subgroups = this.collectSubcategories();
 
     return (
       <div style={this.getTopicStyles()}>
-        <div style={this.getHeaderStyles()}>
-          <img src="images/logo.png" />
-          <div>
-              {
-                isAuthenticated &&
-                <div>
-                  <Avatar />
-                </div>
-              }
-              {
-                !isAuthenticated &&
-                <span
-                  onClick={this.goToLogin}
-                  style={this.getLinkStyle()}
-                >
-                  Sign in
-                </span>
-              }
-            </div>
-        </div>
         {
-        	(loading || prefsLoading) &&
-          <div className="loader">
-				    <svg viewBox="0 0 32 32" width="32" height="32">
-				      <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
-				    </svg>
-				  </div>
-        }
-        {
-          !loading && !prefsLoading &&
+          !loading &&
           <div style={this.getSelectStyle()}>
             {
           	  options.map((opt, index) => {
@@ -230,7 +178,7 @@ class TopicSelect extends Component {
           </div>
         }
         {
-          !loading && !prefsLoading &&
+          !loading &&
           <div className="vbox overflow-scroll" style={this.getContentStyles()}>
 	          {
 	          	Object.keys(subgroups).length > 0 &&
@@ -249,7 +197,7 @@ class TopicSelect extends Component {
         	</div>
         }
         {
-        	!loading && !prefsLoading &&
+        	!loading &&
         	<div style={{maxHeight: '42px', display: 'flex', flex: '100%'}}>
 	          <button style={this.getActionButtonStyles()} onClick={this.explore}>{`${isAuthenticated ? 'Save Preferences' : 'Explore'}`}</button>
 	        </div>
@@ -261,8 +209,6 @@ class TopicSelect extends Component {
 
 const mapStateToProps = (state) => ({
   selectState: state.Prefs.get('selectState'),
-  loading: state.Topics.get('loading'),
-  prefsLoading: state.Prefs.get('loading'),
   option: state.Topics.toJSON().option,
   topics: state.Topics.toJSON().data,
   prefs: state.Prefs.toJSON().prefs,

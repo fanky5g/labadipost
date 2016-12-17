@@ -94,11 +94,11 @@ func (api *API) FbOauthCallback(c echo.Context) error {
   if oauthUser == nil {
     user.OauthToken = AccessToken{
       Provider: "facebook",
-      Id: user.TwitterId,
+      Id: user.FbId,
       FbToken: token,
     }
     if err := user.Save(); err == nil {
-      clientLocation = clientLocation + "?nu=1"
+      // do nothing for now
     }
   }
 

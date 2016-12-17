@@ -4,7 +4,8 @@ const LogoTwitter = () => (
   <svg
     className="twitter-login"
     viewBox="328 355 335 276"
-    xmlns="http://www.w3.org/2000/svg">
+    xmlns="http://www.w3.org/2000/svg"
+    >
     <path d="
       M 630, 425
       A 195, 195 0 0 1 331, 600

@@ -124,7 +124,7 @@ func (api *API) TwitterOauthCallback(c echo.Context) error {
       TwitterToken: accessToken,
     }
     if err := user.Save(); err == nil {
-      clientLocation = clientLocation.(string) + "?nu=1"
+      // clientLocation = clientLocation.(string) + "?nu=1"//do nothing for now
     }
   }
 

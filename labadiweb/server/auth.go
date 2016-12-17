@@ -18,12 +18,15 @@ import (
 
 var mySigningKey = []byte(os.Getenv("JWT_KEY"))
 type Claims struct {
-  Username  string `json:"username"`
-  Email string `json:"email"`
-  Firstname  string `json:"firstname"`
-  Lastname string `json:"lastname"`
-  Avatar string   `json:"avatar"`
-  Id  bson.ObjectId  `json:"id"`
+  Username  string `json:"username"  bson:"username"`
+  Email string `json:"email"  bson:"email"`
+  Firstname  string `json:"firstname"  bson:"firstname"`
+  Lastname string `json:"lastname"  bson:"lastname"`
+  Avatar string   `json:"avatar"  bson:"avatar"`
+  Id  bson.ObjectId  `json:"id"  bson:"_id,omitempty"`
+  FbId string  `json:"fbid"  bson:"fbid"`
+  TwitterId string `json:"twittid" bson:"twittid"`
+  GId string `json:"gid"  bson:"gid"`
   jwt.StandardClaims
 }
 
@@ -63,6 +66,7 @@ func (user *User) GenerateJWTToken(issuer string) (string, error) {
   expireToken := time.Now().Add(time.Hour * 24).Unix()
 
   /* Set token claims */
+
   claims := Claims {
     Username: user.Username,
     Email: user.Email,
@@ -70,6 +74,9 @@ func (user *User) GenerateJWTToken(issuer string) (string, error) {
     Lastname: user.Lastname,
     Avatar: user.Avatar,
     Id: user.Id,
+    FbId: user.FbId,
+    TwitterId: user.TwitterId,
+    GId: user.GId,
     StandardClaims: jwt.StandardClaims {
         ExpiresAt: expireToken,
         Issuer:    issuer,
@@ -186,33 +193,88 @@ func LoginAdmin(c echo.Context, conn *mgo.Session, details *Details) error {
 func (api *AuthRoutes) AuthMiddleware(protectedPage echo.HandlerFunc) echo.HandlerFunc {
   return func(c echo.Context) error {
     AuthHeader := c.Request().Header().Get("Authorization")
+    AuthCookie , err := c.Cookie("jwt-storage")
 
-    if len(AuthHeader) == 0 {
+    if err != nil && err.Error() != "cookie not found" {
+      c.Error(err)
+      return nil
+    }
+
+    if AuthHeader == "" && err != nil &&  err.Error() == "cookie not found" {
       errorMsg := struct {
         Message string `json:"message"`
       }{
         Message: "unauthorized to access resource",
       }
       c.JSON(400, errorMsg)
-    }
-
-    //feels like hackery to get token..find a better way
-    token := strings.TrimSpace(strings.Split(string(AuthHeader[:]), "Bearer")[1])
-    claims, err := DecryptToken(token)
-
-    if err != nil {
-      errorMsg := struct {
-        Message string `json:"message"`
-      }{
-        Message: "unauthorized to access resource",
-      }
-      c.JSON(401, errorMsg)
       return nil
     }
 
+    var claims *Claims
+    var token string
+
+    if AuthHeader != "" {
+      token = strings.TrimSpace(strings.Split(string(AuthHeader[:]), "Bearer")[1])
+      claims, err = DecryptToken(token)
+
+      if err != nil {
+        errorMsg := struct {
+          Message string `json:"message"`
+        }{
+          Message: "unauthorized to access resource",
+        }
+        c.JSON(401, errorMsg)
+        return nil
+      }
+    } else if AuthCookie.Value() != "" {
+      claims, token, _, err = getLoggedUser(c)
+      if err != nil {
+        errorMsg := struct {
+          Message string `json:"message"`
+        }{
+          Message: "unauthorized to access resource",
+        }
+        c.JSON(401, errorMsg)
+        return nil
+      }
+    }
+
     c.Set("user", *claims)
+    c.Set("token", token)
     return protectedPage(c)
   }
+}
+
+func UserFromContext(c echo.Context) (*Claims, error) {
+  AuthHeader := c.Request().Header().Get("Authorization")
+  AuthCookie , err := c.Cookie("jwt-storage")
+
+  if err != nil && err.Error() != "cookie not found" {
+    return nil, err
+  }
+
+  if AuthHeader == "" && err != nil &&  err.Error() == "cookie not found" {
+    return nil, nil
+  }
+
+  var claims *Claims
+  var token string
+
+  if AuthHeader != "" {
+    token = strings.TrimSpace(strings.Split(string(AuthHeader[:]), "Bearer")[1])
+    claims, err = DecryptToken(token)
+
+    if err != nil {
+      return nil, err
+    }
+  } else if AuthCookie.Value() != "" {
+    claims, token, _, err = getLoggedUser(c)
+    if err != nil {
+      return nil, err
+    }
+  }
+
+  return claims, nil
 }
 
 func (api *API) Logout(c echo.Context) error {

@@ -5,6 +5,11 @@ import { provideHooks } from '#node_modules/redial';
 import { getStories } from '../actions';
 import { getTopics } from '#common/actions/Topics';
 import TopicSelect from './TopicSelect';
+import uniqBy from '#node_modules/lodash/uniqBy';
+import Logo from '#common/components/Logo';
+import BaseHeader from '#common/components/BaseHeader';
+import Login from '#routes/Login';
+import { constructOv, replaceOv } from '#common/actions/Overlay';
 
 class RootComponent extends Component {
   static contextTypes = {
@@ -19,6 +24,13 @@ class RootComponent extends Component {
     canvasActive: true,
     nestedRouteActive: false,
   };
+
+  componentWillReceiveProps(nextProps) {
+    const { storiesLoaded, hasPrefs, dispatch, loading } = nextProps;
+    if (hasPrefs && !storiesLoaded && !loading) {
+      dispatch(getStories());
+    }
+  }
 
   getTransitionStyle = () => {
     const { canvasActive } = this.state;
@@ -102,28 +114,68 @@ class RootComponent extends Component {
     }
   };
 
-    //   -webkit-transition-duration: 280ms;
-    // transition-duration: 280ms;
-    // -webkit-transform: translateY(0px);
-    // transform: translateY(0px);
-    // opacity: 1;
-    // padding-bottom: 78px;
-    // overflow: auto;
-    // /* overflow-x: hidden; */
-    // -webkit-overflow-scrolling: touch;
+  goToLogin = () => {
+    const Header = React.createClass({
+      render() {
+        return (
+          <div>
+            <span
+              style={{
+                marginBottom: 0,
+                display: 'block',
+                backgroundColor: '#f0f0f0',
+                padding: '24px 24px 24px',
+                fontSize: '18px',
+                color: 'rgba(0, 0, 0, .8)',
+              }}>
+              <Logo style={{
+                width: '64px',
+                height: '64px',
+              }}/>
+            </span>
+          </div>
+        );
+      },
+    });
+
+    this.constructOverlay({
+      comp: Login,
+      props: {
+        headerComponent: Header,
+        replaceOverlay: this.replaceOvComponent,
+      }
+    });
+  };
+
+  constructOverlay = ({comp, props}) => {
+    const { dispatch } = this.props;
+    dispatch(constructOv({
+      component: comp,
+      props,
+    }));
+  };
+
+  replaceOvComponent = ({comp, props}) => {
+    const { dispatch } = this.props;
+    dispatch(replaceOv({
+      component: comp,
+      props,
+    }));
+  };
+
+  getLogoStyles = () => {
+    return {
+      display: 'inline-block',
+      lineHeight: '85px',
+      height: '85px',
+    };
+  };
 
   render() {
     const { nestedRouteActive } = this.state;
-    const { stories, cursor, isAuthenticated, hasPrefs } = this.props;
-
+    const { stories, cursor, isAuthenticated, hasPrefs, loading } = this.props;
     return (
       <div id="app" style={this.getAppStyles()} ref="pageContainer">
-        {
-          nestedRouteActive &&
-          <div className="fill">
-            {this.props.children}
-          </div>
-        }
         {
           !hasPrefs &&
           <div
@@ -132,15 +184,32 @@ class RootComponent extends Component {
               background: '#fff',
               color: '#333',
             }}>
-            <TopicSelect isAuthenticated={isAuthenticated} />
+              <BaseHeader
+              goToLogin={this.goToLogin}
+              isAuthenticated={isAuthenticated} />
+              {!loading && <TopicSelect isAuthenticated={isAuthenticated} />}
           </div>
         }
         {
-          (isAuthenticated || hasPrefs) &&
+          loading &&
+          <div className="loader" style={{zIndex: 500}}>
+            <svg viewBox="0 0 32 32" width="32" height="32">
+              <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
+            </svg>
+          </div>
+        }
+        {
+          nestedRouteActive &&
+          <div className="fill">
+            {this.props.children}
+          </div>
+        }
+        {
+          ((isAuthenticated && hasPrefs) || hasPrefs) && stories.length > 0 &&
           <div className="fill" id="surface">
             <div style={this.getBoundStyle()}>
               <div className="fill">
-                <Home goToURL={this.visitNestedRoute} stories={stories} />
+                <Home goToURL={this.visitNestedRoute} stories={uniqBy(stories, 'title')} />
               </div>
             </div>
           </div>
@@ -152,13 +221,8 @@ class RootComponent extends Component {
 
 const hooks = {
   defer: ({dispatch, store: {getState}}) => {
-    const storiesLoaded = getState().Stories.get('loaded');
     const topicsLoaded = getState().Topics.get('loaded');
     const promises = [];
-
-    if (!storiesLoaded) {
-      promises.push(dispatch(getStories()));
-    }
 
     if (!topicsLoaded) {
       promises.push(dispatch(getTopics()));
@@ -170,6 +234,7 @@ const hooks = {
 
 const mapStateToProps = (state) => ({
   hasPrefs: state.Prefs.get('hasPrefs'),
+  storiesLoaded: state.Stories.get('loaded'),
   stories: state.Stories.toJSON().data,
   cursor: state.Stories.toJSON().cursor,
 });

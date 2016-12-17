@@ -12,6 +12,8 @@ import (
   "bufio"
   "github.com/streadway/amqp"
   "encoding/json"
+  "github.com/labstack/echo/engine/standard"
+  "github.com/labstack/echo"
 )
 
 // Must raises an error if it not nil
@@ -163,4 +165,37 @@ func BroadCastToQueue(name string, payload interface{}) error {
     return err
   }
   return nil
+}
+
+func getLoggedUser(c echo.Context) (*Claims, string, bool, error) {
+  var jwtString string
+
+  store, err := GetRedisStore()
+  defer store.Close()
+  if err != nil {
+    return nil, jwtString, false, err
+  }
+
+  session, err := store.Get(c.Request().(*standard.Request).Request, "jwt-storage")
+  if err != nil {
+    return nil, jwtString, false, err
+  }
+
+  var userClaims *Claims
+  var isAuthenticated bool
+
+  jwt := session.Values["auth-token"]
+
+  if ok := jwt != nil; ok {
+    userClaims, err = DecryptToken(jwt.(string))
+    jwtString = jwt.(string)
+
+    if err != nil {
+      return nil, jwtString, false, err
+    }
+
+    validateErr := userClaims.Valid()
+    isAuthenticated = validateErr == nil
+  }
+  return userClaims, jwtString, isAuthenticated, nil
 }

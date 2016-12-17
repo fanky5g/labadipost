@@ -65,6 +65,14 @@
         transform: translate(-50%, -50%);
     }
     
+    .centerContent:before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: -.25em;
+    }
+    
     .loader #spinner {
         box-sizing: border-box;
         stroke: #BE0100;
@@ -134,10 +142,27 @@
     }
     </style>
     <script src="/mobile/touch-emulator.js"></script>
+    <script type="text/javascript">
+        if (window.location.hash && window.location.hash == '#_=_') {
+            if (window.history && history.pushState) {
+                window.history.pushState("", document.title, window.location.pathname);
+            } else {
+                // Prevent scrolling by storing the page's current scroll offset
+                var scroll = {
+                    top: document.body.scrollTop,
+                    left: document.body.scrollLeft
+                };
+                window.location.hash = '';
+                // Restore the scroll offset, should be flicker free
+                document.body.scrollTop = scroll.top;
+                document.body.scrollLeft = scroll.left;
+            }
+        }
+    </script>
     <script src="/mobile/svg4Everybody.js"></script>
     <script type="text/javascript">
-    TouchEmulator();
-    svg4everybody();
+        TouchEmulator();
+        svg4everybody();
     </script>
 </head>
 

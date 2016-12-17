@@ -2,16 +2,13 @@
 <!-- http://images.labadipost.com/display?url=https://cdn.pixabay.com/photo/2016/11/08/05/37/adult-1807554_960_720.jpg&w=500&h=300&op=resize&upscale=0 -->
 <!-- setup bundle loader and code splitting for webpack -> couldn't still achieve that coupled with maintaining ssr -->
 
-work on rss so that we always have some content to show - done
+fix posts still saving duplicates feeds on server
 finish admin changing of topics images - done - revisit later to add images for categories
-list categories and topics on client -> let user explore or sign-in to save choices
-code following concept serverside
-do initial page with subcategories(topics) shown to user to select which he wants and press go or to login and then save preferences for later
-allow user to login
-do following concept interface on mobile client
+list categories and topics on client -> let user explore or sign-in to save choices -> done preferences left user own
+code following concept serverside -> partially done, left user own
+allow user to login ->
 redo web client header
 do following concept on web client
-write mongodb extension function for dynamic queries injecting client prefs
 
 write auth into server
 setup nodejs microservice for cover story posting
