@@ -59,7 +59,8 @@ func (feed Feed) SaveUpdates() {
       HandleError(err)
     }
 
-    prevItemMap := make(map[string]struct{}) //make zero value previtemmap
+    // prevItemMap := make(map[string]struct{}) //make zero value previtemmap
+    previtemmap := feed.ItemMap
     feed.Save(prevItemMap)
 
     job := Job{

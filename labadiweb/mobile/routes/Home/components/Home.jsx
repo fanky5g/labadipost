@@ -140,8 +140,8 @@ export default class Home extends Component {
     return this.getSize().height;
   };
 
-  goToSettings = () => {
-    this.props.goToURL('election');
+  goToPrefs = () => {
+    this.props.goToURL('options');
   };
 
   render() {
@@ -162,8 +162,8 @@ export default class Home extends Component {
           numberOfItemsGetter={this.getNumberOfPages}
           itemHeightGetter={this.getPageHeight}
           itemGetter={this.renderPage} />
-          <UpperHButton style={{width: 24, height: 30, top: 10, left: x}} onClick={this.goToSettings} />
-          <LowerHButton style={{width: 24, height: 30, top: 10, left: x}} onClick={this.goToSettings} />
+          <UpperHButton style={{width: 24, height: 30, top: 10, left: x}} onClick={this.goToPrefs} />
+          <LowerHButton style={{width: 24, height: 30, top: 10, left: x}} onClick={this.goToPrefs} />
           <Logo />
       </Surface>
     );

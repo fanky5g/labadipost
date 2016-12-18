@@ -21,9 +21,9 @@ function getLinkStyle() {
   });
 }
 
-const BaseHeader = ({isAuthenticated, goToLogin}) => (
+const BaseHeader = ({isAuthenticated, goToLogin, showLogo}) => (
   <div style={getHeaderStyles()}>
-    <img src="images/logo.png" />
+    <img src={showLogo ? "images/logo.png": "images/blank.png"} style={{height: '32px', width: 'auto'}} />
     <div>
         {
           isAuthenticated &&

@@ -68,7 +68,7 @@ var Page = React.createClass({
   },
 
   getImageHeight: function () {
-    return Math.round(this.props.height * 0.5);
+    return Math.round(this.props.height * 0.45);
   },
 
   getImageStyle: function () {
