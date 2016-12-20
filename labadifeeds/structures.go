@@ -23,6 +23,7 @@ type Source struct {
   Agency string `json:"agency"  bson:"agency"`
   Refresh time.Time  `json:"refresh"  bson:"refresh"`
   PrevItemMap map[string]struct{}  `json:"previtems"  bson:"previtems"`
+  NItemMap []string  `json:"nItemMap" bson:"nItemMap"`
 }
 
 type Sources []Source

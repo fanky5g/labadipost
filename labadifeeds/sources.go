@@ -5,6 +5,7 @@ import (
   "github.com/asaskevich/govalidator"
   "github.com/Techdevt/rss"
   "gopkg.in/mgo.v2/bson"
+  // "gopkg.in/mgo.v2"
   "time"
   "fmt"
 )
@@ -48,11 +49,11 @@ func GetFeedSources() (feedSources Sources) {
           }
 
           source := Source {
-            URL: url,
+            URL: Trim(url),
             Include: include,
             Category: newCategory,
             Subcategory: sub,
-            Agency: agency,
+            Agency: Trim(agency),
             Refresh: refresh,
             PrevItemMap: make(map[string]struct{}),
           }
@@ -158,16 +159,20 @@ func (s *Source) Save() error {
   if err != nil {
     return err
   }
+
+  s.NItemMap = NormalizeItemMap(s.PrevItemMap)
+  s.PrevItemMap = make(map[string]struct{})
   
   c := conn.DB("labadifeeds").C("Sources")
-  err = c.Update(bson.M{"url": s.URL}, s)
+  err = c.Update(bson.M{"_id": s.Id}, s)
+
   if err != nil {
     return err
   }
   return nil
 }
 
-func GetAllSources() (feedSources Sources, err error){
+func GetAllSources() (feedSources Sources, err error) {
   conn, err := ConnectMongo()
   defer conn.Close()
   if err != nil {
@@ -175,7 +180,18 @@ func GetAllSources() (feedSources Sources, err error){
   }
 
   c := conn.DB("labadifeeds").C("Sources")
-  err = c.Find(nil).All(&feedSources)
+  var tempSources Sources
+  err = c.Find(nil).All(&tempSources)
+
+  if err != nil && err.Error() != "not found" {
+    return
+  }
+
+  for _, feedSource := range tempSources {
+    feedSource.PrevItemMap = DenormalizeItemMap(feedSource.NItemMap)
+    feedSource.NItemMap = []string{}
+    feedSources = append(feedSources, feedSource)
+  }
 
   return
 }

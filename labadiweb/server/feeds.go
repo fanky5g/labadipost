@@ -85,13 +85,6 @@ func (api *API) GetAllCategories(c echo.Context) error {
   return nil
 }
 
-
-// paginating news
-type NewsReturn struct {
-  Cursor string `json:"cursor"`
-  News []models.News `json:"stories"`
-}
-
 type UploadImage struct {
   Filename string `json:"filename"`
   Height int `json:"height"`

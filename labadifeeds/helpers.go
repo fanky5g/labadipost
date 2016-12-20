@@ -8,6 +8,7 @@ import (
   "os"
   "time"
   "reflect"
+  "strings"
 )
 
 func RedisConnect() redis.Conn {
@@ -58,4 +59,23 @@ func IsEmpty(object interface{}) bool {
         }
     }
     return false
+}
+
+func NormalizeItemMap(itemMap map[string]struct{}) (out []string) {
+  for id, _ := range itemMap {
+    out = append(out, id)
+  }
+  return
+}
+
+func DenormalizeItemMap(in []string) (out map[string]struct{}) {
+  out = make(map[string]struct{})
+  for _, k := range in {
+    out[k] = struct{}{}
+  }
+  return
+}
+
+func Trim(str string) string {
+  return strings.TrimSpace(str)
 }

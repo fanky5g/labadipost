@@ -29,7 +29,7 @@ func NewFeed(feed *rss.Feed, agency string, category models.Category, subcategor
       Unread: feed.Unread,
       FetchFunc: feed.FetchFunc,
     },
-    Agency: agency,
+    Agency: Trim(agency),
     Category: category,
     Subcategory: subRef,
   }
@@ -60,8 +60,20 @@ func (feed Feed) SaveUpdates() {
     }
 
     // prevItemMap := make(map[string]struct{}) //make zero value previtemmap
-    previtemmap := feed.ItemMap
-    feed.Save(prevItemMap)
+    prevItemMap := feed.ItemMap
+    source, err := FindSource(feed.UpdateURL)
+    if err != nil {
+      HandleError(err)
+    }
+
+    source.NItemMap = NormalizeItemMap(prevItemMap)
+    err = source.Save()
+    if err != nil {
+      HandleError(err)
+    }
+
+    err = feed.Save(prevItemMap)
+    HandleError(err)
 
     job := Job{
       Payload: Payload{

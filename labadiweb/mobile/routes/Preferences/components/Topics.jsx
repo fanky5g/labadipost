@@ -43,7 +43,7 @@ class Topics extends Component {
   render() {
     const { topics, dispatch, loading } = this.props;
     const subgroups = this.collectSubcategories();
-    console.log(loading);
+
     return (
       <div>
         {

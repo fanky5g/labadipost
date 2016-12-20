@@ -23,7 +23,6 @@ class RootComponent extends Component {
   state = {
     canvasActive: true,
     nestedRouteActive: false,
-    nestedRouteAnimating: false,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -112,7 +111,6 @@ class RootComponent extends Component {
 
   visitNestedRoute = (name) => {
     const { canvasActive, nestedRouteActive } = this.state;
-    if (nestedRouteActive) return null;
     const { router } = this.context;
 
     const restoreCanvas = () => {

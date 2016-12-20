@@ -34,6 +34,7 @@
     "linebreak": "^0.3.0",
     "lodash": "^4.17.2",
     "material-design-icons": "^3.0.1",
+    "moment": "^2.17.1",
     "object-assign": "^4.1.0",
     "react-canvas": "git+https://github.com/Techdevt/react-canvas.git#f207455b9f421ac999f23e23e2d6c4576ce4d900",
     "react-input-autosize": "^1.1.0",

@@ -14,7 +14,7 @@ func CreateCategory(category string, imageURL string) (newCat models.Category, e
     return newCat, err
   }
 
-  found, err := FindCategory(category)
+  found, err := FindCategory(Trim(category))
   if ok := err != nil && err.Error() != "not found"; ok {
     return newCat, err
   }
@@ -24,7 +24,7 @@ func CreateCategory(category string, imageURL string) (newCat models.Category, e
   }
 
   newCat = models.Category{
-    Name: category,
+    Name: Trim(category),
     Image: imageURL,
   }
   

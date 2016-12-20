@@ -99,6 +99,17 @@ func (api *PrefRoutes) SaveUserPrefs(c echo.Context) error {
   return nil
 }
 
+// paginating news
+type NewsReturn struct {
+  Cursor string `json:"cursor"`
+  News []Story `json:"stories"`
+}
+
+type Story struct {
+  models.News
+  Subcategory models.Subcategory `json:"subcategory"`
+}
+
 func (api *PrefRoutes) GetNews(c echo.Context) error{
   l := c.QueryParam("limit")
   cursor := c.QueryParam("cursor")
@@ -142,10 +153,10 @@ func (api *PrefRoutes) GetNews(c echo.Context) error{
       query["$or"] = append(query["$or"].([]bson.M), bson.M{"subcategory": ref})
     }
     
-    q = minquery.New(conn.DB("labadifeeds"), "Stories", query).Sort("title", "_id").Limit(limit)
+    q = minquery.New(conn.DB("labadifeeds"), "Stories", query).Sort("item.title").Limit(limit)
   } else {
       //@todo::fetch posts based on user timezone
-      q = minquery.New(conn.DB("labadifeeds"), "Stories", nil).Sort("title", "_id").Limit(limit)
+      q = minquery.New(conn.DB("labadifeeds"), "Stories", nil).Sort("item.title").Limit(limit)
   }
 
   if cursor != "" {
@@ -153,6 +164,7 @@ func (api *PrefRoutes) GetNews(c echo.Context) error{
   }
 
   var stories []models.News
+  var out []Story
   newCursor, err := q.All(&stories, "_id")
 
   if err != nil {
@@ -160,9 +172,27 @@ func (api *PrefRoutes) GetNews(c echo.Context) error{
     return nil
   }
 
+
+  if len(stories) > 0 {
+    for _, story := range stories {
+      var subcat models.Subcategory
+      err := conn.FindRef(&story.Subcategory).One(&subcat)
+      if err != nil {
+        c.Error(err)
+        return nil
+      }
+      s := Story{
+        News: story,
+        Subcategory: subcat,
+      }
+
+      out = append(out, s)
+    }
+  }
+
   newsArray := NewsReturn{
     Cursor: newCursor,
-    News: stories,
+    News: out,
   }
 
   c.JSON(200, newsArray)

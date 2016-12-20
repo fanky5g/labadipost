@@ -29,6 +29,7 @@ func (f *Feed) SaveItems(parent string, prevItemMap map[string]struct{}) (itemRe
     if err != nil {
       return itemRefs, err
     }
+
     c := conn.DB("labadifeeds").C("Stories")
 
     for i:=0; i<len(newItems); i++ {
@@ -73,8 +74,11 @@ func (f *Feed) SaveItems(parent string, prevItemMap map[string]struct{}) (itemRe
         "parent": news.Parent,
         "category": news.Category,
         "subcategory": news.Subcategory,
+        "agency": news.Agency,
+        "agencyimage": f.Feed.Image.Url,
+        "imagewidth": news.ImageWidth,
+        "imageheight": news.ImageHeight,
       })
-      err = c.Insert(news)
 
       if err != nil {
         return itemRefs, err
