@@ -8,8 +8,9 @@ const createRoutes = (store) => {
   const routes = (
     <Route component={App}>
       <Route path="/" getComponents={require('./Home').default(store)} name="Home">
-        <Route path="/options" getComponents={require('./Preferences').getComponents(store)} name="Preferences" />
+        <Route path="options" getComponents={require('./Preferences').getComponents(store)} name="Preferences" />
       </Route>
+      <Route name="Browse" path="browse/:topic" getComponents={require('./Browse').default(store)} />
       <Route name="Page not Found" path="*" getComponents={require('./NotFound').default(store)} />
     </Route>
   );

@@ -8,6 +8,8 @@ import { getCookie } from "#lib/cookie";
 import { getLoggedUser } from '#routes/Account/actions';
 import { provideHooks } from 'redial';
 import { getPrefs } from '#common/actions/Prefs';
+import { RouteTransition } from '#node_modules/react-router-transition';
+import * as presets from '#lib/transition';
 
 /* eslint global-require: "off" */
 // move this to require.ensure block for root
@@ -15,6 +17,10 @@ require('#node_modules/react-mdl/extra/material.min');
 // <Icon name="device/ic_access_alarm_24px" className="svg-24px" />
 
 class App extends Component {
+  static contextTypes = {
+    router: PropTypes.object.isRequired,
+  };
+
   getAppStyles = () => {
     return {
       background: '#f7f7f7',
@@ -31,18 +37,63 @@ class App extends Component {
     dispatch(disposeOv());
   };
 
+  getTransition = () => {
+    const { location: { state } } = this.props;
+    let transition;
+    if (state && state.hasOwnProperty('transition')) {
+      transition = presets[state.transition];
+    } else {
+      transition = presets.noTransition;
+    }
+    return transition;
+  };
+
+  goToUrl = (path, query, state, method) => {
+    const { router } = this.context;
+    if (method) {
+      router[method]({
+        pathname: path,
+        query,
+        state,
+      });
+      return;
+    }
+
+    router.push({
+      pathname: path,
+      query,
+      state,
+    });
+  };
+
+  getPathname = () => {
+    const allowedSubRoutes = ['/', '', 'options', '/options'];
+    if (allowedSubRoutes.indexOf(this.props.location.pathname) !== -1) {
+      return '/';
+    } else {
+      return this.props.location.pathname;
+    }
+  };
+
   render() {
     const {isAuthenticated, overlay: { ovActive, ovComponent, ovProps}, loading} = this.props;
+    const transition = this.getTransition();
 
     return (
       <div id="app" className="fill" style={this.getAppStyles()} ref="pageContainer">
         {ovActive && <OverlayComponent component={ovComponent} isActive={ovActive} props={ovProps} dispose={this.disposeOverlay} />}
-        {
-          React.cloneElement(this.props.children, {
-            isAuthenticated: isAuthenticated,
-            loading,
-          })
-        }
+        <RouteTransition
+          pathname={this.getPathname()}
+          {...transition}
+        >
+          {
+            React.cloneElement(this.props.children, {
+              isAuthenticated: isAuthenticated,
+              goToUrl: this.goToUrl,
+              loading,
+            })
+          }
+        </RouteTransition>
       </div>
     );
   }

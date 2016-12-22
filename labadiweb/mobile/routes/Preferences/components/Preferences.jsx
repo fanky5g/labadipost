@@ -32,9 +32,9 @@ class Preferences extends Component {
   };
 
 	render() {
-		const { user, followCount, goToLogin, loading } = this.props;
+		const { user, followCount, goToLogin, loading, goToUrl } = this.props;
     var isAuthenticated = false;
-    // {!loading && <Topics />}
+
 		return (
       <div className="fill" style={{background: '#000'}}>
         <div className="fill" style={{transition: '380ms', transform: 'translateY(-120px) scale(1, 1)'}} ref="animate">
@@ -51,69 +51,10 @@ class Preferences extends Component {
                     goToLogin={goToLogin}
                     showLogo={false}
                     isAuthenticated={isAuthenticated} />
-                  <div style={this.getTextStyle()}>{`Your favorite Newsfeeds(${followCount})`}</div>
+                  <div style={this.getTextStyle()}>{`Your favorite Newsfeeds(${followCount || 0})`}</div>
+                  {!loading && <Topics goToUrl={goToUrl} />}
                 </div>
               }
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
-              <h1>a page</h1>
             </div>
           </div>
         </div>

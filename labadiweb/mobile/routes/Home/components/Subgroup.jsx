@@ -48,8 +48,12 @@ class Subgroup extends Component {
   };
 
   itemPressed = (id, catId, selected) => {
-  	const { dispatch, selectState } = this.props;
-  	
+  	const { dispatch, selectState, clickAction } = this.props;
+
+    if (clickAction && typeof clickAction === "function") {
+      return;
+    }
+
   	if (!selectState && !selected) {
   	  dispatch(enableSelectState());
       dispatch(selectItem(id, catId));
@@ -59,8 +63,13 @@ class Subgroup extends Component {
   	}
   };
 
-  itemTapped = (id, catId) => {
-    const { dispatch, selectState } = this.props;
+  itemTapped = (id, catId, topic) => {
+    const { dispatch, selectState, clickAction } = this.props;
+
+    if (clickAction && typeof clickAction === "function") {
+      return clickAction(topic);
+    }
+
     if (selectState) {
       dispatch(selectItem(id, catId));
     }
@@ -91,7 +100,7 @@ class Subgroup extends Component {
               <Tappable
                 key={index}
                 onPress={() => this.itemPressed(entry.id, entry.categoryId, entry.selected)}
-                onTap={() => this.itemTapped(entry.id, entry.categoryId)}
+                onTap={() => this.itemTapped(entry.id, entry.categoryId, `${entry.category}@${entry.type}~${entry.id}`)}
                 pressDelay={300}
               >
 	              <div style={this.getEntryStyle(entry.selected)}>

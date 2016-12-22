@@ -102,7 +102,7 @@ export default class Home extends Component {
   };
 
   renderPage = (pageIndex, scrollTop) => {
-    const { stories } = this.props;
+    const { stories, nestedRouteActive } = this.props;
     var size = this.getSize();
     var article = stories[pageIndex];
     var pageScrollTop = pageIndex * this.getPageHeight() - scrollTop;
@@ -113,7 +113,8 @@ export default class Home extends Component {
         height={size.height}
         article={article}
         pageIndex={pageIndex}
-        scrollTop={pageScrollTop} />
+        scrollTop={pageScrollTop}
+        nestedRouteActive={nestedRouteActive} />
     );
   };
 
@@ -146,6 +147,7 @@ export default class Home extends Component {
 
   render() {
     const size = this.getSize();
+    const { showHamburger } = this.props;
 
     return (
       <Surface
@@ -162,8 +164,13 @@ export default class Home extends Component {
           numberOfItemsGetter={this.getNumberOfPages}
           itemHeightGetter={this.getPageHeight}
           itemGetter={this.renderPage} />
-          <UpperHButton style={{width: 24, height: 30, top: 10, left: x}} onClick={this.goToPrefs} />
-          <LowerHButton style={{width: 24, height: 30, top: 10, left: x}} onClick={this.goToPrefs} />
+          {
+            showHamburger &&
+            <Group>
+              <UpperHButton style={{width: 24, height: 30, top: 10, left: x}} onClick={this.goToPrefs} />
+              <LowerHButton style={{width: 24, height: 30, top: 10, left: x}} onClick={this.goToPrefs} />
+            </Group>
+          }
           <Logo />
       </Surface>
     );

@@ -10,10 +10,10 @@ var measureText = ReactCanvas.measureText;
 
 var CONTENT_INSET = 14;
 var TEXT_SCROLL_SPEED_MULTIPLIER = 0.6;
-var TEXT_ALPHA_SPEED_OUT_MULTIPLIER = 1.25;
+var TEXT_ALPHA_SPEED_OUT_MULTIPLIER = 1.5;
 var TEXT_ALPHA_SPEED_IN_MULTIPLIER = 2.6;
 var IMAGE_LAYER_INDEX = 2;
-var TEXT_LAYER_INDEX = 1;
+var TEXT_LAYER_INDEX = 3;
 
 var Page = React.createClass({
 
@@ -80,18 +80,21 @@ var Page = React.createClass({
     categoryTextStyle.width = this.categoryTextMetrics.width;
     categoryTextStyle.top = categoryTextStyle.top + (this.agencyTextMetrics.height - 0.5 * CONTENT_INSET);
 
+    const arrSubcatName = article.subcategory.type.split(":");
+    const subcatName = arrSubcatName.length > 1 ? arrSubcatName[1] : arrSubcatName[0];
+
     return (
-      <Group style={groupStyle}>
+      <Group style={groupStyle} onClick={this.visitLink}>
         <Image style={imageStyle} src={`http://images.labadipost.com/display?url=${article.image}&op=noop`} fadeIn={true} useBackingStore={true} />
         <Group style={metaStyle} useBackingStore={true}>
           <Group style={subcatStyle}>
             <Text style={subcatLabelStyle}>From</Text>
-            <Text style={subcatTextStyle}>{article.subcategory.type}</Text>
+            <Text style={subcatTextStyle}>{subcatName}</Text>
           </Group>
           <Text style={timeAgoStyle}>{timeAgo(article.date)}</Text>
         </Group>
         <Group style={agencyMetaStyle} useBackingStore={true}>
-          <Image style={agencyImageStyle} src={`http://images.labadipost.com/display?url=${article.agencyImage}&op=resize&w=48&h=48`} useBackingStore={true} />
+          <Image style={agencyImageStyle} src={`http://images.labadipost.com/display?url=${article.agencyImage}&op=resize&w=48&h=48`} fadeIn={true} useBackingStore={true} />
           <Text style={agencyTextStyle}>{article.agency}</Text>
           <Text style={categoryTextStyle}>{article.category.name}</Text>
         </Group>
@@ -101,6 +104,12 @@ var Page = React.createClass({
         </Group>
       </Group>
     );
+  },
+
+  visitLink: function() {
+    const { article, nestedRouteActive } = this.props;
+    if (nestedRouteActive) return;
+    window.open(article.link, "_blank");
   },
 
   // Styles
@@ -165,7 +174,7 @@ var Page = React.createClass({
       fontFace: FontFace('-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif', null, {weight: 400}),
       fontSize: 14,
       color: '#333',
-      lineHeight: 22,
+      lineHeight: 24,
     };
   },
 
@@ -179,7 +188,7 @@ var Page = React.createClass({
       fontFace: FontFace('-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif', null, {weight: 400}),
       fontSize: 14,
       color: '#09c',
-      lineHeight: 22,
+      lineHeight: 24,
     };
   },
 
@@ -276,7 +285,7 @@ var Page = React.createClass({
       width: this.props.width - 2 * CONTENT_INSET,
       fontFace: FontFace('-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif'),
       fontSize: 15,
-      lineHeight: 23
+      lineHeight: 23,
     };
   },
 
@@ -298,7 +307,7 @@ var Page = React.createClass({
       left: 0,
       alpha: alpha,
       translateY: translateY,
-      zIndex: TEXT_LAYER_INDEX
+      zIndex: TEXT_LAYER_INDEX,
     };
   }
 

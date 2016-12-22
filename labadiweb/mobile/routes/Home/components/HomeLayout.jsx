@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from '#node_modules/react';
+import ReactDOM from 'react-dom';
 import Home from './Home';
 import { connect } from '#node_modules/react-redux';
 import { provideHooks } from '#node_modules/redial';
@@ -20,8 +21,38 @@ class RootComponent extends Component {
     isAuthenticated: PropTypes.bool,
   };
 
+  componentWillMount() {
+    const { router } = this.context;
+    const canvasActive = router.isActive('/', true);
+    const nestedRouteActive = !canvasActive;
+    this.setState({canvasActive, nestedRouteActive});
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    const { nestedRouteActive, canvasActive } = nextState;
+
+    if (canvasActive == false && nestedRouteActive == true) {
+      const { router } = this.context;
+      const c = router.isActive('/', true);
+      const n = !canvasActive;
+
+      if  (c !== canvasActive || n !== nestedRouteActive) {
+        this.setState({canvasActive: c, nestedRouteActive: n});
+      }
+    }
+  }
+
+  componentDidMount() {
+    this.setState({mounted: true});
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('popstate', this.popStateEventListener);
+  }
+
   state = {
-    canvasActive: true,
+    canvasActive: false,
+    mounted: false,
     nestedRouteActive: false,
   };
 
@@ -32,19 +63,8 @@ class RootComponent extends Component {
     }
   }
 
-  componentDidMount() {
-    const { location } = this.props;
-    const nestedRoute = location.pathname.split("/")[1];
-
-    if (nestedRoute !== "") {
-      setTimeout(() => {
-        this.visitNestedRoute(nestedRoute);
-      }, 1000);
-    }
-  }
-
   getTransitionStyle = () => {
-    const { canvasActive } = this.state;
+    const { nestedRouteActive } = this.state;
 
     const size = this.getSize();
     let translateTo = 0;
@@ -60,17 +80,15 @@ class RootComponent extends Component {
       transform: `translate(0px, ${to}px) scale(1, 1)`,
     });
 
-    if (canvasActive) {
+    if (!nestedRouteActive) {
       translateTo = size.height - 48;
-      this.setState({
-       canvasActive: false,
-      });
+      this.setState({ nestedRouteActive: true});
       return baseTransition(translateTo);
     }
 
-    if (!canvasActive) {
+    if (nestedRouteActive) {
       this.setState({
-       canvasActive: true,
+       nestedRouteActive: false,
       });
       return baseTransition(translateTo);
     }
@@ -98,14 +116,34 @@ class RootComponent extends Component {
   };
 
   toggleClearCanvas = () => {
-    const { canvasActive, nestedRouteActive } = this.state;
+    const { nestedRouteActive, mounted } = this.state;
     const canvasSurface = document.getElementById("surface");
+    if (!canvasSurface || !mounted) return;
+
     Object.assign(canvasSurface.style, this.getTransitionStyle());
 
-    if (!canvasActive) {
+    if (nestedRouteActive) {
       setTimeout(() => {
         canvasSurface.removeAttribute('style');
       }, 480);
+    }
+  };
+
+
+
+  restoreCanvas = () => {
+    const { router } = this.context;
+    // we are already in navigated state, bring canvas back to live
+    this.toggleClearCanvas();
+    router.push('/');
+  };
+
+  popStateEventListener = () => {
+    const { nestedRouteActive } = this.state;
+    if(location.hash === '' && nestedRouteActive) {
+      setTimeout(() => {
+        this.restoreCanvas();
+      },0);
     }
   };
 
@@ -113,30 +151,16 @@ class RootComponent extends Component {
     const { canvasActive, nestedRouteActive } = this.state;
     const { router } = this.context;
 
-    const restoreCanvas = () => {
-      // we are already in navigated state, bring canvas back to live
-      this.toggleClearCanvas();
-      this.setState({ nestedRouteActive: false });
-      router.push('/');
+    const attachBackEvent = () => {
+      window.addEventListener('popstate', this.popStateEventListener);
     };
 
-    function attachBackEvent() {
-      window.addEventListener('popstate', function() {
-        if(location.hash === '') {
-          setTimeout(function() {
-            restoreCanvas();
-          },0);
-        }
-      }, false);
-    }
-
-    if (canvasActive) {
+    if (!nestedRouteActive) {
       this.toggleClearCanvas();
-      this.setState({ nestedRouteActive: true});
       attachBackEvent();
       router.push(name);
     } else {
-      restoreCanvas();
+      this.restoreCanvas();
     }
   };
 
@@ -198,8 +222,9 @@ class RootComponent extends Component {
   };
 
   render() {
-    const { nestedRouteActive } = this.state;
-    const { stories, cursor, isAuthenticated, hasPrefs, loading } = this.props;
+    const { nestedRouteActive, canvasActive } = this.state;
+    const { stories, cursor, isAuthenticated, hasPrefs, loading, goToUrl } = this.props;
+
     return (
       <div className="fill" style={this.getAppStyles()} ref="pageContainer">
         {
@@ -232,16 +257,17 @@ class RootComponent extends Component {
               this.props.children &&
               React.cloneElement(this.props.children, {
                 goToLogin: this.goToLogin,
+                goToUrl,
               })
             }
           </div>
         }
         {
-          ((isAuthenticated && hasPrefs) || hasPrefs) && stories.length > 0 &&
+          ((isAuthenticated && hasPrefs) || hasPrefs) && stories.length > 0 && canvasActive &&
           <div className="fill" id="surface">
             <div style={this.getBoundStyle()}>
               <div className="fill">
-                <Home goToURL={this.visitNestedRoute} stories={uniqBy(stories, 'title')} />
+                <Home goToURL={this.visitNestedRoute} showHamburger={true} nestedRouteActive={nestedRouteActive} stories={uniqBy(stories, 'title')} />
               </div>
             </div>
           </div>

@@ -9,6 +9,8 @@ import (
   "github.com/icza/minquery"
   "strconv"
   "encoding/gob"
+
+  "fmt"
 )
 
 type Pref struct {
@@ -113,6 +115,9 @@ type Story struct {
 func (api *PrefRoutes) GetNews(c echo.Context) error{
   l := c.QueryParam("limit")
   cursor := c.QueryParam("cursor")
+  topic := c.QueryParam("topic")
+  subtopic := c.QueryParam("sub")
+  subId := c.QueryParam("subId")
 
   var limit int
 
@@ -125,42 +130,53 @@ func (api *PrefRoutes) GetNews(c echo.Context) error{
   } else {
     limit = 50
   }
-
+  
+  var q minquery.MinQuery
   var prefs *Prefs
-  p := c.Get("prefs")
-
-  if p != nil {
-    prefs = p.(*Prefs)
-  }
-
   conn, err := ConnectMongo()
   defer conn.Close()
   if err != nil {
     return err
   }
 
-  var q minquery.MinQuery
-  if prefs != nil {
-    query := bson.M{}
-    query["$or"] = []bson.M{}
-
-    for _, pref := range *prefs {
-      ref := mgo.DBRef{
-        Database: "labadifeeds",
-        Id: pref.Id,
-        Collection: "Subcategories",
-      }
-      query["$or"] = append(query["$or"].([]bson.M), bson.M{"subcategory": ref})
+  if topic != "" && subtopic != "" && subId != "" {
+    ref := mgo.DBRef{
+      Database: "labadifeeds",
+      Id: bson.ObjectIdHex(subId),
+      Collection: "Subcategories",
     }
-    
+    fmt.Println(ref)
+    query := bson.M{"subcategory": ref, "category.name": topic}
     q = minquery.New(conn.DB("labadifeeds"), "Stories", query).Sort("item.title").Limit(limit)
   } else {
-      //@todo::fetch posts based on user timezone
-      q = minquery.New(conn.DB("labadifeeds"), "Stories", nil).Sort("item.title").Limit(limit)
-  }
+    p := c.Get("prefs")
 
-  if cursor != "" {
-    q = q.Cursor(cursor)
+    if p != nil {
+      prefs = p.(*Prefs)
+    }
+
+    if prefs != nil {
+      query := bson.M{}
+      query["$or"] = []bson.M{}
+
+      for _, pref := range *prefs {
+        ref := mgo.DBRef{
+          Database: "labadifeeds",
+          Id: pref.Id,
+          Collection: "Subcategories",
+        }
+        query["$or"] = append(query["$or"].([]bson.M), bson.M{"subcategory": ref})
+      }
+      
+      q = minquery.New(conn.DB("labadifeeds"), "Stories", query).Sort("item.title").Limit(limit)
+    } else {
+        //@todo::fetch posts based on user timezone
+        q = minquery.New(conn.DB("labadifeeds"), "Stories", nil).Sort("item.title").Limit(limit)
+    }
+
+    if cursor != "" {
+      q = q.Cursor(cursor)
+    }
   }
 
   var stories []models.News

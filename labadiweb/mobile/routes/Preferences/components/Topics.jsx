@@ -1,4 +1,4 @@
-import React, { Component } from '#node_modules/react';
+import React, { Component, PropTypes } from '#node_modules/react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import groupBy from '#node_modules/lodash/groupBy';
@@ -23,21 +23,38 @@ class Topics extends Component {
   };
 
   collectSubcategories = () => {
-    const { topics } = this.props;
-    const subcategories = topics.reduce((prev, curr) => {
-      return curr.subcategories && curr.subcategories.length ?
-        prev.concat(curr.subcategories.map(subcat => ({
+    const { topics, prefs } = this.props;
+
+    const subcategories = prefs.map(pref => {
+      const cat = topics.find(topic => topic.id === pref.categoryId);
+
+      if (cat) {
+        const subcat = cat.subcategories.find(subc => subc.id == pref.id);
+        return {
           ...subcat,
-          category: curr.name,
-          categoryId: curr.id,
-        }))) : prev;
-    }, []);
+          category: cat.name,
+          categoryId: cat.id,
+        };
+      }
+    });
 
     return groupBy(subcategories, 'category');
   };
 
   getSize = () => {
     return document.getElementById("main").getBoundingClientRect();
+  };
+
+  getContentStyles = () => {
+    return {
+      width: `${this.getSize().width + 20}px`,
+      margin: '1em 0 0',
+    };
+  };
+
+  browseTopic = (topic) => {
+    const { goToUrl } = this.props;
+    goToUrl(`/browse/${encodeURIComponent(topic)}`, {}, { transition: 'slideLeftTransition' });
   };
 
   render() {
@@ -48,7 +65,7 @@ class Topics extends Component {
       <div>
         {
           !loading &&
-          <div className="vbox overflow-scroll">
+          <div className="vbox overflow-scroll" style={this.getContentStyles()}>
 	          {
 	          	Object.keys(subgroups).length > 0 &&
 	          	Object.keys(subgroups).map((key, index) => {
@@ -58,7 +75,7 @@ class Topics extends Component {
 	                  <div style={{textAlign: 'center', width: '100%'}}>
 	                  	<span style={{textTransform: 'uppercase', fontSize: '16px', fontWeight: '500'}}>{key}</span>
 	                  </div>
-	                  <Subgroup group={group} option="type" screen={this.getSize()}/>
+	                  <Subgroup group={group} clickAction={this.browseTopic} option="type" screen={this.getSize()}/>
 	                </div>
 	              );
 	          	})

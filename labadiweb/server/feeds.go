@@ -22,7 +22,7 @@ func GetCategory(catName string) (cat models.Category, stories []models.News, er
   if ok := err != nil && err.Error() != "not found"; ok {
     return cat, stories, err
   }
-  
+
   for _, ref := range cat.Stories {
     var story models.News
     q := conn.FindRef(&ref)
@@ -65,6 +65,12 @@ func (api *API) GetAllCategories(c echo.Context) error {
         c.Error(err)
         return nil
       }
+      // currentImage, err := GetCurrentSubcategoryImage(sub.Id)
+      // if err != nil {
+      //   c.Error(err)
+      //   return nil
+      // }
+      // sub.Image = currentImage
       subs = append(subs, sub)
     }
     
@@ -125,6 +131,37 @@ func (api *API) UpdateSubcategoryImage(c echo.Context) error {
 
   c.NoContent(200)
   return nil
+}
+
+func GetCurrentSubcategoryImage(id bson.ObjectId) (string, error) {
+  conn, err := ConnectMongo()
+  if err != nil {
+    return "", err
+  }
+
+  c := conn.DB("labadifeeds").C("Stories")
+  ref := mgo.DBRef{
+    Database: "labadifeeds",
+    Collection: "Subcategories",
+    Id: id,
+  }
+
+  var story models.News
+  err = c.Find(bson.M{"subcategory": ref}).One(&story)
+
+  if err != nil && err.Error() != "not found" {
+    return "", err
+  }
+
+  if err !=nil && err.Error() == "not found" {
+    return "", nil
+  }
+
+  if !isEmpty(story) {
+    return story.Image, nil
+  } else {
+    return "", nil
+  }
 }
 
 // func DeleteNews(bson.ObjectId id) {
