@@ -1,4 +1,3 @@
-feeds fetch should be arranged by date..only latest fetched from database
 sort feeds by date and then save latest image
 grouping not done properly
 preferences page..group subcategories based on agency

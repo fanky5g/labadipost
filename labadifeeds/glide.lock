@@ -1,14 +1,14 @@
-hash: ddeac3a6a88aa2639a183a7e9c628e9d98bccdee60e07bb83d22f155a859eccd
-updated: 2016-12-12T02:56:07.439854214Z
+hash: 6671de3e37a71052bec64b5a3a8e97e44bced378ce56c72022a6fbf949627dbe
+updated: 2016-12-23T15:30:02.758057771Z
 imports:
 - name: bitbucket.org/fanky5g/labadipost
-  version: 86d4b31bdc6f812649dd9b6e4552b6be83732bd8
+  version: 243339398f0aec29f3d6023abe13c29d6644ce9b
   repo: git@bitbucket.org:fanky5g/labadipost.git
   vcs: git
   subpackages:
   - labadicommon
 - name: github.com/andybalholm/cascadia
-  version: 65919c611220063037b1db8eb334acaf17a6d8ea
+  version: 196d48ce4ae8cf1c8f87088d2884eca214240887
 - name: github.com/asaskevich/govalidator
   version: 7b3beb6df3c42abd3509abfc3bcacc0fbfb7c877
 - name: github.com/axgle/mahonia
@@ -23,20 +23,20 @@ imports:
 - name: github.com/Sirupsen/logrus
   version: 881bee4e20a5d11a6a88a5667c6f292072ac1963
 - name: github.com/streadway/amqp
-  version: cb4fb930736ebd61a54da180a6aa4e92b206ff13
+  version: 3d520d05b74cc137bfac4ee6cd40d52cda7810ee
 - name: github.com/tealeg/xlsx
-  version: a8490cf686defe538b45b05af838d9eeb7d8fe64
+  version: e0f3d7d6cf84b282edb711bc6a23e8dbbd331a13
   repo: git@github.com:tealeg/xlsx.git
   vcs: git
 - name: github.com/Techdevt/rss
-  version: ae8953acae36a7d9fe6352d971861c921498ca97
+  version: 5047545ae0dbc7c0bdfa54ade5b075d4aa0a8a00
 - name: golang.org/x/net
-  version: b1a2d6e8c8b5fc8f601ead62536f02a8e1b6217d
+  version: 5df5483e0518a11a6ef1e894c70236eb3f639557
   subpackages:
   - html
   - html/atom
 - name: golang.org/x/sys
-  version: 478fcf54317e52ab69f40bb4c7a1520288d7f7ea
+  version: d75a52659825e75fff6158388dddc6a5b04f9ba5
   subpackages:
   - unix
 - name: gopkg.in/mgo.v2

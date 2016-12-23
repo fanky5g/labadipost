@@ -30,11 +30,17 @@ func (f *Feed) SaveItems(parent string, prevItemMap map[string]struct{}) (itemRe
       return itemRefs, err
     }
 
+    latest := newItems[newItems.Len() -1]
+    fmt.Println(latest)
+    go UpdateSubcategoryImage(latest.Image, f.Subcategory.Id.(bson.ObjectId))
+
     c := conn.DB("labadifeeds").C("Stories")
 
     for i:=0; i<len(newItems); i++ {
       item := newItems[i]
       id := bson.NewObjectId()
+
+      fmt.Println(item.Image)
 
       // w, h, err := GetImageDimensions(item.Image)
 
@@ -96,7 +102,7 @@ func (f *Feed) SaveItems(parent string, prevItemMap map[string]struct{}) (itemRe
   return itemRefs, nil
 }
 
-func (f *Feed) FindNewItems(prevItemMap map[string]struct{}) ([]*rss.Item){
+func (f *Feed) FindNewItems(prevItemMap map[string]struct{}) (rss.Items){
   var newItems []*rss.Item
   for _, item := range f.Items {
     if _, ok := prevItemMap[item.ID]; !ok {

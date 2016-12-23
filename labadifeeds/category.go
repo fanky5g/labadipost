@@ -3,6 +3,7 @@ package main
 import (
   "gopkg.in/mgo.v2/bson"
   models "bitbucket.org/fanky5g/labadipost/labadicommon"
+  "fmt"
 )
 
 type Category models.Category
@@ -47,4 +48,27 @@ func FindCategory(category string) (cat models.Category, err error) {
     return cat, err
   }
   return cat, nil
+}
+
+func UpdateSubcategoryImage(image string, subcatId bson.ObjectId) {
+  if image == "" {
+    return
+  }
+
+  conn, err := ConnectMongo()
+  if err != nil {
+    fmt.Println(err)
+  }
+  
+  subcol := conn.DB("labadifeeds").C("Subcategories")
+  err = subcol.Update(bson.M{"_id": subcatId}, bson.M{"$set": bson.M{"image": image}})
+  if err != nil {
+    if err.Error() == "not found" {
+      fmt.Println(err)
+      return
+    }
+    fmt.Println(err)
+    return
+  }
+  fmt.Println(subcatId)
 }

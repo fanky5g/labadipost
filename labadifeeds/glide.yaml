@@ -9,7 +9,7 @@ import:
   subpackages:
   - bson
 - package: github.com/Techdevt/rss
-  version: ae8953acae36a7d9fe6352d971861c921498ca97
+  version: 5047545ae0dbc7c0bdfa54ade5b075d4aa0a8a00
 - package: github.com/garyburd/redigo
   version: ~1.0.0
   subpackages:

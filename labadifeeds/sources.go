@@ -6,7 +6,6 @@ import (
   "github.com/Techdevt/rss"
   "gopkg.in/mgo.v2/bson"
   // "gopkg.in/mgo.v2"
-  "strings"
   "time"
   "fmt"
 )
