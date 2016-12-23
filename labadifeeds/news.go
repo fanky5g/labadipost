@@ -45,6 +45,10 @@ func (f *Feed) SaveItems(parent string, prevItemMap map[string]struct{}) (itemRe
       w := 0
       h := 0
 
+      if item.Title == "" && item.Summary == "" {
+        continue
+      }
+
       news := &News{
         Item: &rss.Item{
           Title: item.Title,

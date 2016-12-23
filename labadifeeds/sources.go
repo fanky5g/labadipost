@@ -6,6 +6,7 @@ import (
   "github.com/Techdevt/rss"
   "gopkg.in/mgo.v2/bson"
   // "gopkg.in/mgo.v2"
+  "strings"
   "time"
   "fmt"
 )
@@ -40,10 +41,10 @@ func GetFeedSources() (feedSources Sources) {
           }
 
           if subcategory == "General" {
-            subcategory = category + ":" + subcategory
+            subcategory = Trim(category) + ":" + Trim(subcategory)
           }
 
-          sub, err := newCategory.AddSubcategory(subcategory, "https://labadipics.s3.amazonaws.com/subcategory.png")
+          sub, err := newCategory.AddSubcategory(Trim(subcategory), "https://labadipics.s3.amazonaws.com/subcategory.png")
           if err != nil {
             panic(err)
           }

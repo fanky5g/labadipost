@@ -1,4 +1,11 @@
+feeds fetch should be arranged by date..only latest fetched from database
+sort feeds by date and then save latest image
+grouping not done properly
+preferences page..group subcategories based on agency
 bottom bar with just two icons bookmark(pin) and like(love icon)..show like count
+prefetch images(5 at a time)
+layout->image and alpha problems
+
 bookmarks
 tryloadmore
 feeds without any image will be put into another group as headlines -> scrolling -> with their source's icon by the side

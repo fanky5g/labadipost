@@ -65,8 +65,15 @@ func (feed Feed) SaveUpdates() {
     if err != nil {
       HandleError(err)
     }
+    
+    nItemMap := NormalizeItemMap(prevItemMap)
+    if len(nItemMap) > 0 {
+      source.NItemMap = nItemMap
+    }
 
-    source.NItemMap = NormalizeItemMap(prevItemMap)
+    source.Refresh = feed.Refresh
+    source.Save()
+
     err = source.Save()
     if err != nil {
       HandleError(err)

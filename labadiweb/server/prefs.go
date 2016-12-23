@@ -10,7 +10,7 @@ import (
   "strconv"
   "encoding/gob"
 
-  "fmt"
+  // "fmt"
 )
 
 type Pref struct {
@@ -145,9 +145,9 @@ func (api *PrefRoutes) GetNews(c echo.Context) error{
       Id: bson.ObjectIdHex(subId),
       Collection: "Subcategories",
     }
-    fmt.Println(ref)
+    // fmt.Println(ref)
     query := bson.M{"subcategory": ref, "category.name": topic}
-    q = minquery.New(conn.DB("labadifeeds"), "Stories", query).Sort("item.title").Limit(limit)
+    q = minquery.New(conn.DB("labadifeeds"), "Stories", query).Sort("-item.date").Limit(limit)
   } else {
     p := c.Get("prefs")
 
@@ -168,10 +168,10 @@ func (api *PrefRoutes) GetNews(c echo.Context) error{
         query["$or"] = append(query["$or"].([]bson.M), bson.M{"subcategory": ref})
       }
       
-      q = minquery.New(conn.DB("labadifeeds"), "Stories", query).Sort("item.title").Limit(limit)
+      q = minquery.New(conn.DB("labadifeeds"), "Stories", query).Sort("-item.date").Limit(limit)
     } else {
         //@todo::fetch posts based on user timezone
-        q = minquery.New(conn.DB("labadifeeds"), "Stories", nil).Sort("item.title").Limit(limit)
+        q = minquery.New(conn.DB("labadifeeds"), "Stories", nil).Sort("-item.date").Limit(limit)
     }
 
     if cursor != "" {
