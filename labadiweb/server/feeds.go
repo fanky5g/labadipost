@@ -60,7 +60,12 @@ func (api *API) GetAllCategories(c echo.Context) error {
     var subs []models.Subcategory
     for _, subcat := range cat.Subcategories {
       var sub models.Subcategory
-      err := conn.FindRef(&subcat).One(&sub)
+      subRef := mgo.DBRef{
+        Database: "labadipost",
+        Collection: "Subcategories",
+        Id: subcat.Id,
+      }
+      err := conn.FindRef(&subRef).One(&sub)
       if err != nil {
         c.Error(err)
         return nil

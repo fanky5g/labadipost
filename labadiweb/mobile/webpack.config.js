@@ -9,7 +9,6 @@ const PLUGINS = [
     },
   }),
   new webpack.optimize.OccurrenceOrderPlugin,
-  new webpack.optimize.DedupePlugin(),
 ];
 
 if (process.env.NODE_ENV === 'production') {
@@ -39,7 +38,7 @@ module.exports = {
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loader: 'babel',
+      loader: 'babel-loader',
     }, {
       test: /\.svg/,
       loader: 'url-loader',

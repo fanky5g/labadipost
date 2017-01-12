@@ -192,7 +192,12 @@ func (api *PrefRoutes) GetNews(c echo.Context) error{
   if len(stories) > 0 {
     for _, story := range stories {
       var subcat models.Subcategory
-      err := conn.FindRef(&story.Subcategory).One(&subcat)
+      subRef := mgo.DBRef{
+        Database: "labadipost",
+        Collection: "Subcategories",
+        Id: story.Subcategory.Id,
+      }
+      err := conn.FindRef(&subRef).One(&subcat)
       if err != nil {
         c.Error(err)
         return nil

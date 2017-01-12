@@ -58,14 +58,14 @@ const config = [{
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loader: 'babel',
+      loader: 'babel-loader',
       query: BABEL_QUERY,
     }, {
       test: /\.scss$/,
-      loader: ExtractTextPlugin.extract({ fallbackLoader: 'style', loader: 'css!sass' }),
+      loader: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader!sass-loader' }),
     }, {
       test: /\.css$/,
-      loader: ExtractTextPlugin.extract({ fallbackLoader: 'style', loader: 'css' }),
+      loader: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader' }),
     }, {
       test: /\.gif$/,
       loader: 'url-loader',

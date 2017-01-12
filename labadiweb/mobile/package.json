@@ -22,7 +22,7 @@
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "transform-loader": "^0.2.1",
-    "webpack": "^1.5.3"
+    "webpack": "^1.12.14"
   },
   "peerDependencies": {
     "react": "^0.14.0"
