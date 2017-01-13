@@ -4,7 +4,7 @@ import:
   repo: git@bitbucket.org:fanky5g/labadipost.git
   vcs: git
   subpackages:
-    - labadipics
+  - labadipics
 - package: github.com/Sirupsen/logrus
 - package: github.com/codegangsta/cli
 - package: github.com/disintegration/imaging
@@ -22,12 +22,14 @@ import:
   - aws
 - package: github.com/spf13/viper
 - package: github.com/thoas/gokvstores
+  version: ae1105ba099c89f31af38c658ab6e64f1fc50e62
 - package: github.com/thoas/gostorages
 - package: github.com/thoas/stats
 - package: golang.org/x/image
   subpackages:
   - bmp
   - tiff
+- package: github.com/rubenfonseca/fastimage
 testImport:
 - package: github.com/stretchr/testify
   subpackages:

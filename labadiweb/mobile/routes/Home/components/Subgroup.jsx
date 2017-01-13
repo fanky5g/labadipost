@@ -115,7 +115,7 @@ class Subgroup extends Component {
 			                backgroundSize: 'cover',
 			                backgroundPosition: 'center center',
 			                backgroundRepeat: 'no-repeat',
-			                backgroundImage: `url(http://images.labadipost.com/display?url=${entry.image}&op=noop)`
+			                backgroundImage: `url(http://images.labadipost.com/display?url=${encodeURIComponent(entry.image)}&op=noop)`
 			              }}>
 			            </div>
 			          </div>

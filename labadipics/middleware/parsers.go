@@ -13,6 +13,7 @@ import (
 	"bitbucket.org/fanky5g/labadipost/labadipics/hash"
 	"bitbucket.org/fanky5g/labadipost/labadipics/image"
 	"bitbucket.org/fanky5g/labadipost/labadipics/util"
+	"github.com/rubenfonseca/fastimage"
 )
 
 const sigParamName = "sig"
@@ -95,6 +96,26 @@ func URLParser() gin.HandlerFunc {
 			}
 
 			mimetype := mime.TypeByExtension(filepath.Ext(value))
+
+			if mimetype == "" {
+			    imagetype, _, err := fastimage.DetectImageType(value)
+			    if err != nil {
+			    	c.String(http.StatusBadRequest, fmt.Sprintf("Failed to detect mimetype"))
+					c.Abort()
+					return
+			    }
+
+			    switch imagetype {
+				case fastimage.JPEG:
+				    mimetype = "image/jpeg"
+				case fastimage.PNG:
+				    mimetype = "image/png"
+				case fastimage.GIF:
+				    mimetype = "image/gif"
+				case fastimage.BMP:
+				    mimetype = "image/bmp"
+				}
+			}
 
 			_, ok := image.Extensions[mimetype]
 

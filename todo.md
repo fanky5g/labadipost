@@ -18,3 +18,13 @@ write a rabbitmq function to send news items into a queue where the websocket wi
 
 nginx caching
 delegate email sending to another server
+
+/*
+  Todo:
+    create a socket connection that will push to users livestream of newsfeed
+    Reporters:
+      Register reporters
+      Let reporters add news items
+      Reporters will be paid based on number of reads and amount of time users hang around to read their news items
+
+*/

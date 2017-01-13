@@ -85,7 +85,7 @@ var Page = React.createClass({
 
     return (
       <Group style={groupStyle} onClick={this.visitLink}>
-        <Image style={imageStyle} src={`http://images.labadipost.com/display?url=${article.image}&op=noop`} fadeIn={true} useBackingStore={true} />
+        <Image style={imageStyle} src={`http://images.labadipost.com/display?url=${encodeURIComponent(article.image)}&op=noop`} fadeIn={true} useBackingStore={true} />
         <Group style={metaStyle} useBackingStore={true}>
           <Group style={subcatStyle}>
             <Text style={subcatLabelStyle}>From</Text>
@@ -94,7 +94,7 @@ var Page = React.createClass({
           <Text style={timeAgoStyle}>{timeAgo(article.date)}</Text>
         </Group>
         <Group style={agencyMetaStyle} useBackingStore={true}>
-          <Image style={agencyImageStyle} src={`http://images.labadipost.com/display?url=${article.agencyImage}&op=resize&w=48&h=48`} fadeIn={true} useBackingStore={true} />
+          <Image style={agencyImageStyle} src={`http://images.labadipost.com/display?url=${encodeURIComponent(article.agencyImage)}&op=resize&w=48&h=48`} fadeIn={true} useBackingStore={true} />
           <Text style={agencyTextStyle}>{article.agency}</Text>
           <Text style={categoryTextStyle}>{article.category.name}</Text>
         </Group>

@@ -31,7 +31,6 @@ func (f *Feed) SaveItems(parent string, prevItemMap map[string]struct{}) (itemRe
     }
 
     latest := newItems[newItems.Len() -1]
-    fmt.Println(latest)
     go UpdateSubcategoryImage(latest.Image, f.Subcategory.Id.(bson.ObjectId))
 
     c := conn.DB("labadifeeds").C("Stories")
@@ -40,7 +39,6 @@ func (f *Feed) SaveItems(parent string, prevItemMap map[string]struct{}) (itemRe
       item := newItems[i]
       id := bson.NewObjectId()
 
-      fmt.Println(item.Image)
 
       // w, h, err := GetImageDimensions(item.Image)
 

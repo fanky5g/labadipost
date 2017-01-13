@@ -67,8 +67,6 @@ func UpdateSubcategoryImage(image string, subcatId bson.ObjectId) {
       fmt.Println(err)
       return
     }
-    fmt.Println(err)
     return
   }
-  fmt.Println(subcatId)
 }

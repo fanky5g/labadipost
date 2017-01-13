@@ -4,7 +4,8 @@ import (
   // "time"
   "strconv"
   "os"
-  "log"
+  // "log"
+  "fmt"
 )
 
 var (
@@ -34,16 +35,7 @@ func main() {
 func HandleError(err error) {
   if err != nil {
     // write logging mechanism here that will catch for errors
-    log.Println(err)
+    // log.Println(err)
+    fmt.Println(err)
   }
 }
-
-/*
-  Todo:
-    create a socket connection that will push to users livestream of newsfeed
-    Reporters:
-      Register reporters
-      Let reporters add news items
-      Reporters will be paid based on number of reads and amount of time users hang around to read their news items
-
-*/

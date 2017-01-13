@@ -72,7 +72,6 @@ func (feed Feed) SaveUpdates() {
     }
 
     source.Refresh = feed.Refresh
-    source.Save()
 
     err = source.Save()
     if err != nil {
