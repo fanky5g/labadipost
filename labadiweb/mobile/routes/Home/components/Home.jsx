@@ -18,14 +18,12 @@ const lineAmt= 3;
 
 ReactCanvas.registerLayerType('upperHButton', function (ctx, layer) {
   let y = outSetMargin;
-  ctx.globalAlpha = 1;
   ctx.fillStyle = 'rgb(255, 255, 255)';
   ctx.globalCompositeOperation = 'source-atop';
   for (let i = 0; i < lineAmt; i++) {
     ctx.moveTo(x, y);
     ctx.fillRect(x,y,lineWidth,lineHeight + .2);
     y += insetMargin;
-    ctx.save();
   }
 });
 
@@ -43,7 +41,6 @@ var UpperHButton = ReactCanvas.createCanvasComponent({
 ReactCanvas.registerLayerType('lowerHButton', function (ctx, layer) {
   ctx.globalCompositeOperation = 'destination-over';
   let y = outSetMargin;
-  ctx.globalAlpha = 1;
   ctx.beginPath();
   ctx.lineWidth = lineHeight;
   for (let i = 0; i < lineAmt; i++) {
@@ -51,9 +48,7 @@ ReactCanvas.registerLayerType('lowerHButton', function (ctx, layer) {
     ctx.lineTo(x + lineWidth, y);
     ctx.stroke();
     y += insetMargin;
-    ctx.save();
   }
-  // ctx.fillRect(x, y, lineWidth, lineHeight);
 });
 
 ReactCanvas.registerLayerType('logo', function(ctx, layer) {
@@ -69,11 +64,6 @@ ReactCanvas.registerLayerType('logo', function(ctx, layer) {
 var Logo = ReactCanvas.createCanvasComponent({
   displayName: 'Logo',
   layerType: 'logo',
-
-  applyCustomProps: function (prevProps, props) {
-    var style = props.style || {};
-    var layer = this.node;
-  }
 });
 
 var LowerHButton = ReactCanvas.createCanvasComponent({
@@ -149,12 +139,16 @@ export default class Home extends Component {
     const size = this.getSize();
     const { showHamburger } = this.props;
 
+    const ratio = window.devicePixelRatio || 1;
+    const w = screen.width * ratio;
+    const h = screen.height * ratio;
+
     return (
       <Surface
         top={0}
         left={0}
-        width={1080}
-        height={1680}
+        width={size.width}
+        height={size.height}
         id="surface" style={{width: `${size.width}px`, height: `${size.height}px`}}>
         <ListView
           style={this.getListViewStyle()}
@@ -171,7 +165,7 @@ export default class Home extends Component {
               <LowerHButton style={{width: 24, height: 30, top: 10, left: x}} onClick={this.goToPrefs} />
             </Group>
           }
-          <Logo />
+          <Logo style={{width: 38, height: 38, top: 10, left: 10}}/>
       </Surface>
     );
   }
