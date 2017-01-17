@@ -82,6 +82,7 @@ var Page = React.createClass({
 
     const arrSubcatName = article.subcategory.type.split(":");
     const subcatName = arrSubcatName.length > 1 ? arrSubcatName[1] : arrSubcatName[0];
+    console.log(this.getOptionsStyle())
 
     return (
       <Group style={groupStyle} onClick={this.visitLink}>
@@ -101,6 +102,9 @@ var Page = React.createClass({
         <Group style={this.getTextGroupStyle()} useBackingStore={true}>
           <Text style={titleStyle}>{this.props.article.title}</Text>
           <Text style={excerptStyle}>{this.props.article.summary}</Text>
+        </Group>
+        <Group style={this.getOptionsStyle()} useBackingStore={true}>
+          <Text style={Object.assign({}, subcatLabelStyle, {color: '#fff', fontWeight: 800})} onClick={this.optionsClicked}>From</Text>
         </Group>
       </Group>
     );
@@ -122,6 +126,24 @@ var Page = React.createClass({
       width: this.props.width,
       height: this.props.height,
     };
+  },
+
+  getOptionsStyle: function() {
+    const { optionsWidth } = this.props;
+    const x = this.props.width - optionsWidth;
+    return {
+      position: 'absolute',
+      top: 0,
+      left: x,
+      width: optionsWidth,
+      height: this.props.height,
+      zIndex: 3,
+      background: 'red',
+    }; 
+  },
+
+  optionsClicked: function() {
+    console.log('options was clicked');
   },
 
   getAgencyMetaHeight: function() {
