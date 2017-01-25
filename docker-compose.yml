@@ -35,8 +35,10 @@ services:
     volumes:
       - ./labadihub:/go/src/labadihub
     command: /bin/sh -c "go build && ./labadihub"
-    links:
+    depends_on:
       - rabbitmq
+    #links:
+    #  - rabbitmq
     environment:
       RABBITMQ_URL: amqp://rabbitmq
 

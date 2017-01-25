@@ -9,7 +9,7 @@ import (
   "encoding/json"
   "strconv"
   "strings"
-  // "gopkg.in/mgo.v2/bson"
+  "gopkg.in/mgo.v2/bson"
   // "fmt"
 )
 
@@ -102,12 +102,14 @@ func (api *API) TwitterOauthCallback(c echo.Context) error {
     return nil
   }
   
+  uid := bson.NewObjectId()
   user := &User{
     Username: userInfo.Username,
     Email: userInfo.Email,
     Firstname: userInfo.Firstname,
     Avatar: strings.Replace(userInfo.Avatar, "_normal", "", -1),
     TwitterId: strconv.FormatInt(userInfo.TwitterId, 10),
+    Id: uid,
   }
 
   //save new oauth logins

@@ -193,7 +193,19 @@ func (u *User) Save() error {
   defer conn.Close()
   c := conn.DB("labadipost").C("Users")
 
-  err = c.Insert(u)
+  err = c.Insert(bson.M{
+    "_id": u.Id,
+    "username": u.Username,
+    "email": u.Email,
+    "firstname": u.Firstname,
+    "lastname": u.Lastname,
+    "avatar": u.Avatar,
+    "fbid": u.FbId,
+    "gid": u.GId,
+    "twittid": u.TwitterId,
+    "oauthtoken": u.OauthToken,
+  })
+
   if err != nil {
     return err
   }

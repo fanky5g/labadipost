@@ -7,6 +7,7 @@ import (
   "golang.org/x/net/context"
   "golang.org/x/oauth2"
   "encoding/json"
+  "gopkg.in/mgo.v2/bson"
   "net/http"
 )
 
@@ -68,6 +69,7 @@ func (api *API) GoogleOauthCallback(c echo.Context) error {
     return nil
   }
 
+  uid := bson.NewObjectId()
   user := &User{
     Username: userInfo.Username,
     Email: userInfo.Email,
@@ -75,6 +77,7 @@ func (api *API) GoogleOauthCallback(c echo.Context) error {
     Lastname: userInfo.Lastname,
     Avatar: userInfo.Avatar,
     GId: userInfo.GId,
+    Id: uid,
   }
 
   //save new oauth logins

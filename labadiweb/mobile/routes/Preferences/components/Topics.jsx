@@ -75,7 +75,7 @@ class Topics extends Component {
 	                  <div style={{textAlign: 'center', width: '100%'}}>
 	                  	<span style={{textTransform: 'uppercase', fontSize: '16px', fontWeight: '500'}}>{key}</span>
 	                  </div>
-	                  <Subgroup group={group} clickAction={this.browseTopic} option="type" screen={this.getSize()}/>
+	                  <Subgroup group={group} selectState={false} clickAction={this.browseTopic} option="type" screen={this.getSize()}/>
 	                </div>
 	              );
 	          	})

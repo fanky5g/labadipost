@@ -8,6 +8,7 @@ import (
   "golang.org/x/oauth2"
   "encoding/json"
   "net/http"
+  "gopkg.in/mgo.v2/bson"
 )
 
 var fbClientId = os.Getenv("FB_ID")
@@ -75,6 +76,7 @@ func (api *API) FbOauthCallback(c echo.Context) error {
     return nil
   }
   
+  uid := bson.NewObjectId()
   user := &User{
     Username: userInfo.Username,
     Email: userInfo.Email,
@@ -82,6 +84,7 @@ func (api *API) FbOauthCallback(c echo.Context) error {
     Lastname: userInfo.Lastname,
     Avatar: userInfo.Avatar.Data.Url,
     FbId: userInfo.FbId,
+    Id: uid,
   }
 
   //save new oauth logins

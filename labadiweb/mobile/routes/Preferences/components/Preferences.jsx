@@ -32,8 +32,7 @@ class Preferences extends Component {
   };
 
 	render() {
-		const { user, followCount, goToLogin, loading, goToUrl } = this.props;
-    var isAuthenticated = false;
+		const { user, followCount, goToLogin, loading, goToUrl, isAuthenticated } = this.props;
 
 		return (
       <div className="fill" style={{background: '#000'}}>
@@ -42,7 +41,15 @@ class Preferences extends Component {
             <div style={this.getPageStyles()} className="fill">
               {
                 isAuthenticated &&
-                <AccountCard user={user} />
+                <div>
+                  <BaseHeader
+                    goToLogin={goToLogin}
+                    showLogo={false}
+                    isAuthenticated={isAuthenticated} />
+                    <div style={this.getTextStyle()}>{`Your favorite Newsfeeds(${followCount || 0})`}</div>
+                    <AccountCard user={user} />
+                    {!loading && <Topics goToUrl={goToUrl} />}
+                </div>
               }
               {
                 !isAuthenticated &&

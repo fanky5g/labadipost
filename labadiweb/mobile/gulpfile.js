@@ -32,7 +32,7 @@ gulp.task('reload-js', function () {
 });
 
 gulp.task('copy-build', function() {
-  return gulp.src(['./build/*', './touch-emulator.js', './lib/svg4Everybody.js', './svg-sprites/*'])
+  return gulp.src(['./build/*', './touch-emulator.js', './lib/svg4Everybody.js', './svg-sprites/*', './icomoon.ttf', './Helvetica-Condensed.otf'])
     .pipe(gulp.dest('../server/data/static/build/mobile'));
 });
 

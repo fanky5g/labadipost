@@ -15,8 +15,8 @@ class Subgroup extends Component {
       width: `${effectiveWidth}px`,
       height: `${effectiveHeight}px`,
       backgroundColor: '#333',
-      marginBottom: '2px',
-      marginRight: '2px',
+      // marginBottom: '2px',
+      marginRight: '3px',
       cursor: 'pointer',
       opacity: selected ? 0.6 : 1,
     };
@@ -50,9 +50,7 @@ class Subgroup extends Component {
   itemPressed = (id, catId, selected) => {
   	const { dispatch, selectState, clickAction } = this.props;
 
-    if (clickAction && typeof clickAction === "function") {
-      return;
-    }
+    if (clickAction && typeof clickAction === "function") return;
 
   	if (!selectState && !selected) {
   	  dispatch(enableSelectState());
@@ -88,6 +86,7 @@ class Subgroup extends Component {
 
   render() {
   	const { group, option, selectState } = this.props;
+
   	// agency agencyImage category categoryId id image type "News:General"
   	return (
       <div style={{padding: '5px 0', position: 'relative', marginBottom: '8px'}}>
@@ -137,8 +136,8 @@ class Subgroup extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  selectState: state.Prefs.get('selectState'),
+const mapStateToProps = (state, ownProps) => ({
+  selectState: ownProps.selectState || state.Prefs.get('selectState'),
 });
 
 export default connect(mapStateToProps)(Subgroup);

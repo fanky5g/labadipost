@@ -4,8 +4,8 @@ const Icon = ({name, className, style}) => {
   const [type, icon] = name.split("/");
 
   return (
-  	<svg className={className} style={style}>
-      <use xlinkHref={`/mobile/${type}.svg#${icon}`}></use>
+  	<svg role="img" title={icon} className={className} style={style}>
+      <use xlinkHref={`/mobile/${type}.svg#${icon}`} />
     </svg>
    );
 };

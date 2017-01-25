@@ -3,6 +3,8 @@ import ReactCanvas from '#node_modules/react-canvas';
 import Page from './Page';
 import articles from '../data';
 import ListView from './ListView';
+import { bindActionCreators } from 'redux';
+import { likeStory, bookmarkStory } from '../actions';
 
 const Surface = ReactCanvas.Surface;
 // const ListView = ReactCanvas.ListView;
@@ -100,12 +102,12 @@ export default class Home extends Component {
   };
 
   renderPage = (pageIndex, scrollTop) => {
-    const { stories, nestedRouteActive } = this.props;
+    const { stories, nestedRouteActive, isAuthenticated, goToLogin, dispatch } = this.props;
     var size = this.getSize();
     var optionsWidth = this.getOptionsWidth();
     var article = stories[pageIndex];
     var pageScrollTop = pageIndex * this.getPageHeight() - scrollTop;
-
+    
     return (
       <Page
         width={size.width}
@@ -114,7 +116,12 @@ export default class Home extends Component {
         pageIndex={pageIndex}
         scrollTop={pageScrollTop}
         nestedRouteActive={nestedRouteActive}
-        optionsWidth={optionsWidth}/>
+        optionsWidth={optionsWidth}
+        goToLogin={goToLogin}
+        isAuthenticated={isAuthenticated}
+        bookmark={bindActionCreators(bookmarkStory, dispatch)}
+        like={bindActionCreators(likeStory, dispatch)}
+      />
     );
   };
 

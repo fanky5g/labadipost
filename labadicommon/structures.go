@@ -16,6 +16,8 @@ type News struct {
   ImageHeight int      `json:"imageheight"   bson:"imageheight"`
   Agency      string   `json:"agency" bson:"agency"`
   AgencyImage string   `json:"agencyImage" bson:"agencyimage"`
+  LikeCount   int      `json:"likeCount"  bson:"likeCount"`
+  Likes       []bson.ObjectId  `json:""  bson:"likes"`
 }
 
 type Subcategory struct {

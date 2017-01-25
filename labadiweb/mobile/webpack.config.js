@@ -41,11 +41,7 @@ module.exports = {
       loader: 'babel-loader',
     }, {
       test: /\.svg/,
-      loader: 'url-loader',
-      query: {
-        limit: 26000,
-        mimetype: 'image/svg+xml',
-      },
+      loader: 'babel!svg-react',
     },],
     postLoaders: [
       { loader: "transform?brfs" }
@@ -59,6 +55,7 @@ module.exports = {
       '#node_modules': path.join(__dirname, 'node_modules'),
       '#lib': path.join(__dirname, 'lib'),
       '#common': path.join(__dirname, 'common'),
+      '#svg-sprites': path.join(__dirname, 'svg-sprites'),
     },
   },
   devtool: 'source-map'

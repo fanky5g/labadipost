@@ -49,6 +49,7 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
     "scroll-behavior": "^0.3.2",
-    "scroller": "git://github.com/mjohnston/scroller"
+    "scroller": "git://github.com/mjohnston/scroller",
+    "svg-react-loader": "^0.3.7"
   }
 }

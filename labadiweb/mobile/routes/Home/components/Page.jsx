@@ -1,4 +1,5 @@
 import { timeAgo } from '#lib/date';
+import Icon from '#common/components/Icon';
 var React = require('#node_modules/react');
 var ReactCanvas = require('#node_modules/react-canvas');
 
@@ -8,12 +9,52 @@ var Text = ReactCanvas.Text;
 var FontFace = ReactCanvas.FontFace;
 var measureText = ReactCanvas.measureText;
 
+var FONT_FACE_DEFAULT = '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif';
 var CONTENT_INSET = 14;
 var TEXT_SCROLL_SPEED_MULTIPLIER = 0.6;
 var TEXT_ALPHA_SPEED_OUT_MULTIPLIER = 1.5;
 var TEXT_ALPHA_SPEED_IN_MULTIPLIER = 2.6;
 var IMAGE_LAYER_INDEX = 2;
-var TEXT_LAYER_INDEX = 3;
+var TEXT_LAYER_INDEX = 1;
+var BOTTOM_BAR_HEIGHT = 32;
+
+ReactCanvas.registerLayerType('Button', function (ctx, layer) {
+  var xPos = layer._originalStyle.left || 0;
+  let yPos = layer._originalStyle.top || 0;
+  let background = layer._originalStyle.background || 'rgb(0, 0, 0)';
+  let color = layer._originalStyle.color || 'rgb(0, 0, 0)';
+  let width = layer._originalStyle.width;
+  let height = layer._originalStyle.height;
+  let fontSize = layer._originalStyle.fontSize;
+  let font = layer._originalStyle.font;
+  let lineHeight = layer._originalStyle.lineHeight;
+
+  ctx.fillStyle = background;
+  ctx.fillRect(xPos, yPos, width, height);
+
+  ctx.fillStyle = color;
+  ctx.font = `${fontSize}px ${font}`;
+  const text = layer._originalStyle.iconCode;
+  const textEncoded = String.fromCharCode(parseInt(text, 16));
+  const metrics = measureText(textEncoded, 200, FontFace(font), fontSize, lineHeight);
+
+  const insetX = layer._originalStyle.insetX || 0.5 *((width - metrics.width) / 2) + xPos;
+  const insetY = layer._originalStyle.insetY || yPos + ((height - metrics.height) / 2) + metrics.height;
+
+  ctx.fillText(textEncoded, insetX, insetY, width);
+  ctx.closePath();
+});
+
+var Button = ReactCanvas.createCanvasComponent({
+  displayName: 'Button',
+  layerType: 'Button',
+
+  applyCustomProps: function (prevProps, props) {
+    var style = props.style || {};
+    var layer = this.node;
+    layer.zIndex = style.zIndex;
+  }
+});
 
 var Page = React.createClass({
 
@@ -64,11 +105,11 @@ var Page = React.createClass({
     // Layout title and excerpt below image.
     titleStyle.height = this.titleMetrics.height;
     excerptStyle.top = titleStyle.top + titleStyle.height + CONTENT_INSET;
-    excerptStyle.height = this.props.height - excerptStyle.top - CONTENT_INSET;
+    excerptStyle.height = this.props.height - excerptStyle.top - BOTTOM_BAR_HEIGHT - CONTENT_INSET;
     subcatStyle.height = this.subcatMetrics.height;
     subcatTextStyle.height = this.subcatTextMetrics.height;
     subcatTextStyle.width = this.subcatTextMetrics.width;
-    subcatTextStyle.left = this.subcatLabelMetrics.width + CONTENT_INSET + 2;
+    subcatTextStyle.left = this.subcatLabelMetrics.width + CONTENT_INSET + 4;
     subcatTextStyle.color = '#09c';
     subcatLabelStyle.height = this.subcatLabelMetrics.height;
     subcatLabelStyle.width = this.subcatLabelMetrics.width;
@@ -82,7 +123,41 @@ var Page = React.createClass({
 
     const arrSubcatName = article.subcategory.type.split(":");
     const subcatName = arrSubcatName.length > 1 ? arrSubcatName[1] : arrSubcatName[0];
-    console.log(this.getOptionsStyle())
+
+    let commentStyle = this.getIconStyle();
+    commentStyle.fontFace = FontFace(FONT_FACE_DEFAULT, null, {weight: 400});
+    const commentMetrics = measureText(`${25} COMMENTS`, 120, commentStyle.fontFace, commentStyle.fontSize, commentStyle.lineHeight);
+    commentStyle.width = commentMetrics.width;
+    commentStyle.height = commentMetrics.height;
+
+    let sharesStyle = this.getIconStyle();
+    sharesStyle.fontFace = FontFace(FONT_FACE_DEFAULT, null, {weight: 400});
+    sharesStyle.left = commentMetrics.width + 2*CONTENT_INSET;
+    const sharesMetrics = measureText(`${2} SHARES`, 120, sharesStyle.fontFace, sharesStyle.fontSize, sharesStyle.lineHeight);
+    sharesStyle.width = sharesMetrics.width;
+    sharesStyle.height = sharesMetrics.height;
+
+    let bookmarkStyle = this.getIconStyle();
+    bookmarkStyle.fontSize = 20;
+    bookmarkStyle.top = bookmarkStyle.top - 0.5 * CONTENT_INSET;
+    const bookmarkIcon = String.fromCharCode(parseInt('e912', 16));
+    bookmarkStyle.fontFace = FontFace('IconFont', null, {weight: 400});
+    const bookmarkMetrics = measureText(bookmarkIcon, 64, bookmarkStyle.fontFace, bookmarkStyle.fontSize, bookmarkStyle.lineHeight);
+    bookmarkStyle.left = this.props.width - (bookmarkMetrics.width + 2 * CONTENT_INSET);
+    bookmarkStyle.width = bookmarkMetrics.width;
+    bookmarkStyle.height = bookmarkMetrics.height;
+
+    let likeStyle = this.getIconStyle();
+    likeStyle.fontSize = 20;
+    likeStyle.top = likeStyle.top - 0.5 * CONTENT_INSET;
+    likeStyle.fontFace = FontFace('IconFont', null, {weight: 400});
+    const likeIcon = String.fromCharCode(parseInt('e914', 16));
+    const likeMetrics = measureText(likeIcon, 64, likeStyle.fontFace, likeStyle.fontSize, likeStyle.lineHeight);
+    likeStyle.left = bookmarkStyle.left - (likeMetrics.width + 3 * CONTENT_INSET);
+    likeStyle.width = likeMetrics.width;
+    likeStyle.height = likeMetrics.height;
+
+    var ButtonStyle = this.getButtonStyle();
 
     return (
       <Group style={groupStyle} onClick={this.visitLink}>
@@ -103,17 +178,77 @@ var Page = React.createClass({
           <Text style={titleStyle}>{this.props.article.title}</Text>
           <Text style={excerptStyle}>{this.props.article.summary}</Text>
         </Group>
-        <Group style={this.getOptionsStyle()} useBackingStore={true}>
-          <Text style={Object.assign({}, subcatLabelStyle, {color: '#fff', fontWeight: 800})} onClick={this.optionsClicked}>From</Text>
+        <Group style={this.getOptionsStyle()}>
+          <Button style={Object.assign({}, ButtonStyle, {
+            background: '#3b5998',
+            top: 0,
+            iconCode: 'e90f',
+          })}></Button>
+          <Button style={Object.assign({}, ButtonStyle, {
+            background: '#0084b4',
+            top: this.props.height / 4,
+            iconCode: 'e90e',
+          })}></Button>
+          <Button style={Object.assign({}, ButtonStyle, {
+            background: '#BA2D91',
+            top: 2 * (this.props.height / 4),
+            iconCode: 'e910',
+          })}></Button>
+          <Button style={Object.assign({}, ButtonStyle, {
+            background: '#FDAC3A',
+            top: 3 * (this.props.height / 4),
+            iconCode: 'e911',
+          })}></Button>
+        </Group>
+        <Group style={this.getBottomBarStyle()}>
+          <Text style={commentStyle}>25 COMMENTS</Text>
+          <Text style={sharesStyle}>2 SHARES</Text>
+          <Text style={likeStyle} onClick={this.like}>&#xe914;</Text>
+          <Text style={bookmarkStyle} onClick={this.bookmark}>&#xe912;</Text>
         </Group>
       </Group>
     );
   },
 
+  // Actions
+  // ======
+
+  ensureLoggedIn: function() {
+    const { isAuthenticated, goToLogin } = this.props;
+
+    return new Promise((resolve, reject) => {
+      if (!isAuthenticated) {
+        goToLogin();
+        reject();
+      }
+      resolve();
+    });
+  },
+
   visitLink: function() {
     const { article, nestedRouteActive } = this.props;
     if (nestedRouteActive) return;
-    window.open(article.link, "_blank");
+
+    this.ensureLoggedIn()
+      .then(() => {
+        window.open(article.link, "_blank");
+      }).catch(() => {});
+  },
+
+  like: function() {
+    this.ensureLoggedIn()
+      .then(() => {
+        const { article } = this.props;
+        this.props.like(article.id);
+      }).catch(() => {});
+  },
+
+  bookmark: function() {
+    this.ensureLoggedIn()
+      .then(() => {
+        const { article } = this.props;
+        this.props.bookmark(article.id);
+      }).catch(() => {});
   },
 
   // Styles
@@ -130,20 +265,62 @@ var Page = React.createClass({
 
   getOptionsStyle: function() {
     const { optionsWidth } = this.props;
-    const x = this.props.width - optionsWidth;
+
     return {
-      position: 'absolute',
       top: 0,
-      left: x,
+      left: this.props.width,
       width: optionsWidth,
       height: this.props.height,
-      zIndex: 3,
-      background: 'red',
-    }; 
+    };
+  },
+
+  getBottomBarStyle: function() {
+    return {
+      height: 32,
+      top: this.props.height - 32,
+      left: 0,
+      width: this.props.width,
+    };
+  },
+
+  getIconStyle: function () {
+    var top = this.props.height - 32;
+    var translateY = 0;
+    translateY = -this.props.scrollTop * TEXT_SCROLL_SPEED_MULTIPLIER;
+    var alphaMultiplier = (this.props.scrollTop <= 0) ? -TEXT_ALPHA_SPEED_OUT_MULTIPLIER : TEXT_ALPHA_SPEED_IN_MULTIPLIER;
+    var alpha = 1 - (this.props.scrollTop / this.props.height) * alphaMultiplier;
+    alpha = Math.min(Math.max(alpha, 0), 1);
+
+    return {
+      top: top + 0.5 * CONTENT_INSET,
+      left: CONTENT_INSET,
+      fontSize: 12,
+      textTransform: 'uppercase',
+      lineHeight: 24,
+      color: '#757575',
+      // active: #999
+      translateY: translateY,
+      alpha: alpha,
+      fontFace: FontFace('IconFont', null, {weight: 500}),
+    };
   },
 
   optionsClicked: function() {
     console.log('options was clicked');
+  },
+
+  getButtonStyle: function(isActive) {
+    return {
+      width: 64,
+      height: this.props.height / 4,
+      font: 'IconFont',
+      fontSize: 40,
+      color: '#fff',
+      background: '#999',
+      color: '#fff',
+      lineHeight: 50,
+      left: this.props.width,
+    };
   },
 
   getAgencyMetaHeight: function() {
@@ -176,7 +353,7 @@ var Page = React.createClass({
     var metabarHeight = this.getMetaBarHeight();
 
     return {
-      top: imageHeight + metabarHeight + (0.5 * CONTENT_INSET),
+      top: imageHeight + metabarHeight,
       left: CONTENT_INSET,
       width: 48,
       height: 48,
@@ -191,11 +368,11 @@ var Page = React.createClass({
     var metabarHeight = this.getMetaBarHeight();
 
     return {
-      top: imageHeight + metabarHeight + CONTENT_INSET,
+      top: imageHeight + metabarHeight + (0.5 * CONTENT_INSET),
       left: 48 + CONTENT_INSET + 10,
-      fontFace: FontFace('-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif', null, {weight: 400}),
+      fontFace: FontFace(FONT_FACE_DEFAULT, null, {weight: 400}),
       fontSize: 14,
-      color: '#333',
+      color: '#212121',
       lineHeight: 24,
     };
   },
@@ -205,9 +382,9 @@ var Page = React.createClass({
     var metabarHeight = this.getMetaBarHeight();
 
     return {
-      top: imageHeight + metabarHeight + CONTENT_INSET,
+      top: imageHeight + metabarHeight + (0.5 * CONTENT_INSET),
       left: 48 + CONTENT_INSET + 10,
-      fontFace: FontFace('-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif', null, {weight: 400}),
+      fontFace: FontFace(FONT_FACE_DEFAULT, null, {weight: 400}),
       fontSize: 14,
       color: '#09c',
       lineHeight: 24,
@@ -233,7 +410,7 @@ var Page = React.createClass({
       width: this.props.width,
       left: 0,
       zIndex: TEXT_LAYER_INDEX,
-      color: '#333',
+      color: '#212121',
       alpha: alpha,
       translateY: translateY,
     };
@@ -250,7 +427,7 @@ var Page = React.createClass({
       top: this.getImageHeight() + 0.5 * CONTENT_INSET,
       left: CONTENT_INSET,
       width: Math.round(this.props.width / 2) - CONTENT_INSET,
-      fontFace: FontFace('-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif', null, {weight: 400}),
+      fontFace: FontFace(FONT_FACE_DEFAULT, null, {weight: 400}),
     };
   },
 
@@ -259,9 +436,9 @@ var Page = React.createClass({
       lineHeight: 30,
       top: this.getImageHeight() + 0.5 * CONTENT_INSET,
       width: Math.round(this.props.width / 2) - CONTENT_INSET,
-      fontFace: FontFace('-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif', null, {weight: 400}),
+      fontFace: FontFace(FONT_FACE_DEFAULT, null, {weight: 400}),
       fontSize: 16,
-      color: '#333',
+      color: '#212121',
     };
   },
 
@@ -290,14 +467,14 @@ var Page = React.createClass({
     var imageHeight = this.getImageHeight();
     var metabarHeight = this.getMetaBarHeight();
     var agencyMetaHeight = this.getAgencyMetaHeight();
-    var top = imageHeight + metabarHeight + agencyMetaHeight + CONTENT_INSET;
+    var top = imageHeight + metabarHeight + agencyMetaHeight;
     return {
       top: top,
       left: CONTENT_INSET,
       width: this.props.width - 2 * CONTENT_INSET,
       fontSize: 22,
       lineHeight: 30,
-      fontFace: FontFace('-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif', null, {weight: 500})
+      fontFace: FontFace(FONT_FACE_DEFAULT, null, {weight: 500})
     };
   },
 
@@ -305,7 +482,7 @@ var Page = React.createClass({
     return {
       left: CONTENT_INSET,
       width: this.props.width - 2 * CONTENT_INSET,
-      fontFace: FontFace('-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif'),
+      fontFace: FontFace(FONT_FACE_DEFAULT, null, {weight: 400}),
       fontSize: 15,
       lineHeight: 23,
     };

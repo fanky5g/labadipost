@@ -63,6 +63,8 @@ func (api *API) ActivateUser(c echo.Context) error {
 func (api *AuthRoutes) Bind(group *echo.Group) {
   group.Use(api.AuthMiddleware)
   group.GET("/v1/auth/user", api.GetUser)
+  group.POST("/v1/feeds/like", api.LikeStory)
+  group.POST("/v1/feeds/bookmark", api.BookmarkStory)
 }
 
 func (api *AuthRoutes) GetUser(c echo.Context) error {

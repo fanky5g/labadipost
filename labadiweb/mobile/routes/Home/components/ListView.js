@@ -107,7 +107,13 @@ var ListView = React.createClass({
     var optionsWidth = this.props.optionsWidthGetter();
     var lval = left > 0 ? left : 0;
     if (lval > optionsWidth) lval = optionsWidth;
+
+    // if (this.state.scrollTop !== top && lval > 0) {
+    //   this.setState({ scrollLeft: lval  });
+    //   return;
+    // } else {
     this.setState({ scrollTop: top, scrollLeft: lval});
+    // }
 
     if (this.props.onScroll) {
       this.props.onScroll(lval, top);

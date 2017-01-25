@@ -223,7 +223,7 @@ class RootComponent extends Component {
 
   render() {
     const { nestedRouteActive, canvasActive } = this.state;
-    const { stories, cursor, isAuthenticated, hasPrefs, loading, goToUrl } = this.props;
+    const { stories, cursor, isAuthenticated, hasPrefs, loading, goToUrl, dispatch } = this.props;
 
     return (
       <div className="fill" style={this.getAppStyles()} ref="pageContainer">
@@ -267,7 +267,15 @@ class RootComponent extends Component {
           <div className="fill" id="surface">
             <div style={this.getBoundStyle()}>
               <div className="fill">
-                <Home goToURL={this.visitNestedRoute} showHamburger={true} nestedRouteActive={nestedRouteActive} stories={uniqBy(stories, 'title')} />
+                <Home
+                  goToURL={this.visitNestedRoute}
+                  showHamburger={true}
+                  nestedRouteActive={nestedRouteActive}
+                  stories={uniqBy(stories, 'title')}
+                  goToLogin={this.goToLogin}
+                  isAuthenticated={isAuthenticated}
+                  dispatch={dispatch}
+                />
               </div>
             </div>
           </div>
